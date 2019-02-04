@@ -1,0 +1,138 @@
+# PROMPT
+function getPwd {
+  pwd_length=25
+  DIR=`pwd`
+  echo $DIR | grep "^$HOME" >> /dev/null
+  if [ $? -eq 0 ]
+  then
+    CURRDIR=`echo $DIR | awk -F$HOME '{print $2}'`
+    newPWD="~$CURRDIR"
+
+    if [ $(echo -n $newPWD | wc -c | tr -d " ") -gt $pwd_length ]
+    then
+      newPWD="~/..$(echo -n $PWD | sed -e "s/.*\(.\{$pwd_length\}\)/\1/")"
+    fi
+  elif [ "$DIR" = "$HOME" ]
+  then
+    newPWD="~"
+  elif [ $(echo -n $PWD | wc -c | tr -d " ") -gt $pwd_length ]
+  then
+    newPWD="..$(echo -n $PWD | sed -e "s/.*\(.\{$pwd_length\}\)/\1/")"
+  else
+    newPWD="$(echo -n $PWD)"
+  fi
+
+  echo $newPWD
+}
+
+function code {
+  if [[ $# = 0 ]]
+  then
+    open -a "Visual Studio Code"
+  else
+    local argPath="$1"
+    [[ $1 = /* ]] && argPath="$1" || argPath="$PWD/${1#./}"
+    open -a "Visual Studio Code" "$argPath"
+  fi
+}
+
+function gitx {
+  if [[ $# = 0 ]]
+  then
+    open -a "GitX"
+  else
+    local argPath="$1"
+    [[ $1 = /* ]] && argPath="$1" || argPath="$PWD/${1#./}"
+    open -a "GitX" "$argPath"
+  fi
+}
+
+# Kubernetes
+function getsecretvalue() {
+  typeset SECRET_NAME=$1
+  typeset LITERAL_KEY=$2
+  kubectl get secrets $SECRET_NAME -o yaml | grep $LITERAL_KEY | cut -d ":" -f 2 | tr -d ' ' | base64 --decode
+}
+
+function getsecret() {
+  typeset SECRET_NAME=$1
+  kubectl get secrets $SECRET_NAME -o yaml
+}
+
+function iTermSetKube {
+  local curcontext=""
+  local curkube=""
+  local curnamespace=""
+  local curdir=""
+  local dispkube=""
+  local red=0;
+  local green=0;
+  local blue=0;
+  local promptcolour=""
+
+  curcontext=$(kubectl config get-contexts `kubectl config current-context`)
+  curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
+  curnamespace=$(echo ${curcontext} | grep "^*" | awk '{print $5}')
+  #[ -e ~/.kube/config ] && curkube=$(cat ~/.kube/config | grep "^current-context:" | awk '{print $2}' | cut -d '.' -f 1)
+  [ "${curkube}" = "dev" ] && dispkube="DEV" && red=0 && green=255 && blue=0 && promptcolour=$FG[002]
+  [ "${curkube}" = "staging" ] && dispkube="STAGING" && red=0 && green=0 && blue=255 && promptcolour=$FG[032]
+  [ "${curkube}" = "prod" ] && dispkube="PROD" && red=255 && green=0 && blue=0 && promptcolour=$FG[001]
+  [ "${curkube}" = "sandbox" ] && dispkube="SANDBOX" && red=255 && green=255 && blue=0 && promptcolour=$FG[003]
+
+  ### Change the tab colour ###
+#  echo -n -e "\e]6;1;bg;*;default\a"
+#  if [ $(( $red + $green + $blue )) -gt 0 ] ; then
+#    echo -n -e "\e]6;1;bg;red;brightness;${red}\a"
+#    echo -n -e "\e]6;1;bg;green;brightness;${green}\a"
+#    echo -n -e "\e]6;1;bg;blue;brightness;${blue}\a"
+#  fi
+
+  ### Put a floating env badge ###
+#  echo -n -e "\e]1337;SetUserVar=curkube=$(echo ${dispkube} | base64)\a"
+#  echo -n -e "\e]1337;SetBadgeFormat=$(echo '\(user.curkube)' | base64)\a"
+
+  export KUBE_DISPLAY="${promptcolour}${dispkube} - ${curnamespace}%{$reset_color%}"
+}
+
+function iTermSetTitle {
+	local curproject=""
+	local curdir=$(print -P %~)
+
+	if [[ $curdir = "~/dev/au/"* ]]
+	then
+		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/au/(\S+?)/.*$#$1#g'`
+	else
+		curproject=${curdir: -12}
+	fi
+
+	echo -n -e "\e]1;${curproject}\a"
+}
+
+
+# Docker
+function remove-all-docker-containers() {
+  docker ps -aq --no-trunc | xargs docker rm
+}
+
+function remove-trufflehawk-containers ()
+{
+    docker ps -a | awk '{ print $1,$2,$3 }' | egrep "find_truffles|au-truffle_hawk" | awk '{print $1 }' | xargs -I {} docker rm {}
+}
+
+# Git
+function clean-git-branches() {
+	git checkout master
+	git fetch --prune
+	git pull
+	git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
+	git gc --aggressive
+	git checkout -
+	git checkout rc
+	git pull
+	git checkout -
+}
+
+#Fly
+function fly-watch() {
+	`echo $1 | perl -p -e 's#.*/pipelines/(.*)/jobs/(.*)/builds/(.*)$#fly watch -t au -j $1/$2 -b $3#g'`
+}
