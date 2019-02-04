@@ -1,6 +1,5 @@
 alias ll='ls -lhG'
 
-
 alias hostip='ipconfig getifaddr en0'
 
 alias kc="kubectl"

@@ -74,10 +74,10 @@ function iTermSetKube {
   curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
   curnamespace=$(echo ${curcontext} | grep "^*" | awk '{print $5}')
   #[ -e ~/.kube/config ] && curkube=$(cat ~/.kube/config | grep "^current-context:" | awk '{print $2}' | cut -d '.' -f 1)
-  [ "${curkube}" = "dev" ] && dispkube="DEV" && red=0 && green=255 && blue=0 && promptcolour=$FG[002]
-  [ "${curkube}" = "staging" ] && dispkube="STAGING" && red=0 && green=0 && blue=255 && promptcolour=$FG[032]
-  [ "${curkube}" = "prod" ] && dispkube="PROD" && red=255 && green=0 && blue=0 && promptcolour=$FG[001]
-  [ "${curkube}" = "sandbox" ] && dispkube="SANDBOX" && red=255 && green=255 && blue=0 && promptcolour=$FG[003]
+  [[ "${curkube}" =~ ".*dev.*" ]] && red=0 && green=255 && blue=0 && promptcolour=$FG[002]
+  [[ "${curkube}" =~ ".*staging.*" ]] && red=0 && green=0 && blue=255 && promptcolour=$FG[032]
+  [[ "${curkube}" =~ ".*prod.*" ]] && red=255 && green=0 && blue=0 && promptcolour=$FG[001]
+  [[ "${curkube}" =~ ".*sandbox.*" ]] && red=255 && green=255 && blue=0 && promptcolour=$FG[003]
 
   ### Change the tab colour ###
 #  echo -n -e "\e]6;1;bg;*;default\a"
@@ -91,7 +91,7 @@ function iTermSetKube {
 #  echo -n -e "\e]1337;SetUserVar=curkube=$(echo ${dispkube} | base64)\a"
 #  echo -n -e "\e]1337;SetBadgeFormat=$(echo '\(user.curkube)' | base64)\a"
 
-  export KUBE_DISPLAY="${promptcolour}${dispkube} - ${curnamespace}%{$reset_color%}"
+  export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
 }
 
 function iTermSetTitle {

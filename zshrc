@@ -80,6 +80,7 @@ source $ZSH/oh-my-zsh.sh
 . $HOME/.zsh/zsh_aliases
 . $HOME/.zsh/zsh_environ
 . $HOME/.zsh/zsh_prompt
+. $HOME/.zsh/.secrets
 . $HOME/dev/au/engineering/kubernetes/kuberc
 . $HOME/dev/au/engineering/kubernetes/kuberc_china
 . $HOME/.zshenv
