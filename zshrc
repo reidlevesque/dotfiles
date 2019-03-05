@@ -86,6 +86,7 @@ source $ZSH/oh-my-zsh.sh
 . $HOME/.zshenv
 
 eval "$(pyenv init -)"
+eval "$(jenv init -)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 

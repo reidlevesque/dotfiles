@@ -72,12 +72,12 @@ function iTermSetKube {
 
   curcontext=$(kubectl config get-contexts `kubectl config current-context`)
   curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
-  curnamespace=$(echo ${curcontext} | grep "^*" | awk '{print $5}')
+  curnamespace=$(echo ${curcontext} | grep "^*" | perl -p -e 's/.*\s(\S+)$/$1/g')
   #[ -e ~/.kube/config ] && curkube=$(cat ~/.kube/config | grep "^current-context:" | awk '{print $2}' | cut -d '.' -f 1)
   [[ "${curkube}" =~ ".*dev.*" ]] && red=0 && green=255 && blue=0 && promptcolour=$FG[002]
   [[ "${curkube}" =~ ".*staging.*" ]] && red=0 && green=0 && blue=255 && promptcolour=$FG[032]
   [[ "${curkube}" =~ ".*prod.*" ]] && red=255 && green=0 && blue=0 && promptcolour=$FG[001]
-  [[ "${curkube}" =~ ".*sandbox.*" ]] && red=255 && green=255 && blue=0 && promptcolour=$FG[003]
+  [[ "${curkube}" =~ ".*sb1.*" ]] && red=255 && green=255 && blue=0 && promptcolour=$FG[003]
 
   ### Change the tab colour ###
 #  echo -n -e "\e]6;1;bg;*;default\a"
