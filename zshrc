@@ -65,6 +65,7 @@ plugins=(
   brew
   docker
   git
+  kubectl
   mvn
   python
   perl
