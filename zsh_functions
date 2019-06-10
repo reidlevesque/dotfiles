@@ -48,6 +48,18 @@ function gitx {
 }
 
 # Kubernetes
+function kss() {
+  typeset SERVICE_NAME=$1
+  typeset REPLICAS=$2
+  kubectl scale statefulset $SERVICE_NAME --replicas=$REPLICAS
+}
+
+function ksd() {
+  typeset SERVICE_NAME=$1
+  typeset REPLICAS=$2
+  kubectl scale deployment $SERVICE_NAME --replicas=$REPLICAS
+}
+
 function getsecretvalue() {
   typeset SECRET_NAME=$1
   typeset LITERAL_KEY=$2
