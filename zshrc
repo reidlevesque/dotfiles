@@ -85,6 +85,7 @@ source $ZSH/oh-my-zsh.sh
 . $HOME/dev/au/engineering/kubernetes/kuberc
 . $HOME/dev/au/engineering/kubernetes/kuberc_china
 . $HOME/.zshenv
+. $HOME/.brewrc
 
 eval "$(pyenv init -)"
 eval "$(jenv init -)"
