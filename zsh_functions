@@ -36,17 +36,6 @@ function code {
   fi
 }
 
-function gitx {
-  if [[ $# = 0 ]]
-  then
-    open -a "GitX"
-  else
-    local argPath="$1"
-    [[ $1 = /* ]] && argPath="$1" || argPath="$PWD/${1#./}"
-    open -a "GitX" "$argPath"
-  fi
-}
-
 # Kubernetes
 function kss() {
   typeset SERVICE_NAME=$1
@@ -113,13 +102,14 @@ function iTermSetTitle {
 	if [[ $curdir = "~/dev/au/"* ]]
 	then
 		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/au/(\S+?)/.*$#$1#g'`
+	elif [[ $curdir = "~/dev/rogers/"* ]]
+	then
+		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/rogers/(\S+?)/.*$#$1#g'`
 	else
 		curproject=${curdir: -12}
 	fi
-
 	echo -n -e "\e]1;${curproject}\a"
 }
-
 
 # Docker
 function remove-all-docker-containers() {
