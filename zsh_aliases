@@ -3,6 +3,7 @@ alias ll='ls -lhG'
 alias hostip='ipconfig getifaddr en0'
 
 alias kc="kubectl"
+alias kcg="kc get -o yaml"
 alias kclogs="kc logs -f "
 alias kcpods="kc get pods | grep "
 alias kcsecrets="kc get secrets | grep "
