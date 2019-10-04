@@ -1,0 +1,11 @@
+[user]
+	name = Reid Levesque
+	email = reid@autonomic.ai
+[init]
+	templatedir = /Users/reidlevesque/.git_templates
+[alias]
+  co = checkout
+  ci = duet-commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
