@@ -66,11 +66,11 @@ plugins=(
   docker
   git
   kubectl
-  mvn
   python
-  perl
   shrink-path
-  virtualenv
+#  mvn
+#  perl
+#  virtualenv
 )
 
 source $ZSH/oh-my-zsh.sh
