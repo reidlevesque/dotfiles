@@ -16,6 +16,9 @@ export PATH="$HOME/.jenv/bin:$PATH"
 
 export PATH="$HOME/bin:$PATH"
 
+export GOPATH=$HOME/dev/go
+export PATH="$GOPATH/bin:$PATH"
+
 export INTELLIJ_PREFERENCE_DIR="$HOME/Library/Preferences/IntelliJIdea2018.1"
 
 export AWS_DEFAULT_PROFILE="reid"
