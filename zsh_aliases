@@ -1,18 +1,3 @@
 alias ll='ls -lhG'
 
 alias hostip='ipconfig getifaddr en0'
-
-alias kc="kubectl"
-alias kcg="kc get -o yaml"
-alias kclogs="kc logs -f "
-alias kcpods="kc get pods | grep "
-alias kcsecrets="kc get secrets | grep "
-alias kcwatch="watch 'kubectl get pod | grep'"
-alias port-forward-prometheus='kubectl -n monitoring port-forward $(kc get pod -n monitoring -o name -l app=prometheus,component=server | cut -d / -f 2) 9090'
-alias port-forward-alertmanager='kubectl -n monitoring port-forward $(kc get pod -n monitoring -o name -l app=prometheus,component=alertmanager | cut -d / -f 2) 9093'
-
-alias gitpushf="git push --force-with-lease"
-
-# remove alias from kubectl plugin
-unalias kcp
-unalias ksd

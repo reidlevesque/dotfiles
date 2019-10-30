@@ -1,0 +1,38 @@
+# Aliases
+alias kc="kubectl"
+alias kcg="kc get -o yaml"
+alias kcd="kc describe"
+alias kclogs="kc logs -f "
+alias kcpods="kc get pods | grep "
+alias kcsecrets="kc get secrets | grep "
+alias kcwatch="watch 'kubectl get pod | grep'"
+alias port-forward-prometheus='kubectl -n monitoring port-forward $(kc get pod -n monitoring -o name -l app=prometheus,component=server | cut -d / -f 2) 9090'
+alias port-forward-alertmanager='kubectl -n monitoring port-forward $(kc get pod -n monitoring -o name -l app=prometheus,component=alertmanager | cut -d / -f 2) 9093'
+
+# Remove alias from kubectl plugin
+unalias kcp
+unalias ksd
+
+# Functions
+function kss() {
+  typeset SERVICE_NAME=$1
+  typeset REPLICAS=$2
+  kubectl scale statefulset $SERVICE_NAME --replicas=$REPLICAS
+}
+
+function ksd() {
+  typeset SERVICE_NAME=$1
+  typeset REPLICAS=$2
+  kubectl scale deployment $SERVICE_NAME --replicas=$REPLICAS
+}
+
+function getsecretvalue() {
+  typeset SECRET_NAME=$1
+  typeset LITERAL_KEY=$2
+  kubectl get secrets $SECRET_NAME -o yaml | grep $LITERAL_KEY | cut -d ":" -f 2 | tr -d ' ' | base64 --decode
+}
+
+function getsecret() {
+  typeset SECRET_NAME=$1
+  kubectl get secrets $SECRET_NAME -o yaml
+}

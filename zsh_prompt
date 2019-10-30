@@ -1,8 +1,38 @@
-. $HOME/.zsh/zsh_functions
+function iTermSetKube {
+  local curcontext=""
+  local curkube=""
+  local curnamespace=""
+  local curdir=""
+  local dispkube=""
+  local promptcolour=""
 
-precmd() { 
-    iTermSetKube
-    iTermSetTitle
+  curcontext=$(kubectl config get-contexts `kubectl config current-context`)
+  curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
+  curnamespace=$(echo ${curcontext} | grep "^*" | perl -p -e 's/.*\s(\S+)$/$1/g')
+  #[ -e ~/.kube/config ] && curkube=$(cat ~/.kube/config | grep "^current-context:" | awk '{print $2}' | cut -d '.' -f 1)
+  [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
+  [[ "${curkube}" =~ ".*staging.*" ]] && promptcolour=$FG[032]
+  [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
+  [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[003]
+  [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
+
+  export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
+}
+
+function iTermSetTitle {
+	local curproject=""
+	local curdir=$(print -P %~)
+
+	if [[ $curdir = "~/dev/au/"* ]]
+	then
+		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/au/(\S+?)/.*$#$1#g'`
+	elif [[ $curdir = "~/dev/go/src/au/"* ]]
+	then
+		curproject="go: `echo $curdir/ | perl -p -e 's#^.*/dev/go/src/au/(\S+?)/.*$#$1#g'`"
+	else
+		curproject=${curdir: -12}
+	fi
+	echo -n -e "\e]1;${curproject}\a"
 }
 
 function restoreprompt {
@@ -17,6 +47,11 @@ function truncateprompt {
 $FG[032]$(shrink_path -t -l)\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
+}
+
+precmd() { 
+    iTermSetKube
+    iTermSetTitle
 }
 
 restoreprompt
