@@ -2,6 +2,7 @@
 alias kc="kubectl"
 alias kcg="kc get -o yaml"
 #alias kcd="kc describe"
+alias kcpf="kc port-forward"
 alias kclogs="kc logs -f "
 alias kcpods="kc get pods | grep "
 alias kcsecrets="kc get secrets | grep "
