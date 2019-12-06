@@ -52,11 +52,7 @@ function clean-git-branches() {
 	git fetch --prune
 	git pull
 	git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
-	git gc --aggressive
 	git checkout -
-#	git checkout rc
-#	git pull
-#	git checkout -
 }
 
 #Fly
