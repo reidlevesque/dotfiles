@@ -55,6 +55,25 @@ function clean-git-branches() {
 	git checkout -
 }
 
+function clone-all-repos () 
+{
+  for i in `seq 50`
+  do
+    curl -u $GITHUB_USERNAME:$GITHUB_ORG_SEARCH_TOKEN -s "https://api.github.com/orgs/autonomic-ai/repos?page=$i" | grep full_name
+  done | sort -u | perl -p -e 's/^.*": "(.*)",$/git\@github.com:$1/g' | xargs -n1 git clone
+}
+
+function update-all-repos () 
+{
+  for i in *
+  do
+    cd $i
+    git co master
+    git pull
+    cd -
+  done
+}
+
 #Fly
 function fly-watch() {
 	`echo $1 | perl -p -e 's#.*/pipelines/(.*)/jobs/(.*)/builds/(.*)$#fly watch -t au -j $1/$2 -b $3#g'`
