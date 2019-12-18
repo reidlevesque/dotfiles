@@ -8,13 +8,14 @@ function iTermSetKube {
 
   curcontext=$(kubectl config get-contexts `kubectl config current-context`)
   curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
-  curnamespace=$(echo ${curcontext} | grep "^*" | perl -p -e 's/.*\s(\S+)$/$1/g')
-  #[ -e ~/.kube/config ] && curkube=$(cat ~/.kube/config | grep "^current-context:" | awk '{print $2}' | cut -d '.' -f 1)
+  curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
+
   [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
   [[ "${curkube}" =~ ".*staging.*" ]] && promptcolour=$FG[032]
   [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
   [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[003]
   [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
+  [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
 
   export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
 }

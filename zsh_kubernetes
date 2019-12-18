@@ -13,6 +13,7 @@ alias port-forward-alertmanager='kubectl -n monitoring port-forward $(kc get pod
 # Remove alias from kubectl plugin
 unalias kcp
 unalias ksd
+unalias kca
 
 # Functions
 function kss() {
