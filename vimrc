@@ -7,6 +7,7 @@ set smarttab
 set smartindent
 set autoindent
 set ruler
+set number
 set hlsearch
 set incsearch
 set visualbell
