@@ -1,3 +1,5 @@
 alias ll='ls -lhG'
 
 alias hostip='ipconfig getifaddr en0'
+
+alias update-all-repos='ls | xargs -P20 -I{} git -C {} pull'

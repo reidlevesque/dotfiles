@@ -63,17 +63,6 @@ function clone-all-repos ()
   done | sort -u | perl -p -e 's/^.*": "(.*)",$/git\@github.com:$1/g' | xargs -n1 git clone
 }
 
-function update-all-repos () 
-{
-  for i in *
-  do
-    cd $i
-    git co master
-    git pull
-    cd -
-  done
-}
-
 #Fly
 function fly-watch() {
 	`echo $1 | perl -p -e 's#.*/pipelines/(.*)/jobs/(.*)/builds/(.*)$#fly watch -t au -j $1/$2 -b $3#g'`
