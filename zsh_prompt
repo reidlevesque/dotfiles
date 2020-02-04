@@ -10,6 +10,8 @@ function iTermSetKube {
   curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
   curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
 
+  awscolour=$FG[008]
+
   [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
   [[ "${curkube}" =~ ".*staging.*" ]] && promptcolour=$FG[032]
   [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
@@ -17,7 +19,11 @@ function iTermSetKube {
   [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
   [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
 
-  export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
+  if [ -z $AWS_REGION ]; then
+    export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
+  else
+    export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} - ${awscolour}${AWS_REGION} | ${AWS_PROFILE}%{$reset_color%}"
+  fi
 }
 
 function iTermSetTitle {

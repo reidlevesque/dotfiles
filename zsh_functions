@@ -67,3 +67,19 @@ function clone-all-repos ()
 function fly-watch() {
 	`echo $1 | perl -p -e 's#.*/pipelines/(.*)/jobs/(.*)/builds/(.*)$#fly watch -t au -j $1/$2 -b $3#g'`
 }
+
+# AWS
+function use-aws-cn() {
+  export AWS_REGION=cn-northwest-1
+  export AWS_PROFILE=aws-cn-experiment-1
+}
+
+function use-aws-na() {
+  export AWS_REGION=us-west-2
+  export AWS_PROFILE=master
+}
+
+function unset-aws() {
+  export AWS_REGION=
+  export AWS_PROFILE=
+}
