@@ -1,3 +1,5 @@
+#! /bin/zsh
+
 # PROMPT
 function getPwd {
   pwd_length=25

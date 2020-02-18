@@ -1,3 +1,5 @@
+#! /bin/zsh
+
 # Aliases
 alias kc="kubectl"
 alias kcg="kc get -o yaml"

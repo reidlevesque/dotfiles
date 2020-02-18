@@ -1,17 +1,5 @@
-#export M2_HOME="$HOME/app/apache-maven"
-#export PATH="$M2_HOME/bin:$PATH"
+#! /bin/zsh
 
-#export CONFLUENT_HOME="$HOME/app/confluent"
-#export PATH="$CONFLUENT_HOME/bin:$PATH"
-
-#export ELASTIC_HOME="$HOME/app/elasticsearch"
-#export PATH="$ELASTIC_HOME/bin:$PATH"
-
-#export ANACONDA_HOME="$HOME/app/anaconda3"
-#export PATH="$ANACONDA_HOME/bin:$PATH"
-
-#export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_172.jdk/Contents/Home"
-#export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
 
 export PATH="$HOME/bin:$PATH"
@@ -23,3 +11,6 @@ export INTELLIJ_PREFERENCE_DIR="$HOME/Library/Preferences/IntelliJIdea2018.1"
 
 export KUSTOMIZE_DIR=~/.kustomize
 
+export INFRA_REPO_DIR="$HOME/dev/au/infrastructure"
+
+export AWS_REGION=us-west-2

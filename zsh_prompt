@@ -1,3 +1,5 @@
+#! /bin/zsh
+
 function iTermSetKube {
   local curcontext=""
   local curkube=""

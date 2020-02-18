@@ -1,3 +1,5 @@
+#! /bin/zsh
+
 alias ll='ls -lhG'
 
 alias hostip='ipconfig getifaddr en0'
