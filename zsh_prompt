@@ -45,17 +45,19 @@ function iTermSetTitle {
 }
 
 function restoreprompt {
-    export PROMPT='${KUBE_DISPLAY} $FG[237]------------------------------------------------------------%{$reset_color%}
+    export PROMPT='${KUBE_DISPLAY} $FG[237]----------------------------------%{$reset_color%}
 $FG[032]%~\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
+    export RPROMPT=""
 }
 
 function truncateprompt {
-    export PROMPT='${KUBE_DISPLAY} $FG[237]------------------------------------------------------------%{$reset_color%}
+    export PROMPT='${KUBE_DISPLAY} $FG[237]----------------------------------%{$reset_color%}
 $FG[032]$(shrink_path -t -l)\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
+    export RPROMPT=""
 }
 
 precmd() { 
