@@ -1,7 +1,7 @@
 #! /bin/zsh
 
-# . $HOME/.zsh/antigenrc
-. $HOME/.zsh/ohmyzshrc
+. $HOME/.zsh/antigenrc
+#. $HOME/.zsh/ohmyzshrc
 
 # User configuration
 
@@ -15,6 +15,10 @@
 . $HOME/dev/au/engineering/kubernetes/kuberc_china
 . $HOME/.zshenv
 . $HOME/.brewrc
+
+# Keep history per shell (i.e. don't share)
+setopt noincappendhistory
+setopt nosharehistory
 
 eval "$(pyenv init -)"
 eval "$(jenv init -)"

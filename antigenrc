@@ -7,7 +7,7 @@ antigen use oh-my-zsh
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
-antigen bundle kubectl # This doesn't work; kubernetes autocompletion breaks
+antigen bundle kubectl
 antigen bundle brew
 antigen bundle shrink-path
 antigen bundle command-not-found
@@ -23,7 +23,7 @@ antigen bundle zpm-zsh/ssh
 # antigen bundle eastokes/aws-plugin-zsh
 
 # Load the theme.
-antigen theme af-magic
+# antigen theme af-magic
 
 # Tell Antigen that you're done.
 antigen apply
