@@ -23,7 +23,7 @@ antigen bundle zpm-zsh/ssh
 # antigen bundle eastokes/aws-plugin-zsh
 
 # Load the theme.
-# antigen theme af-magic
+antigen theme af-magic
 
 # Tell Antigen that you're done.
 antigen apply
