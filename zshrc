@@ -1,7 +1,7 @@
 #! /bin/zsh
 
-. $HOME/.zsh/antigenrc
-#. $HOME/.zsh/ohmyzshrc
+#. $HOME/.zsh/antigenrc
+. $HOME/.zsh/ohmyzshrc
 
 # User configuration
 
