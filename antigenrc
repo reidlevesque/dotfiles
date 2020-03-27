@@ -11,6 +11,7 @@ antigen bundle kubectl
 antigen bundle brew
 antigen bundle shrink-path
 antigen bundle command-not-found
+antigen bundle vscode
 
 # Bundles from the other repos.
 antigen bundle caarlos0/zsh-git-sync
