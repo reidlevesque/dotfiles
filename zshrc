@@ -17,8 +17,8 @@
 . $HOME/.brewrc
 
 # Keep history per shell (i.e. don't share)
-setopt noincappendhistory
-setopt nosharehistory
+#setopt noincappendhistory
+#setopt nosharehistory
 
 eval "$(pyenv init -)"
 eval "$(jenv init -)"
