@@ -21,11 +21,15 @@ function iTermSetKube {
   [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
   [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
 
-  if [ -z $AWS_REGION ]; then
-    export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
+  if [ -n "${AWS_PROFILE}" ]; then
+    aws_role="${AWS_PROFILE}"
+    aws_account=""
   else
-    export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} - ${awscolour}${AWS_REGION} | ${AWS_PROFILE}%{$reset_color%}"
+    aws_role=${AWS_OKTA_ASSUMED_ROLE}
+    aws_account=$(echo "${AWS_OKTA_ASSUMED_ROLE_ARN}" | cut -d ':' -f 5)
   fi
+
+  export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} - ${awscolour}${AWS_REGION} | ${aws_role} | ${aws_account}%{$reset_color%}"
 }
 
 function iTermSetTitle {

@@ -71,6 +71,6 @@ function use-aws-na() {
 }
 
 function unset-aws() {
-  export AWS_REGION=
+  export AWS_REGION=us-west-2
   export AWS_PROFILE=
 }
