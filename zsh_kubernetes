@@ -18,6 +18,13 @@ unalias ksd
 unalias kca
 
 # Functions
+function kcgb() {
+  typeset RESOURCE_TYPE=$1
+  typeset SERVICE_NAME=$2
+
+  kubectl get -o yaml $RESOURCE_TYPE $SERVICE_NAME | bat -lyaml
+}
+
 function kss() {
   typeset SERVICE_NAME=$1
   typeset REPLICAS=$2
