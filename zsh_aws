@@ -1,0 +1,3 @@
+#! /bin/zsh
+
+alias aws-okta-consolidated='aws-okta exec okta -r arn:aws:iam::058711591523:role/sre-engineers-na.samlrole -- zsh'
