@@ -11,6 +11,7 @@ alias kcsecrets="kc get secrets | grep "
 alias kcwatch="watch 'kubectl get pod | grep'"
 alias port-forward-prometheus='kubectl -n monitoring port-forward $(kc get pod -n monitoring -o name -l app=prometheus,component=server | cut -d / -f 2) 9090'
 alias port-forward-alertmanager='kubectl -n monitoring port-forward $(kc get pod -n monitoring -o name -l app=prometheus,component=alertmanager | cut -d / -f 2) 9093'
+alias kcnodes="kc get node  --sort-by=.metadata.creationTimestamp"
 
 # Remove alias from kubectl plugin
 unalias kcp
