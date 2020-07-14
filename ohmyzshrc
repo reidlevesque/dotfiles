@@ -28,7 +28,7 @@ plugins=(
   kubectl
   python
   shrink-path
-  command-not-found
+  # command-not-found # This makes things slow
   z
   vscode
 
