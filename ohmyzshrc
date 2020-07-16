@@ -38,3 +38,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# make pasting fast again
+zstyle ':bracketed-paste-magic' active-widgets '.self-*'
