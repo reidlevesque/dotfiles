@@ -51,7 +51,7 @@ function getsecret() {
 
 function kcwatch() {
   typeset RESOURCE_TYPE=$1
-  typeset REGEX=$2
+  typeset REGEX=${2:-}
 
-  watch "kubectl get $RESOURCE_TYPE | grep $REGEX"
+  watch "kubectl get ${RESOURCE_TYPE} | grep \"${REGEX}\""
 }
