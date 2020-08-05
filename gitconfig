@@ -2,7 +2,7 @@
 	name = Reid Levesque
 	email = reid@autonomic.ai
 [init]
-	templatedir = /Users/reidlevesque/.git_templates
+	templatedir = /Users/reid/.git_templates
 [alias]
   co = checkout
   ci = duet-commit
