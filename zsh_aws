@@ -1,3 +1,12 @@
 #! /bin/zsh
 
+if [[ ${AWS_OKTA_ASSUMED_ROLE} == *global* ]]; then
+  export AWS_REGION=cn-northwest-1
+else
+  export AWS_REGION=us-west-2
+fi
+
 alias aws-okta-consolidated='aws-okta exec okta -r arn:aws:iam::058711591523:role/sre-engineers-na.samlrole -- zsh'
+alias aws-okta-aws-cn-staging='aws-okta exec aws-cn -r arn:aws-cn:iam::719172089972:role/sre-full-access-global.samlrole -- zsh'
+alias aws-okta-aws-cn-tools='aws-okta exec aws-cn -r arn:aws-cn:iam::616940954957:role/sre-full-access-global.samlrole -- zsh'
+alias aws-okta-aws-cn-cnp0='aws-okta exec aws-cn -r arn:aws-cn:iam::411637666174:role/sre-full-access-global.samlrole -- zsh'

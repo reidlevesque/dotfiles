@@ -14,5 +14,3 @@ export INTELLIJ_PREFERENCE_DIR="$HOME/Library/Preferences/IntelliJIdea2018.1"
 export KUSTOMIZE_DIR=~/.kustomize
 
 export INFRA_REPO_DIR="$HOME/dev/au/infrastructure"
-
-export AWS_REGION=us-west-2
