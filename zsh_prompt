@@ -20,6 +20,7 @@ function iTermSetKube {
   [[ "${curkube}" =~ ".*cnp0.*" ]] && promptcolour=$FG[001]
   [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[003]
   [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
+  [[ "${curkube}" =~ ".*cicd.*" ]] && promptcolour=$FG[005]
   [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
 
   if [ -n "${AWS_PROFILE}" ]; then

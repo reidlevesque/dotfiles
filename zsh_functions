@@ -32,6 +32,10 @@ function remove-all-docker-containers() {
   docker ps -aq --no-trunc | xargs docker rm
 }
 
+function remove-all-docker-images() {
+  docker images | awk '{ print $3 }' | xargs -I {} docker rmi {}
+}
+
 function remove-trufflehawk-containers ()
 {
     docker ps -a | awk '{ print $1,$2,$3 }' | egrep "find_truffles|au-truffle_hawk" | awk '{print $1 }' | xargs -I {} docker rm {}
@@ -57,4 +61,9 @@ function clone-all-repos ()
 #Fly
 function fly-watch() {
 	`echo $1 | perl -p -e 's#.*/pipelines/(.*)/jobs/(.*)/builds/(.*)$#fly watch -t au -j $1/$2 -b $3#g'`
+}
+
+# Random
+function jwt-decode() {
+  jq -R 'split(".") | .[1] | @base64d | fromjson'
 }
