@@ -55,3 +55,10 @@ function kcwatch() {
 
   watch "kubectl get ${RESOURCE_TYPE} | grep \"${REGEX}\""
 }
+
+function kcwatchnodes() {
+  local GROUP=${1:-nodes}
+  local COLUMN=${2:-zone}
+
+  watch "kubectl get node --sort-by=.metadata.creationTimestamp -l autonomic.ai/type=${GROUP} --show-labels | perl -p -e \"s/autonomic.ai.*beta.kubernetes.io\/${COLUMN}=(.*?),.*/\\\$1/g\""
+}
