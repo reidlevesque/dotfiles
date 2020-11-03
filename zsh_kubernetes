@@ -62,3 +62,10 @@ function kcwatchnodes() {
 
   watch "kubectl get node --sort-by=.metadata.creationTimestamp -l autonomic.ai/type=${GROUP} --show-labels | perl -p -e \"s/autonomic.ai.*beta.kubernetes.io\/${COLUMN}=(.*?),.*/\\\$1/g\""
 }
+
+function kcpsp() {
+  local template=$'{{range .items}}{{if .metadata.annotations }}{{ if (index .metadata.annotations "kubernetes.io/psp")}} {{printf "%-80s %s\\n" .metadata.name (index .metadata.annotations "kubernetes.io/psp" )}}{{end}}{{end}}{{end}}'
+  printf "%-80s %s" POD_NAME SECURITY_POLICY
+  echo ""
+  kubectl get pods --output go-template="${template}" $*
+}
