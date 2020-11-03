@@ -38,12 +38,9 @@ function iTermSetTitle {
 	local curproject=""
 	local curdir=$(print -P %~)
 
-	if [[ $curdir = "~/dev/au/"* ]]
+	if [[ $curdir = "~/dev/"* ]]
 	then
-		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/au/(\S+?)/.*$#$1#g'`
-	elif [[ $curdir = "~/dev/go/src/"* ]]
-	then
-		curproject="go: `echo $curdir/ | perl -p -e 's#^.*/dev/go/src/.*/.*/(\S+?)/.*$#$1#g'`"
+		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/.*?/(\S+?)/.*$#$1#g'`
 	else
 		curproject=${curdir: -12}
 	fi
