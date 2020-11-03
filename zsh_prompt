@@ -17,7 +17,7 @@ function iTermSetKube {
   [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
   [[ "${curkube}" =~ ".*staging.*" ]] && promptcolour=$FG[032]
   [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
-  [[ "${curkube}" =~ ".*cnp0.*" ]] && promptcolour=$FG[001]
+  [[ "${curkube}" =~ ".*cnp.*" ]] && promptcolour=$FG[001]
   [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[003]
   [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
   [[ "${curkube}" =~ ".*cicd.*" ]] && promptcolour=$FG[005]
