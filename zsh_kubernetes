@@ -12,6 +12,7 @@ alias kcsecrets="kc get secrets | grep "
 alias port-forward-prometheus='kc port-forward service/prometheus-server -n monitoring 9090:80'
 alias port-forward-alertmanager='kubectl port-forward service/prometheus-alertmanager -n monitoring 9093:80'
 alias kcnodes="kc get node  --sort-by=.metadata.creationTimestamp"
+alias kaups="aukops"
 
 # Remove alias from kubectl plugin
 unalias kcp
