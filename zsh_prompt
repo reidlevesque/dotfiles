@@ -14,13 +14,25 @@ function iTermSetKube {
 
   awscolour=$FG[008]
 
+  # DEV
+  [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
   [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
+
+  # STAGING
+  [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[032]
   [[ "${curkube}" =~ ".*staging.*" ]] && promptcolour=$FG[032]
+
+  # PROD
+  [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
   [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
   [[ "${curkube}" =~ ".*cnp.*" ]] && promptcolour=$FG[001]
-  [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[003]
+  [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[001]
+
+  # TOOLS
   [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
   [[ "${curkube}" =~ ".*cicd.*" ]] && promptcolour=$FG[005]
+
+  # AUTOMATION
   [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
 
   if [ -n "${AWS_PROFILE}" ]; then
@@ -63,7 +75,7 @@ $FG[105]%(!.#.»)%{$reset_color%} '
     export RPROMPT=""
 }
 
-precmd() { 
+precmd() {
     iTermSetKube
     iTermSetTitle
 }
