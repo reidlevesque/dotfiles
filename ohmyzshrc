@@ -31,6 +31,8 @@ plugins=(
   # command-not-found # This makes things slow
   z
   vscode
+  gcloud
+  # terraform # Doesn't seem to work
 
   # Custom plugins
   zsh-autosuggestions # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
