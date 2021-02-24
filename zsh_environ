@@ -4,7 +4,7 @@ export PATH="$HOME/.jenv/bin:$PATH"
 
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/dev/au/sre-scripts/scripts:$PATH"
-export PATH="$HOME/dev/gg/gcp-scripts:$PATH"
+export PATH="$HOME/dev/au/gcp-scripts:$PATH"
 export PATH="${PATH}:${HOME}/.krew/bin"
 
 export GOPATH=$HOME/dev/go
@@ -13,6 +13,6 @@ export PATH="$GOPATH/bin:$PATH"
 export INTELLIJ_PREFERENCE_DIR="$HOME/Library/Preferences/IntelliJIdea2018.1"
 
 export KUSTOMIZE_DIR=~/.kustomize
-export TF_PLUGIN_CACHE_DIR=~/.terraform.d/plugin-cache
+# export TF_PLUGIN_CACHE_DIR=~/.terraform.d/plugin-cache
 
 export INFRA_REPO_DIR="$HOME/dev/au/infrastructure"

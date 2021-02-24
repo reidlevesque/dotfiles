@@ -2,6 +2,7 @@
 
 # Aliases
 alias kc="kubectl"
+alias kx='kubectx'
 alias kcg="kc get -o yaml"
 #alias kcd="kc describe"
 alias kcpf="kc port-forward"
