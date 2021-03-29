@@ -7,12 +7,13 @@ function iTermSetKube {
   local curdir=""
   local dispkube=""
   local promptcolour=""
+  local cloud_details=""
 
   curcontext=$(kubectl config get-contexts `kubectl config current-context`)
   curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
   curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
 
-  awscolour=$FG[008]
+  cloud_color=$FG[008]
 
   # DEV
   [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
@@ -35,15 +36,16 @@ function iTermSetKube {
   # AUTOMATION
   [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
 
-  if [ -n "${AWS_PROFILE}" ]; then
-    aws_role="${AWS_PROFILE}"
-    aws_account=""
+  if [ -z "${AWS_OKTA_ASSUMED_ROLE}" ]; then
+    gcp_project=$(gcloud config get-value project)
+    cloud_details="${gcp_project}"
   else
-    aws_role=${AWS_OKTA_ASSUMED_ROLE}
     aws_account=$(echo "${AWS_OKTA_ASSUMED_ROLE_ARN}" | cut -d ':' -f 5)
+    cloud_details="${AWS_REGION} | ${AWS_OKTA_ASSUMED_ROLE} | ${aws_account}"
+    cloud_details="'${AWS_PROFILE}'"
   fi
 
-  export KUBE_DISPLAY="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} - ${awscolour}${AWS_REGION} | ${aws_role} | ${aws_account}%{$reset_color%}"
+  export CLOUD_PROMPT="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} - ${cloud_color}${cloud_details}%{$reset_color%}"
 }
 
 function iTermSetTitle {
@@ -60,7 +62,7 @@ function iTermSetTitle {
 }
 
 function restoreprompt {
-    export PROMPT='${KUBE_DISPLAY} $FG[237]----------------------------------%{$reset_color%}
+    export PROMPT='${CLOUD_PROMPT} $FG[237]----------------------------------%{$reset_color%}
 $FG[032]%~\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
@@ -68,7 +70,7 @@ $FG[105]%(!.#.»)%{$reset_color%} '
 }
 
 function truncateprompt {
-    export PROMPT='${KUBE_DISPLAY} $FG[237]----------------------------------%{$reset_color%}
+    export PROMPT='${CLOUD_PROMPT} $FG[237]----------------------------------%{$reset_color%}
 $FG[032]$(shrink_path -t -l)\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
