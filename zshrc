@@ -22,4 +22,4 @@
 #setopt nosharehistory
 
 eval "$(pyenv init -)"
-eval "$(jenv init -)"
+# eval "$(jenv init -)" # Slow

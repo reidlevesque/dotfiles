@@ -37,7 +37,8 @@ function iTermSetKube {
   [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
 
   if [ -z "${AWS_OKTA_ASSUMED_ROLE}" ]; then
-    gcp_project=$(gcloud config get-value project)
+    # gcp_project=$(gcloud config get-value project)
+    gcp_project=$(cat "${HOME}/.config/gcloud/configurations/config_default" | grep project | awk '{print $3}')
     cloud_details="${gcp_project}"
   else
     aws_account=$(echo "${AWS_OKTA_ASSUMED_ROLE_ARN}" | cut -d ':' -f 5)
