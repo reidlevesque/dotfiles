@@ -67,3 +67,8 @@ function fly-watch() {
 function jwt-decode() {
   jq -R 'split(".") | .[1] | @base64d | fromjson'
 }
+
+function wol-clifford() {
+  local server_ip=$(dig +short andreaandreid.ddns.net)
+  wakeonlan -i "${server_ip}" -p 42464 "2c:f0:5d:98:71:fc"
+}
