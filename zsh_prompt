@@ -5,15 +5,18 @@ function iTermSetKube {
   local curkube=""
   local curnamespace=""
   local curdir=""
+  local curdatetime=""
   local dispkube=""
   local promptcolour=""
   local cloud_details=""
+  local light_colour=""
 
   curcontext=$(kubectl config get-contexts `kubectl config current-context`)
   curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
   curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
+  curdatetime=$(date -u '+%Y-%m-%d %H:%M:%S')
 
-  cloud_color=$FG[008]
+  light_colour=$FG[008]
 
   # DEV
   [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
@@ -32,6 +35,7 @@ function iTermSetKube {
   # TOOLS
   [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
   [[ "${curkube}" =~ ".*cicd.*" ]] && promptcolour=$FG[005]
+  [[ "${curkube}" =~ ".*common-services.*" ]] && promptcolour=$FG[005]
 
   # AUTOMATION
   [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
@@ -46,7 +50,10 @@ function iTermSetKube {
     cloud_details="'${AWS_PROFILE}'"
   fi
 
-  export CLOUD_PROMPT="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} - ${cloud_color}${cloud_details}%{$reset_color%}"
+  export KUBERNETES_PROMPT="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
+  export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%}"
+  export DATE_TIME_PROMPT="${light_colour}${curdatetime}%{$reset_color%}"
+  export PROMPT_SEPARATOR="$FG[237]-----%{$reset_color%}"
 }
 
 function iTermSetTitle {
@@ -63,7 +70,7 @@ function iTermSetTitle {
 }
 
 function restoreprompt {
-    export PROMPT='${CLOUD_PROMPT} $FG[237]----------------------------------%{$reset_color%}
+    export PROMPT='${KUBERNETES_PROMPT} ${PROMPT_SEPARATOR} ${CLOUD_PROMPT} ${PROMPT_SEPARATOR} ${DATE_TIME_PROMPT} ${PROMPT_SEPARATOR}
 $FG[032]%~\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
@@ -71,7 +78,7 @@ $FG[105]%(!.#.»)%{$reset_color%} '
 }
 
 function truncateprompt {
-    export PROMPT='${CLOUD_PROMPT} $FG[237]----------------------------------%{$reset_color%}
+    export PROMPT='${KUBERNETES_PROMPT} ${PROMPT_SEPARATOR} ${CLOUD_PROMPT} ${PROMPT_SEPARATOR} ${DATE_TIME_PROMPT} ${PROMPT_SEPARATOR}
 $FG[032]$(shrink_path -t -l)\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
