@@ -20,6 +20,7 @@ function iTermSetKube {
 
   # DEV
   [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
+  [[ "${curkube}" =~ "gke-x-.*" ]] && promptcolour=$FG[002]
   [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
 
   # STAGING
