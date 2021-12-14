@@ -1,9 +1,22 @@
 #! /bin/zsh
 
-alias ll='ls -lhG'
-
+#alias ll='ls -lhG'
+alias t='terraform'
 alias hostip='ipconfig getifaddr en0'
 
 alias update-all-repos='ls | xargs -P20 -I{} git -C {} pull'
 
-alias tfgg='terraform init && terraform'
+# Modern Unix Alternatives
+# https://github.com/ibraheemdev/modern-Unix
+alias ll='exa -l'
+# alias ag='ag'
+# alias cat='bat'
+# alias df='duf'
+# alias diff='delta'
+# alias du='dust'
+# alias find='fd'
+# alias grep='rg'
+# alias ls='exa'
+# alias ping='gping'
+# alias top='btm'
+# alias top='gtop'
