@@ -14,9 +14,9 @@ function iTermSetKube {
   CLOUD_PROMPT=""
 
   local light_colour=$FG[008]
-  local prompt_separator="$FG[235]-----%{$reset_color%}"
+  local prompt_separator="${light_colour}-----%{$reset_color%}"
 
-  if kubectl config current-context 2> /dev/null; then
+  if kubectl config current-context > /dev/null 2>&1; then
     curcontext=$(kubectl config get-contexts `kubectl config current-context`)
     curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
     curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
