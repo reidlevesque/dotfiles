@@ -11,11 +11,11 @@
 . $HOME/.zsh/zsh_cloud
 . $HOME/.zsh/zsh_environ
 . $HOME/.zsh/zsh_prompt
-. $HOME/.zsh/.secrets
-. $HOME/dev/au/engineering/kubernetes/kuberc
-. $HOME/dev/au/engineering/kubernetes/kuberc_china
-. $HOME/.zshenv
-. $HOME/.brewrc
+[ -f $HOME/dev/au/engineering/kubernetes/kuberc ] && . $HOME/dev/au/engineering/kubernetes/kuberc
+[ -f $HOME/dev/au/engineering/kubernetes/kuberc_china ] && . $HOME/dev/au/engineering/kubernetes/kuberc_china
+[ -f $HOME/.zshenv ] && . $HOME/.zshenv
+[ -f $HOME/.brewrc ] && . $HOME/.brewrc
+[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Keep history per shell (i.e. don't share)
 #setopt noincappendhistory

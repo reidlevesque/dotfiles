@@ -9,52 +9,58 @@ function iTermSetKube {
   local dispkube=""
   local promptcolour=""
   local cloud_details=""
-  local light_colour=""
 
-  curcontext=$(kubectl config get-contexts `kubectl config current-context`)
-  curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
-  curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
-  curdatetime=$(date -u '+%Y-%m-%d %H:%M:%S')
+  KUBERNETES_PROMPT=""
+  CLOUD_PROMPT=""
 
-  light_colour=$FG[008]
+  local light_colour=$FG[008]
+  local prompt_separator="$FG[235]-----%{$reset_color%}"
 
-  # DEV
-  [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
-  [[ "${curkube}" =~ "gke-x-.*" ]] && promptcolour=$FG[002]
-  [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
+  if kubectl config current-context 2> /dev/null; then
+    curcontext=$(kubectl config get-contexts `kubectl config current-context`)
+    curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
+    curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
 
-  # STAGING
-  [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[032]
-  [[ "${curkube}" =~ ".*staging.*" ]] && promptcolour=$FG[032]
+    # DEV
+    [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
+    [[ "${curkube}" =~ "gke-x-.*" ]] && promptcolour=$FG[002]
+    [[ "${curkube}" =~ ".*dev.*" ]] && promptcolour=$FG[002]
 
-  # PROD
-  [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
-  [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
-  [[ "${curkube}" =~ ".*cnp.*" ]] && promptcolour=$FG[001]
-  [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[001]
+    # STAGING
+    [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[032]
+    [[ "${curkube}" =~ ".*staging.*" ]] && promptcolour=$FG[032]
 
-  # TOOLS
-  [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
-  [[ "${curkube}" =~ ".*cicd.*" ]] && promptcolour=$FG[005]
-  [[ "${curkube}" =~ ".*common-services.*" ]] && promptcolour=$FG[005]
+    # PROD
+    [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
+    [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
+    [[ "${curkube}" =~ ".*cnp.*" ]] && promptcolour=$FG[001]
+    [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[001]
 
-  # AUTOMATION
-  [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
+    # TOOLS
+    [[ "${curkube}" =~ ".*tools.*" ]] && promptcolour=$FG[005]
+    [[ "${curkube}" =~ ".*cicd.*" ]] && promptcolour=$FG[005]
+    [[ "${curkube}" =~ ".*common-services.*" ]] && promptcolour=$FG[005]
 
-  if [ -z "${AWS_OKTA_ASSUMED_ROLE}" ]; then
-    # gcp_project=$(gcloud config get-value project)
-    gcp_project=$(cat "${HOME}/.config/gcloud/configurations/config_default" | grep project | awk '{print $3}')
-    cloud_details="${gcp_project}"
-  else
+    # AUTOMATION
+    [[ "${curkube}" =~ ".*automation.*" ]] && promptcolour=$FG[006]
+
+    export KUBERNETES_PROMPT="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} ${prompt_separator} "
+  fi
+
+  if [ -n "${AWS_OKTA_ASSUMED_ROLE}" ]; then
     aws_account=$(echo "${AWS_OKTA_ASSUMED_ROLE_ARN}" | cut -d ':' -f 5)
     cloud_details="${AWS_REGION} | ${AWS_OKTA_ASSUMED_ROLE} | ${aws_account}"
     cloud_details="'${AWS_PROFILE}'"
+    export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
+  elif [ -f "${HOME}/.config/gcloud/configurations/config_default" ]; then
+    # gcp_project=$(gcloud config get-value project)
+    gcp_project=$(cat "${HOME}/.config/gcloud/configurations/config_default" | grep project | awk '{print $3}')
+    cloud_details="${gcp_project}"
+    export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
   fi
 
-  export KUBERNETES_PROMPT="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%}"
-  export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%}"
-  export DATE_TIME_PROMPT="${light_colour}${curdatetime}%{$reset_color%}"
-  export PROMPT_SEPARATOR="$FG[237]-----%{$reset_color%}"
+  curdatetime=$(date -u '+%Y-%m-%d %H:%M:%S')
+  export DATE_TIME_PROMPT="${light_colour}${curdatetime}%{$reset_color%} ${prompt_separator} "
 }
 
 function iTermSetTitle {
@@ -71,7 +77,7 @@ function iTermSetTitle {
 }
 
 function restoreprompt {
-    export PROMPT='${KUBERNETES_PROMPT} ${PROMPT_SEPARATOR} ${CLOUD_PROMPT} ${PROMPT_SEPARATOR} ${DATE_TIME_PROMPT} ${PROMPT_SEPARATOR}
+    export PROMPT='${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
 $FG[032]%~\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
@@ -79,7 +85,7 @@ $FG[105]%(!.#.»)%{$reset_color%} '
 }
 
 function truncateprompt {
-    export PROMPT='${KUBERNETES_PROMPT} ${PROMPT_SEPARATOR} ${CLOUD_PROMPT} ${PROMPT_SEPARATOR} ${DATE_TIME_PROMPT} ${PROMPT_SEPARATOR}
+    export PROMPT='${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
 $FG[032]$(shrink_path -t -l)\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '

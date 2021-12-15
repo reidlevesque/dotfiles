@@ -1,15 +1,11 @@
 #! /bin/zsh
 
-export PATH="$HOME/.jenv/bin:$PATH"
-
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/dev/au/sre-scripts/scripts:$PATH"
 export PATH="$HOME/dev/au/gcp-scripts:$PATH"
 export PATH="$HOME/dev/au/seceng-teleport/scripts:$PATH"
-export PATH="${PATH}:${HOME}/.krew/bin"
-
-export GOPATH=$HOME/dev/go
-export PATH="$GOPATH/bin:$PATH"
+export PATH="$PATH:$HOME/.krew/bin"
+export PATH="$PATH:$HOME/.jenv/bin"
 
 export INTELLIJ_PREFERENCE_DIR="$HOME/Library/Preferences/IntelliJIdea2018.1"
 
