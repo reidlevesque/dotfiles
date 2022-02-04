@@ -1,0 +1,6 @@
+#! /bin/zsh
+
+eval "$(pyenv init -)"
+export PATH="$PYENV_ROOT/shims:$PATH"
+
+eval "$(pyenv virtualenv-init -)"

@@ -21,5 +21,5 @@
 #setopt noincappendhistory
 #setopt nosharehistory
 
-eval "$(pyenv init -)"
 # eval "$(jenv init -)" # Slow
+. $HOME/.zsh/zsh_python # keep this last
