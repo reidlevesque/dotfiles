@@ -13,3 +13,4 @@ export KUSTOMIZE_DIR=~/.kustomize
 # export TF_PLUGIN_CACHE_DIR=~/.terraform.d/plugin-cache
 
 export INFRA_REPO_DIR="$HOME/dev/au/infrastructure"
+export HOMEBREW_NO_ENV_HINTS=true
