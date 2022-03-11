@@ -9,6 +9,7 @@
 . $HOME/.zsh/zsh_aliases
 . $HOME/.zsh/zsh_kubernetes
 . $HOME/.zsh/zsh_cloud
+. $HOME/.zsh/zsh_node
 . $HOME/.zsh/zsh_environ
 . $HOME/.zsh/zsh_prompt
 [ -f $HOME/dev/au/engineering/kubernetes/kuberc ] && . $HOME/dev/au/engineering/kubernetes/kuberc

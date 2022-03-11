@@ -32,6 +32,7 @@ function iTermSetKube {
 
     # PROD
     [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
+    [[ "${curkube}" =~ "gke-sb-.*" ]] && promptcolour=$FG[001]
     [[ "${curkube}" =~ ".*prod.*" ]] && promptcolour=$FG[001]
     [[ "${curkube}" =~ ".*cnp.*" ]] && promptcolour=$FG[001]
     [[ "${curkube}" =~ ".*sb1.*" ]] && promptcolour=$FG[001]
