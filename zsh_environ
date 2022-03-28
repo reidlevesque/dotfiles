@@ -6,6 +6,7 @@ export PATH="$HOME/dev/au/gcp-scripts:$PATH"
 export PATH="$HOME/dev/au/seceng-teleport/scripts:$PATH"
 export PATH="$PATH:$HOME/.krew/bin"
 export PATH="$PATH:$HOME/.jenv/bin"
+export PATH="$PATH:/opt/homebrew/bin"
 
 export INTELLIJ_PREFERENCE_DIR="$HOME/Library/Preferences/IntelliJIdea2018.1"
 
