@@ -1,7 +1,13 @@
 #! /bin/zsh
 
 alias g='gcloud'
+alias g-login='gcloud auth login --brief --launch-browser --update-adc'
 
-export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
-[ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ] && . '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-[ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' ] && . '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+function gcurl () {
+  local token=$(gcloud auth print-access-token)
+  curl --header "Authorization: Bearer $token" $@
+}
+
+export CLOUDSDK_PYTHON="/Users/reid/.pyenv/shims/python3.9"
+[ -f '/Users/reid/bin/google-cloud-sdk/path.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/path.zsh.inc'
+[ -f '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc'
