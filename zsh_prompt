@@ -70,7 +70,7 @@ function iTermSetTitle {
 
 	if [[ $curdir = "~/dev/"* ]]
 	then
-		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/.*?/(\S+?)/.*$#$1#g'`
+		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/(\S+?)/.*$#$1#g'`
 	else
 		curproject=${curdir: -12}
 	fi
