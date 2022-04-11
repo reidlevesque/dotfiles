@@ -2,7 +2,9 @@
 
 #alias ll='ls -lhG'
 alias t='terraform'
+alias iterraform='/usr/local/bin/terraform' # x86_64
 alias hostip='ipconfig getifaddr en0'
+alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
 alias update-all-repos='ls | xargs -P20 -I{} git -C {} pull'
 
