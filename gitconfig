@@ -1,6 +1,6 @@
 [user]
 	name = Reid Levesque
-	email = reid@autonomic.ai
+	email = reid@definitive.io
 [init]
 	templatedir = /Users/reid/.git_templates
 [alias]
@@ -22,7 +22,7 @@
 
 [delta]
     navigate = true
-    
+
 [merge]
     conflictstyle = diff3
 

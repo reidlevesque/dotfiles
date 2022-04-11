@@ -12,8 +12,6 @@
 . $HOME/.zsh/zsh_node
 . $HOME/.zsh/zsh_environ
 . $HOME/.zsh/zsh_prompt
-[ -f $HOME/dev/au/engineering/kubernetes/kuberc ] && . $HOME/dev/au/engineering/kubernetes/kuberc
-[ -f $HOME/dev/au/engineering/kubernetes/kuberc_china ] && . $HOME/dev/au/engineering/kubernetes/kuberc_china
 [ -f $HOME/.zshenv ] && . $HOME/.zshenv
 [ -f $HOME/.brewrc ] && . $HOME/.brewrc
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

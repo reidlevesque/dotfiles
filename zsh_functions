@@ -43,21 +43,13 @@ function remove-trufflehawk-containers ()
 
 # Git
 function clean-git-branches() {
-	git checkout rc || git checkout master
+	git checkout rc || git checkout main
 	git fetch --prune
 	git pull
 	git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
 	git checkout -
 	git checkout rc && git pull && git checkout - || true
-	git checkout master && git pull && git checkout - || true
-}
-
-function clone-all-repos () 
-{
-  for i in `seq 50`
-  do
-    curl -u $GITHUB_USERNAME:$GITHUB_ORG_SEARCH_TOKEN -s "https://api.github.com/orgs/autonomic-ai/repos?page=$i" | grep full_name
-  done | sort -u | perl -p -e 's/^.*": "(.*)",$/git\@github.com:$1/g' | xargs -n1 git clone
+	git checkout main && git pull && git checkout - || true
 }
 
 #Fly

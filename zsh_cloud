@@ -1,34 +1,6 @@
 #! /bin/zsh
 
-if [[ ${AWS_OKTA_ASSUMED_ROLE} == *global* ]]; then
-  export AWS_REGION=cn-northwest-1
-else
-  export AWS_REGION=us-west-2
-fi
-
-alias aws-okta-consolidated='aws-okta exec okta -r arn:aws:iam::058711591523:role/sre-engineers-na.samlrole -- zsh'
-alias aws-okta-au-log-archive='aws-okta exec okta -r arn:aws:iam::633434978733:role/sre-full-access-na.samlrole -- zsh'
-alias aws-okta-aws-cn-staging='aws-okta exec aws-cn -r arn:aws-cn:iam::719172089972:role/sre-full-access-global.samlrole -- zsh'
-alias aws-okta-aws-cn-tools='aws-okta exec aws-cn -r arn:aws-cn:iam::616940954957:role/sre-full-access-global.samlrole -- zsh'
-alias aws-okta-aws-cn-cnp0='aws-okta exec aws-cn -r arn:aws-cn:iam::411637666174:role/sre-full-access-global.samlrole -- zsh'
-alias aws-okta-consolidated-test='aws-okta exec okta -r arn:aws:iam::058711591523:role/sre-policy-test-na.samlrole -- zsh'
-
 alias g='gcloud'
-
-function use-aws-cn() {
-  export AWS_REGION=cn-northwest-1
-  export AWS_PROFILE=
-}
-
-function use-aws-na() {
-  export AWS_REGION=us-west-2
-  export AWS_PROFILE=master
-}
-
-function unset-aws() {
-  export AWS_REGION=us-west-2
-  export AWS_PROFILE=
-}
 
 export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
 [ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ] && . '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
