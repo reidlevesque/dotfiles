@@ -43,12 +43,12 @@ function remove-trufflehawk-containers ()
 
 # Git
 function clean-git-branches() {
-	git checkout rc || git checkout main
+	git checkout plan || git checkout main
 	git fetch --prune
 	git pull
 	git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
 	git checkout -
-	git checkout rc && git pull && git checkout - || true
+	git checkout plan && git pull && git checkout - || true
 	git checkout main && git pull && git checkout - || true
 }
 
