@@ -1,13 +1,11 @@
 #! /bin/zsh
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 export PATH="$HOME/bin:$PATH"
 export PATH="$PATH:$HOME/.krew/bin"
 export PATH="$PATH:$HOME/.jenv/bin"
-export PATH="$PATH:/opt/homebrew/bin"
 
-export INTELLIJ_PREFERENCE_DIR="$HOME/Library/Preferences/IntelliJIdea2018.1"
-
-export KUSTOMIZE_DIR=~/.kustomize
 # export TF_PLUGIN_CACHE_DIR=~/.terraform.d/plugin-cache
 
 export HOMEBREW_NO_ENV_HINTS=true
