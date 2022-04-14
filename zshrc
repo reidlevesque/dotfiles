@@ -1,24 +1,21 @@
 #! /bin/zsh
 
-#. $HOME/.zsh/antigenrc
 . $HOME/.zsh/ohmyzshrc
 
-# User configuration
+# Language Specific Files
+. $HOME/.zsh/zsh_gcp
+. $HOME/.zsh/zsh_kubernetes
+. $HOME/.zsh/zsh_terraform
 
+# General Purpose Files
 . $HOME/.zsh/zsh_functions
 . $HOME/.zsh/zsh_aliases
-. $HOME/.zsh/zsh_kubernetes
-. $HOME/.zsh/zsh_cloud
-. $HOME/.zsh/zsh_node
 . $HOME/.zsh/zsh_environ
 . $HOME/.zsh/zsh_prompt
-[ -f $HOME/.zshenv ] && . $HOME/.zshenv
-[ -f $HOME/.brewrc ] && . $HOME/.brewrc
-[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Keep history per shell (i.e. don't share)
 #setopt noincappendhistory
 #setopt nosharehistory
 
-# eval "$(jenv init -)" # Slow
+eval "$(/opt/homebrew/bin/brew shellenv)"
 . $HOME/.zsh/zsh_python # keep this last

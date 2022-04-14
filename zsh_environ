@@ -1,11 +1,7 @@
 #! /bin/zsh
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 export PATH="$HOME/bin:$PATH"
 export PATH="$PATH:$HOME/.krew/bin"
 export PATH="$PATH:$HOME/.jenv/bin"
-
-# export TF_PLUGIN_CACHE_DIR=~/.terraform.d/plugin-cache
 
 export HOMEBREW_NO_ENV_HINTS=true

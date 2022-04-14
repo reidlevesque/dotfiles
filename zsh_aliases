@@ -2,11 +2,6 @@
 
 #alias ll='ls -lhG'
 
-# Terraform
-alias t='terraform'
-alias iterraform='/usr/local/bin/terraform' # x86_64
-alias t-docs='terraform-docs markdown . > README.md'
-
 alias hostip='ipconfig getifaddr en0'
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 

@@ -72,15 +72,15 @@ DISABLE_AUTO_TITLE="true"
 plugins=(
   brew
   docker
+  gcloud
   git
   kubectl
   python
   shrink-path
-  z
+  terraform
   vscode
-  gcloud
+  z
   # command-not-found # This makes things slow
-  # terraform # Doesn't seem to work
 
   # Custom plugins
   zsh-autosuggestions # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions

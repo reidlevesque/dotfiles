@@ -1,7 +1,7 @@
 #! /bin/zsh
 
 alias g='gcloud'
-alias g-login='gcloud auth login --brief --launch-browser --update-adc'
+alias glogin='gcloud auth login --brief --launch-browser --update-adc'
 
 function gcurl () {
   local token=$(gcloud auth print-access-token)
