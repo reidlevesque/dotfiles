@@ -1,16 +1,19 @@
 #! /bin/zsh
 
 # Aliases
+alias kubectl='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectl'
+alias kubectx='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectx'
+alias kubens='HTTPS_PROXY=socks5://127.0.0.1:8444 kubens'
+
 alias kx='kubectx'
 alias kn='kubens'
-alias kg="kc get -o yaml"
-#alias kcd="kc describe"
-alias kpf="kc port-forward"
-alias kpods="kc get pods | grep "
-alias ksecrets="kc get secrets | grep "
-alias port-forward-prometheus='kc port-forward service/prometheus-server -n monitoring 9090:80'
-alias port-forward-alertmanager='kubectl port-forward service/prometheus-alertmanager -n monitoring 9093:80'
-alias knodes="kc get node  --sort-by=.metadata.creationTimestamp"
+alias kg="k get -o yaml"
+alias kpf="k port-forward"
+alias kpods="k get pods | grep "
+alias ksecrets="k get secrets | grep "
+alias port-forward-prometheus='k port-forward service/prometheus-server -n monitoring 9090:80'
+alias port-forward-alertmanager='k port-forward service/prometheus-alertmanager -n monitoring 9093:80'
+alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 
 # Functions
 function kgb() {
@@ -62,4 +65,30 @@ function kpsp() {
   printf "%-80s %s" POD_NAME SECURITY_POLICY
   echo ""
   kubectl get pods --output go-template="${template}" $*
+}
+
+function ksetup() {
+  local ENV_CODE=${1:-d}
+  local BU=${2:-gencomp}
+  local PORT=${3:-8444}
+
+  local PROJECT=$(gcloud projects list | grep prj-${ENV_CODE}-${BU}-gke | awk '{print $1}')
+  local CLUSTER_INFO=$(gcloud container clusters list --project prj-d-gencomp-gke-7b78 | grep gke-${ENV_CODE}-)
+  local CLUSTER=$(echo "$CLUSTER_INFO" | awk '{print $1}')
+  local CLUSTER_REGION=$(echo "$CLUSTER_INFO" | awk '{print $2}')
+
+  gcloud container clusters get-credentials "${CLUSTER}" \
+    --project "${PROJECT}" \
+    --region "${CLUSTER_REGION}"
+
+  local BASTION_INFO=$(gcloud compute instances list --project "${PROJECT}" | grep gce-bastion)
+  local BASTION=$(echo "${BASTION_INFO}" | awk '{print $1}')
+  local BASTION_ZONE=$(echo "${BASTION_INFO}" | awk '{print $2}')
+
+  echo "Established IAP tunnel to ${BASTION}"
+  gcloud compute ssh "${BASTION}" \
+    --tunnel-through-iap \
+    --ssh-flag="-ND ${PORT}" \
+    --project "${PROJECT}" \
+    --zone "${BASTION_ZONE}"
 }

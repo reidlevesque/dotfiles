@@ -9,5 +9,7 @@ function gcurl () {
 }
 
 export CLOUDSDK_PYTHON="/Users/reid/.pyenv/shims/python3.9"
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
+
 [ -f '/Users/reid/bin/google-cloud-sdk/path.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/path.zsh.inc'
 [ -f '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc'
