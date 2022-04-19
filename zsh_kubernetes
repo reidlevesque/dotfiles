@@ -4,6 +4,7 @@
 alias kubectl='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectl'
 alias kubectx='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectx'
 alias kubens='HTTPS_PROXY=socks5://127.0.0.1:8444 kubens'
+alias nomos='HTTPS_PROXY=socks5://127.0.0.1:8444 nomos'
 
 alias kx='kubectx'
 alias kn='kubens'
