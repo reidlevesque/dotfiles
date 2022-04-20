@@ -74,7 +74,7 @@ function ksetup() {
   local PORT=${3:-8444}
 
   local PROJECT=$(gcloud projects list | grep prj-${ENV_CODE}-${BU}-gke | awk '{print $1}')
-  local CLUSTER_INFO=$(gcloud container clusters list --project prj-d-gencomp-gke-7b78 | grep gke-${ENV_CODE}-)
+  local CLUSTER_INFO=$(gcloud container clusters list --project "${PROJECT}" | grep gke-${ENV_CODE}-)
   local CLUSTER=$(echo "$CLUSTER_INFO" | awk '{print $1}')
   local CLUSTER_REGION=$(echo "$CLUSTER_INFO" | awk '{print $2}')
 
@@ -86,10 +86,12 @@ function ksetup() {
   local BASTION=$(echo "${BASTION_INFO}" | awk '{print $1}')
   local BASTION_ZONE=$(echo "${BASTION_INFO}" | awk '{print $2}')
 
-  echo "Established IAP tunnel to ${BASTION}"
+  echo "Establishing IAP tunnel to ${BASTION}"
   gcloud compute ssh "${BASTION}" \
     --tunnel-through-iap \
     --ssh-flag="-ND ${PORT}" \
     --project "${PROJECT}" \
-    --zone "${BASTION_ZONE}"
+    --zone "${BASTION_ZONE}" &
+  echo "Established IAP tunnel to ${BASTION}"
+  fg
 }

@@ -27,15 +27,15 @@ function iTermSetKube {
 
 function setPyenvPrompt {
   if [ -n "${PYENV_VERSION}" ]; then
-    export PYENV_PROMPT="$FG[172][${PYENV_VERSION}]%{$reset_color%} ${prompt_separator}"
+    export PYENV_PROMPT="$FG[172][${PYENV_VERSION}]%{$reset_color%} ${prompt_separator} "
   fi
 }
 
 function setKubernetesPrompt {
   if kubectl config current-context > /dev/null 2>&1; then
-    curcontext=$(kubectl config get-contexts `kubectl config current-context`)
-    curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1)
-    curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
+    local curcontext=$(kubectl config get-contexts $(kubectl config current-context))
+    local curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1 | perl -pe 's/.*_(.*?)/$1/g')
+    local curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
 
     # COMMON
     [[ "${curkube}" =~ "gke-c.*" ]] && promptcolour=$FG[005]
@@ -54,8 +54,8 @@ function setKubernetesPrompt {
 function setCloudPrompt {
   if [ -f "${HOME}/.config/gcloud/configurations/config_default" ]; then
     # gcp_project=$(gcloud config get-value project)
-    gcp_project=$(cat "${HOME}/.config/gcloud/configurations/config_default" | grep project | awk '{print $3}')
-    cloud_details="${gcp_project}"
+    local gcp_project=$(cat "${HOME}/.config/gcloud/configurations/config_default" | grep project | awk '{print $3}')
+    local cloud_details="${gcp_project}"
     export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
   fi
 }
