@@ -11,18 +11,34 @@ function remove-all-docker-images() {
 
 # Git
 function clean-git-branches() {
-	git checkout plan || git checkout main
-	git fetch --prune
-	git pull
-	git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
-	git checkout -
-	git checkout plan && git pull && git checkout - || true
-	git checkout main && git pull && git checkout - || true
+  declare -a branches=(
+    "main"
+    "plan"
+    "dev"
+    "staging"
+    "prod"
+  )
+
+  local current_branch=$(git branch | sed -n 's/* //p')
+  local default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+
+  git checkout "${default_branch}"
+
+  # Remove deleted branches
+  git fetch --prune
+  git pull
+  git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
+
+  for branch in "${branches[@]}"; do
+    git checkout "${branch}" 2>/dev/null && git pull || true
+  done
+
+  git checkout "${current_branch}"
 }
 
 #Fly
 function fly-watch() {
-	`echo $1 | perl -p -e 's#.*/pipelines/(.*)/jobs/(.*)/builds/(.*)$#fly watch -t au -j $1/$2 -b $3#g'`
+  `echo $1 | perl -p -e 's#.*/pipelines/(.*)/jobs/(.*)/builds/(.*)$#fly watch -t au -j $1/$2 -b $3#g'`
 }
 
 # Random
