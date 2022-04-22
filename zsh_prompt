@@ -26,7 +26,7 @@ function iTermSetKube {
 }
 
 function setPyenvPrompt {
-  if [ -n "${PYENV_VERSION}" ]; then
+  if [[ -n "${PYENV_VERSION}" ]]; then
     export PYENV_PROMPT="$FG[172][${PYENV_VERSION}]%{$reset_color%} ${prompt_separator} "
   fi
 }
@@ -36,6 +36,7 @@ function setKubernetesPrompt {
     local curcontext=$(kubectl config get-contexts $(kubectl config current-context))
     local curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1 | perl -pe 's/.*_(.*?)/$1/g')
     local curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
+    local proxy_enabled=""
 
     # COMMON
     [[ "${curkube}" =~ "gke-c.*" ]] && promptcolour=$FG[005]
@@ -47,7 +48,11 @@ function setKubernetesPrompt {
     # PROD
     [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
 
-    export KUBERNETES_PROMPT="${promptcolour}${curkube} | ${curnamespace}%{$reset_color%} ${prompt_separator} "
+    if [[ -n "${HTTPS_PROXY}" ]]; then
+      proxy_enabled="{*} "
+    fi
+
+    export KUBERNETES_PROMPT="${promptcolour}${proxy_enabled}${curkube} | ${curnamespace}%{$reset_color%} ${prompt_separator} "
   fi
 }
 

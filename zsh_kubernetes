@@ -5,6 +5,7 @@ alias kubectl='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectl'
 alias kubectx='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectx'
 alias kubens='HTTPS_PROXY=socks5://127.0.0.1:8444 kubens'
 alias nomos='HTTPS_PROXY=socks5://127.0.0.1:8444 nomos'
+alias stern='HTTPS_PROXY=socks5://127.0.0.1:8444 stern'
 
 alias kx='kubectx'
 alias kn='kubens'
@@ -17,6 +18,16 @@ alias port-forward-alertmanager='k port-forward service/prometheus-alertmanager 
 alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 
 # Functions
+function kproxy() {
+  local ON_OFF=${1:-"on"}
+
+  if [[ "${ON_OFF}" == "on" ]]; then
+    export HTTPS_PROXY=socks5://127.0.0.1:8444
+  else
+    unset HTTPS_PROXY
+  fi
+}
+
 function kgb() {
   typeset RESOURCE_TYPE=$1
   typeset SERVICE_NAME=$2
