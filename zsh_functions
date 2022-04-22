@@ -33,7 +33,7 @@ function clean-git-branches() {
     git checkout "${branch}" 2>/dev/null && git pull || true
   done
 
-  git checkout "${current_branch}"
+  git checkout "${current_branch}" || git checkout "${default_branch}"
 }
 
 #Fly
