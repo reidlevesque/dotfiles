@@ -18,5 +18,4 @@
 #setopt noincappendhistory
 #setopt nosharehistory
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
 . $HOME/.zsh/zsh_python # keep this last

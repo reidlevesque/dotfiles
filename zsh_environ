@@ -4,5 +4,3 @@ export PATH="$HOME/bin:$PATH"
 export PATH="$PATH:$HOME/.krew/bin"
 export PATH="$PATH:$HOME/.jenv/bin"
 export PATH="/opt/homebrew/opt/go@1.16/bin:$PATH"
-
-export HOMEBREW_NO_ENV_HINTS=true
