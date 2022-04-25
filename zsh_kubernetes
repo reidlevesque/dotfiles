@@ -1,11 +1,11 @@
 #! /bin/zsh
 
 # Aliases
-alias kubectl='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectl'
-alias kubectx='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectx'
-alias kubens='HTTPS_PROXY=socks5://127.0.0.1:8444 kubens'
-alias nomos='HTTPS_PROXY=socks5://127.0.0.1:8444 nomos'
-alias stern='HTTPS_PROXY=socks5://127.0.0.1:8444 stern'
+# alias kubectl='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectl'
+# alias kubectx='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectx'
+# alias kubens='HTTPS_PROXY=socks5://127.0.0.1:8444 kubens'
+# alias nomos='HTTPS_PROXY=socks5://127.0.0.1:8444 nomos'
+# alias stern='HTTPS_PROXY=socks5://127.0.0.1:8444 stern'
 
 alias kx='kubectx'
 alias kn='kubens'
@@ -17,16 +17,48 @@ alias port-forward-prometheus='k port-forward service/prometheus-server -n monit
 alias port-forward-alertmanager='k port-forward service/prometheus-alertmanager -n monitoring 9093:80'
 alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 
-# Functions
-function kproxy() {
-  local ON_OFF=${1:-"on"}
+source ~/dev/ops-tools/kube/definitive-kuberc.sh
 
-  if [[ "${ON_OFF}" == "on" ]]; then
-    export HTTPS_PROXY=socks5://127.0.0.1:8444
-  else
-    unset HTTPS_PROXY
-  fi
-}
+
+
+# Functions
+# function kproxy() {
+#   local ON_OFF=${1:-"on"}
+
+#   if [[ "${ON_OFF}" == "on" ]]; then
+#     export HTTPS_PROXY=socks5://127.0.0.1:8444
+#   else
+#     unset HTTPS_PROXY
+#   fi
+# }
+
+# function ksetup() {
+#   local ENV_CODE=${1:-d}
+#   local BU=${2:-gencomp}
+#   local PORT=${3:-8444}
+
+#   local PROJECT=$(gcloud projects list | grep prj-${ENV_CODE}-${BU}-gke | awk '{print $1}')
+#   local CLUSTER_INFO=$(gcloud container clusters list --project "${PROJECT}" | grep gke-${ENV_CODE}-)
+#   local CLUSTER=$(echo "$CLUSTER_INFO" | awk '{print $1}')
+#   local CLUSTER_REGION=$(echo "$CLUSTER_INFO" | awk '{print $2}')
+
+#   gcloud container clusters get-credentials "${CLUSTER}" \
+#     --project "${PROJECT}" \
+#     --region "${CLUSTER_REGION}"
+
+#   local BASTION_INFO=$(gcloud compute instances list --project "${PROJECT}" | grep gce-bastion)
+#   local BASTION=$(echo "${BASTION_INFO}" | awk '{print $1}')
+#   local BASTION_ZONE=$(echo "${BASTION_INFO}" | awk '{print $2}')
+
+#   echo "Establishing IAP tunnel to ${BASTION}"
+#   gcloud compute ssh "${BASTION}" \
+#     --tunnel-through-iap \
+#     --ssh-flag="-ND ${PORT}" \
+#     --project "${PROJECT}" \
+#     --zone "${BASTION_ZONE}" &
+#   echo "Established IAP tunnel to ${BASTION}"
+#   fg
+# }
 
 function kgb() {
   typeset RESOURCE_TYPE=$1
@@ -77,32 +109,4 @@ function kpsp() {
   printf "%-80s %s" POD_NAME SECURITY_POLICY
   echo ""
   kubectl get pods --output go-template="${template}" $*
-}
-
-function ksetup() {
-  local ENV_CODE=${1:-d}
-  local BU=${2:-gencomp}
-  local PORT=${3:-8444}
-
-  local PROJECT=$(gcloud projects list | grep prj-${ENV_CODE}-${BU}-gke | awk '{print $1}')
-  local CLUSTER_INFO=$(gcloud container clusters list --project "${PROJECT}" | grep gke-${ENV_CODE}-)
-  local CLUSTER=$(echo "$CLUSTER_INFO" | awk '{print $1}')
-  local CLUSTER_REGION=$(echo "$CLUSTER_INFO" | awk '{print $2}')
-
-  gcloud container clusters get-credentials "${CLUSTER}" \
-    --project "${PROJECT}" \
-    --region "${CLUSTER_REGION}"
-
-  local BASTION_INFO=$(gcloud compute instances list --project "${PROJECT}" | grep gce-bastion)
-  local BASTION=$(echo "${BASTION_INFO}" | awk '{print $1}')
-  local BASTION_ZONE=$(echo "${BASTION_INFO}" | awk '{print $2}')
-
-  echo "Establishing IAP tunnel to ${BASTION}"
-  gcloud compute ssh "${BASTION}" \
-    --tunnel-through-iap \
-    --ssh-flag="-ND ${PORT}" \
-    --project "${PROJECT}" \
-    --zone "${BASTION_ZONE}" &
-  echo "Established IAP tunnel to ${BASTION}"
-  fg
 }

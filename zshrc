@@ -6,6 +6,7 @@
 . $HOME/.zsh/zsh_gcp
 . $HOME/.zsh/zsh_kubernetes
 . $HOME/.zsh/zsh_terraform
+. $HOME/.zsh/zsh_brew
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions

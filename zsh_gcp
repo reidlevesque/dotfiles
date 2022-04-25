@@ -2,6 +2,7 @@
 
 alias g='gcloud'
 alias glogin='gcloud auth login --brief --launch-browser --update-adc'
+alias gprojects='gcloud projects list | grep'
 
 function gcurl () {
   local token=$(gcloud auth print-access-token)
