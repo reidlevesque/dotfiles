@@ -44,7 +44,7 @@ function setKubernetesPrompt {
     [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
     [[ "${curkube}" =~ "gke-x-.*" ]] && promptcolour=$FG[002]
     # STAGING
-    [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[220]
+    [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[003]
     # PROD
     [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
 
