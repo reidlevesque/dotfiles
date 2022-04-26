@@ -1,5 +1,6 @@
 #! /bin/zsh
 
+##### run `spectrum_ls` to see all colours #####
 function iTermSetKube {
   local curcontext=""
   local curkube=""
@@ -15,7 +16,6 @@ function iTermSetKube {
   CLOUD_PROMPT=""
   DATE_TIME_PROMPT=""
 
-  # run `spectrum_ls` to see all colours
   local light_colour=$FG[008]
   local prompt_separator="${light_colour}-----%{$reset_color%}"
 
@@ -44,7 +44,7 @@ function setKubernetesPrompt {
     [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
     [[ "${curkube}" =~ "gke-x-.*" ]] && promptcolour=$FG[002]
     # STAGING
-    [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[032]
+    [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[220]
     # PROD
     [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
 
