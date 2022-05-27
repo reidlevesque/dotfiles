@@ -24,20 +24,42 @@ function clean-git-branches() {
   git checkout "${current_branch}" || git checkout "${default_branch}"
 }
 
+function hub_repos() {
+  local github_org="definitive-io"
+  source ~/.secrets/hub
+
+  local page=1 # 1-based pages :(
+  local repos=""
+
+  while true; do
+    local page_repos=$(hub api /orgs/${github_org}/repos \
+      -X GET \
+      -f per_page=100 \
+      -f page=${page} \
+    | jq -r '.[] .name')
+
+    [[ -z "${page_repos}" ]] && break
+
+    repos="${repos}\n${page_repos}"
+    let "page+=1"
+  done
+
+  unset GITHUB_TOKEN
+  echo "${repos}"
+}
+
 function clone-all-repos() {
   local github_org="definitive-io"
 
-  source ~/.secrets/hub
   pushd ~/dev > /dev/null
 
-  for repo in $(hub api -X GET /orgs/${github_org}/repos | jq -r '.[] .name'); do
+  for repo in $(hub_repos); do
     if [[ ! -d "${repo}" ]]; then
       git clone "git@github.com:${github_org}/${repo}.git"
     fi
   done
 
   popd > /dev/null
-  unset GITHUB_TOKEN
 }
 
 function update-all-repos() {
