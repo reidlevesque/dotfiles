@@ -1,0 +1,57 @@
+#! /bin/zsh
+
+function clean-git-branches() {
+  declare -a branches=(
+    "dev"
+    "main"
+    "prod"
+  )
+
+  local current_branch=$(git branch | sed -n 's/* //p')
+  local default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+
+  git checkout "${default_branch}"
+
+  # Remove deleted branches
+  git fetch --prune
+  git pull
+  git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
+
+  for branch in "${branches[@]}"; do
+    git checkout "${branch}" 2>/dev/null && git pull || true
+  done
+
+  git checkout "${current_branch}" || git checkout "${default_branch}"
+}
+
+function clone-all-repos() {
+  local github_org="definitive-io"
+
+  source ~/.secrets/hub
+  pushd ~/dev > /dev/null
+
+  for repo in $(hub api -X GET /orgs/${github_org}/repos | jq -r '.[] .name'); do
+    if [[ ! -d "${repo}" ]]; then
+      git clone "git@github.com:${github_org}/${repo}.git"
+    fi
+  done
+
+  popd > /dev/null
+  unset GITHUB_TOKEN
+}
+
+function update-all-repos() {
+  pushd ~/dev > /dev/null
+
+  for repo in $(ls); do
+    if [[ -d "${repo}" ]]; then
+      echo $repo
+      pushd "${repo}" > /dev/null
+      clean-git-branches
+      popd > /dev/null
+      echo
+    fi
+  done
+
+  popd > /dev/null
+}
