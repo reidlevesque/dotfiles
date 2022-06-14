@@ -19,6 +19,7 @@ alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 
 source ~/dev/ops-tools/kube/definitive-kuberc.sh
 
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 
 # Functions
