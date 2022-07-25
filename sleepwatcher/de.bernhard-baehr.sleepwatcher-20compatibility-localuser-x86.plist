@@ -15,5 +15,9 @@
 	<true/>
 	<key>KeepAlive</key>
 	<true/>
+	<!-- <key>StandardErrorPath</key>
+  <string>/Users/reid/logs/sleepwatcher-x86.err</string>
+	<key>StandardOutPath</key>
+	<string>/Users/reid/logs/sleepwatcher-x86.out</string>  -->
 </dict>
 </plist>
