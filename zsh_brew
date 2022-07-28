@@ -2,7 +2,8 @@
 
 export HOMEBREW_NO_ENV_HINTS=true
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+my_brew=$(which brew)
+eval "$(${my_brew} shellenv)"
 
 brew_completion=$(brew --prefix 2>/dev/null)/share/zsh/site-functions
 if [ $? -eq 0 ] && [ -d "$brew_completion" ];then
