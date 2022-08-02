@@ -11,7 +11,7 @@ function iTermSetKube {
   local promptcolour=""
   local cloud_details=""
 
-  PYENV_PROMT=""
+  PYENV_PROMPT=""
   KUBERNETES_PROMPT=""
   CLOUD_PROMPT=""
   DATE_TIME_PROMPT=""
