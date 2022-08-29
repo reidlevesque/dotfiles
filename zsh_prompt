@@ -1,7 +1,7 @@
 #! /bin/zsh
 
 ##### run `spectrum_ls` to see all colours #####
-function iTermSetKube {
+function iTermSetPromptHeader {
   local curcontext=""
   local curkube=""
   local curnamespace=""
@@ -22,7 +22,7 @@ function iTermSetKube {
   setPyenvPrompt
   setKubernetesPrompt
   setCloudPrompt
-  setDateTimePrompt
+  # setDateTimePrompt
 }
 
 function setPyenvPrompt {
@@ -34,19 +34,19 @@ function setPyenvPrompt {
 function setKubernetesPrompt {
   if kubectl config current-context > /dev/null 2>&1; then
     local curcontext=$(kubectl config get-contexts $(kubectl config current-context))
-    local curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1 | perl -pe 's/.*_(.*?)/$1/g')
+    local curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1 | perl -pe 's/.*_(.*?)/$1/g' | perl -pe 's/^us-central1-//g')
     local curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
     local proxy_enabled=""
 
     # COMMON
-    [[ "${curkube}" =~ "gke-c.*" ]] && promptcolour=$FG[005]
+    [[ "${curkube}" =~ ".*-c.*" ]] && promptcolour=$FG[005]
     # DEV
-    [[ "${curkube}" =~ "gke-d-.*" ]] && promptcolour=$FG[002]
-    [[ "${curkube}" =~ "gke-x-.*" ]] && promptcolour=$FG[002]
+    [[ "${curkube}" =~ ".*-d-.*" ]] && promptcolour=$FG[002]
+    [[ "${curkube}" =~ ".*-x-.*" ]] && promptcolour=$FG[002]
     # STAGING
-    [[ "${curkube}" =~ "gke-s-.*" ]] && promptcolour=$FG[003]
+    [[ "${curkube}" =~ ".*-s-.*" ]] && promptcolour=$FG[003]
     # PROD
-    [[ "${curkube}" =~ "gke-p-.*" ]] && promptcolour=$FG[001]
+    [[ "${curkube}" =~ ".*-p-.*" ]] && promptcolour=$FG[001]
 
     if [[ -n "${HTTPS_PROXY}" ]]; then
       proxy_enabled="{*} "
@@ -100,7 +100,7 @@ $FG[105]%(!.#.»)%{$reset_color%} '
 }
 
 precmd() {
-    iTermSetKube
+    iTermSetPromptHeader
     iTermSetTitle
 }
 
