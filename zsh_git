@@ -17,8 +17,8 @@ function clean-git-branches() {
   git pull
   git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
 
-  for branch in "${branches[@]}"; do
-    git checkout "${branch}" 2>/dev/null && git pull || true
+  for branch in "${branches[@]}" "${default_branch}"; do
+    git checkout "${branch}" 2>/dev/null && git reset --hard origin/${branch} || true
   done
 
   git checkout "${current_branch}" || git checkout "${default_branch}"
