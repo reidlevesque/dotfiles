@@ -92,17 +92,17 @@ function getsecret() {
 }
 
 function kwatch() {
-  typeset RESOURCE_TYPE=$1
-  typeset REGEX=${2:-}
+  typeset RESOURCE_TYPE=$1; shift;
+  typeset REGEX=${*:-}
 
-  watch -w "kubectl get ${RESOURCE_TYPE} | grep \"${REGEX}\""
+  watch "kubectl get ${RESOURCE_TYPE} | grep ${REGEX}"
 }
 
 function kwatchnodes() {
   local GROUP=${1:-nodes}
   local COLUMN=${2:-zone}
 
-  watch -w "kubectl get node --sort-by=.metadata.creationTimestamp -l autonomic.ai/type=${GROUP} --show-labels | perl -p -e \"s/autonomic.ai.*beta.kubernetes.io\/${COLUMN}=(.*?),.*/\\\$1/g\""
+  watch "kubectl get node --sort-by=.metadata.creationTimestamp -l autonomic.ai/type=${GROUP} --show-labels | perl -p -e \"s/autonomic.ai.*beta.kubernetes.io\/${COLUMN}=(.*?),.*/\\\$1/g\""
 }
 
 function kpsp() {
