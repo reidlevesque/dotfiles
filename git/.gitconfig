@@ -2,8 +2,8 @@
 	name = Reid Levesque
 	email = reidlevesque@users.noreply.github.com
 [init]
-	# templatedir =  /Users/reid/.git_templates
-	templatedir = /Users/reid/.zsh/git/templates
+	# templatedir = ~/.git_templates
+	templatedir = ~/.zsh/git/templates
 [alias]
     co = checkout
     ci = commit
