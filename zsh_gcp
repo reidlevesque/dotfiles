@@ -14,3 +14,20 @@ export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
 [ -f '/Users/reid/bin/google-cloud-sdk/path.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/path.zsh.inc'
 [ -f '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc'
+
+function gassets () {
+  local project=$1
+  local asset_type=${2:-}
+
+  if [[ -z "${asset_type}" ]]; then
+    gcloud asset search-all-resources \
+      --scope=projects/${project} \
+      --format json \
+    | jq '.[].assetType'
+  else
+    gcloud asset search-all-resources \
+      --scope=projects/${project} \
+      --format json \
+    | jq ".[] | select(.assetType == \"${asset_type}\")"
+  fi
+}
