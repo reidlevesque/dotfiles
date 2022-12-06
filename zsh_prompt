@@ -85,7 +85,7 @@ function iTermSetTitle {
 
 function restoreprompt {
     export PROMPT='${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
-$FG[032]%~\
+%(?..%B(%?%)%b )$FG[032]%~\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
     export RPROMPT=""
@@ -93,7 +93,7 @@ $FG[105]%(!.#.»)%{$reset_color%} '
 
 function truncateprompt {
     export PROMPT='${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
-$FG[032]$(shrink_path -t -l)\
+%(?..%B(%?%)%b )$FG[032]$(shrink_path -t -l)\
 $(git_prompt_info) \
 $FG[105]%(!.#.»)%{$reset_color%} '
     export RPROMPT=""
