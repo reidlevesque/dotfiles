@@ -9,6 +9,7 @@
     ci = commit
     st = status
     br = branch
+    cp = cherry-pick
     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
     lg = log --graph --abbrev-commit --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     lga = log --graph --abbrev-commit --all --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
