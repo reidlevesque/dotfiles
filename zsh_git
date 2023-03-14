@@ -40,7 +40,31 @@ function hub_repos() {
       -X GET \
       -f per_page=100 \
       -f page=${page} \
-    | jq -r '.[] .name')
+    | jq -r '.[] | select(.archived == false) | .name')
+
+    [[ -z "${page_repos}" ]] && break
+
+    repos="${repos}\n${page_repos}"
+    let "page+=1"
+  done
+
+  unset GITHUB_TOKEN
+  echo "${repos}"
+}
+
+function hub_archived_repos() {
+  local github_org="definitive-io"
+  source ~/.secrets/hub
+
+  local page=1 # 1-based pages :(
+  local repos=""
+
+  while true; do
+    local page_repos=$(hub api /orgs/${github_org}/repos \
+      -X GET \
+      -f per_page=100 \
+      -f page=${page} \
+    | jq -r '.[] | select(.archived == true) | .name')
 
     [[ -z "${page_repos}" ]] && break
 
@@ -76,6 +100,20 @@ function update-all-repos() {
       clean-git-branches
       popd > /dev/null
       echo
+    fi
+  done
+
+  popd > /dev/null
+}
+
+function remove-archived-repos() {
+  local github_org="definitive-io"
+
+  pushd ~/dev > /dev/null
+
+  for repo in $(hub_archived_repos); do
+    if [[ -d "${repo}" ]]; then
+      rm -rfv "${repo}"
     fi
   done
 
