@@ -17,5 +17,6 @@ alias ll='exa -l'
 # alias grep='rg'
 # alias ls='exa'
 # alias ping='gping'
-# alias top='btm'
+# alias top='btm' # brew install bottom
 # alias top='gtop'
+# alias dig='dog'
