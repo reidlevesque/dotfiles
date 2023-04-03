@@ -106,14 +106,15 @@ function update-all-repos() {
   popd > /dev/null
 }
 
-function remove-archived-repos() {
+function prune-repos() {
   local github_org="definitive-io"
 
   pushd ~/dev > /dev/null
 
   for repo in $(hub_archived_repos); do
     if [[ -d "${repo}" ]]; then
-      rm -rfv "${repo}"
+      echo "Deleting ${repo}"
+      rm -rf "${repo}"
     fi
   done
 
