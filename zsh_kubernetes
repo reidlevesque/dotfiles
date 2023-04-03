@@ -1,12 +1,6 @@
 #! /bin/zsh
 
 # Aliases
-# alias kubectl='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectl'
-# alias kubectx='HTTPS_PROXY=socks5://127.0.0.1:8444 kubectx'
-# alias kubens='HTTPS_PROXY=socks5://127.0.0.1:8444 kubens'
-# alias nomos='HTTPS_PROXY=socks5://127.0.0.1:8444 nomos'
-# alias stern='HTTPS_PROXY=socks5://127.0.0.1:8444 stern'
-
 alias kx='kubectx'
 alias kn='kubens'
 alias kg="k get -o yaml"
@@ -21,6 +15,9 @@ alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
+# Telepresence
+alias tele='telepresence'
+telepresence completion zsh > "${fpath[1]}/_telepresence"
 
 # Functions
 # function kproxy() {

@@ -1,0 +1,8 @@
+#! /bin/zsh
+
+site_functions_dir=$(brew --prefix 2>/dev/null)/share/zsh/site-functions
+if [ $? -eq 0 ] && [ -d "$site_functions_dir" ];then
+  fpath=($site_functions_dir $fpath)
+fi
+autoload -U compinit
+compinit

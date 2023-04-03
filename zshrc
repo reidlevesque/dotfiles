@@ -3,10 +3,10 @@
 . $HOME/.zsh/ohmyzshrc
 
 # Language Specific Files
+. $HOME/.zsh/zsh_brew # keep this first
 . $HOME/.zsh/zsh_gcp
 . $HOME/.zsh/zsh_kubernetes
 . $HOME/.zsh/zsh_terraform
-. $HOME/.zsh/zsh_brew
 . $HOME/.zsh/zsh_git
 
 # General Purpose Files
@@ -14,6 +14,7 @@
 . $HOME/.zsh/zsh_aliases
 . $HOME/.zsh/zsh_environ
 . $HOME/.zsh/zsh_prompt
+. $HOME/.zsh/zsh_completion
 
 # Keep history per shell (i.e. don't share)
 #setopt noincappendhistory
