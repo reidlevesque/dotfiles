@@ -19,10 +19,21 @@ function iTermSetPromptHeader {
   local light_colour=$FG[008]
   local prompt_separator="${light_colour}-----%{$reset_color%}"
 
+  setTerraformPrompt
   setPyenvPrompt
   setKubernetesPrompt
   setCloudPrompt
   # setDateTimePrompt
+}
+
+function setTerraformPrompt {
+  local tf_workspace
+  tf_workspace=$(terraform workspace show 2>/dev/null)
+  if [[ "${tf_workspace}" = "default" ]]; then
+    export TF_PROMPT=""
+  else
+    export TF_PROMPT="$FG[207](${tf_workspace})%{$reset_color%} ${prompt_separator} "
+  fi
 }
 
 function setPyenvPrompt {
@@ -83,18 +94,9 @@ function iTermSetTitle {
 	echo -n -e "\e]1;${curproject}\a"
 }
 
-function restoreprompt {
-  export PROMPT='${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
+function setprompt {
+  export PROMPT='${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
 $FG[032]%~\
-$(git_prompt_info) \
-%(?..%B[%?%\]%b )\
-$FG[105]%(!.#.»)%{$reset_color%} '
-  export RPROMPT=""
-}
-
-function truncateprompt {
-  export PROMPT='${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
-$FG[032]$(shrink_path -t -l)\
 $(git_prompt_info) \
 %(?..%B[%?%\]%b )\
 $FG[105]%(!.#.»)%{$reset_color%} '
@@ -106,4 +108,4 @@ precmd() {
     iTermSetTitle
 }
 
-restoreprompt
+setprompt
