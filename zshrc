@@ -8,6 +8,7 @@
 . $HOME/.zsh/zsh_kubernetes
 . $HOME/.zsh/zsh_terraform
 . $HOME/.zsh/zsh_git
+. $HOME/.zsh/zsh_node
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
