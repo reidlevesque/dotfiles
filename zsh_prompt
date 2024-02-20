@@ -69,9 +69,10 @@ function setKubernetesPrompt {
 
 function setCloudPrompt {
   if [ -f "${HOME}/.config/gcloud/configurations/config_default" ]; then
-    # gcp_project=$(gcloud config get-value project)
-    local gcp_project=$(cat "${HOME}/.config/gcloud/configurations/config_default" | grep project | awk '{print $3}')
-    local cloud_details="${gcp_project}"
+    local gcloud_profile=$(gcloud config configurations list --filter='is_active:True' --format json | jq -r '.[].name')
+    local gcloud_project=$(g config list --format json | jq -r '.core.project')
+    # local gcloud_project=$(gcloud config get-value project)
+    local cloud_details="[${gcloud_profile}] ${gcloud_project}"
     export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
   fi
 }
