@@ -16,8 +16,8 @@ alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Telepresence
-alias tel='telepresence'
-telepresence completion zsh > "${fpath[1]}/_telepresence"
+# alias tel='telepresence'
+# telepresence completion zsh > "${fpath[1]}/_telepresence"
 
 # Functions
 # function kproxy() {
