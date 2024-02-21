@@ -19,11 +19,14 @@ function iTermSetPromptHeader {
   local light_colour=$FG[008]
   local prompt_separator="${light_colour}-----%{$reset_color%}"
 
+# gdate +"%Y-%m-%d %H:%M:%S.%3N"
   setTerraformPrompt
   setPyenvPrompt
+  # TODO: The next 2 are slow (~300ms each).
   setKubernetesPrompt
   setCloudPrompt
   # setDateTimePrompt
+# gdate +"%Y-%m-%d %H:%M:%S.%3N"
 }
 
 function setTerraformPrompt {
@@ -43,8 +46,8 @@ function setPyenvPrompt {
 }
 
 function setKubernetesPrompt {
-  if kubectl config current-context > /dev/null 2>&1; then
-    local curcontext=$(kubectl config get-contexts $(kubectl config current-context))
+  local curcontext="$(kubectl config get-contexts)"
+  if [[ "$curcontext" != "" ]]; then
     local curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1 | perl -pe 's/.*_(.*?)/$1/g' | perl -pe 's/^us-central1-//g')
     local curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
     local proxy_enabled=""
@@ -68,9 +71,11 @@ function setKubernetesPrompt {
 }
 
 function setCloudPrompt {
-  if [ -f "${HOME}/.config/gcloud/configurations/config_default" ]; then
+  if command -v gcloud &> /dev/null; then
+    # This is slow (~300ms)
     local gcloud_profile=$(gcloud config configurations list --filter='is_active:True' --format json | jq -r '.[].name')
-    local gcloud_project=$(g config list --format json | jq -r '.core.project')
+    local gcloud_project=$(cat "${HOME}/.config/gcloud/configurations/config_${gcloud_profile}" | grep project | awk '{print $3}')
+    # local gcloud_project=$(gcloud config list --format json | jq -r '.core.project')
     # local gcloud_project=$(gcloud config get-value project)
     local cloud_details="[${gcloud_profile}] ${gcloud_project}"
     export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
