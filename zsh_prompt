@@ -19,14 +19,14 @@ function iTermSetPromptHeader {
   local light_colour=$FG[008]
   local prompt_separator="${light_colour}-----%{$reset_color%}"
 
-# gdate +"%Y-%m-%d %H:%M:%S.%3N"
   setTerraformPrompt
   setPyenvPrompt
-  # TODO: The next 2 are slow (~300ms each).
   setKubernetesPrompt
-  setCloudPrompt
-  # setDateTimePrompt
+  # TODO: The next 1 is slow (~300ms).
 # gdate +"%Y-%m-%d %H:%M:%S.%3N"
+  setCloudPrompt
+# gdate +"%Y-%m-%d %H:%M:%S.%3N"
+  # setDateTimePrompt
 }
 
 function setTerraformPrompt {
@@ -46,10 +46,10 @@ function setPyenvPrompt {
 }
 
 function setKubernetesPrompt {
-  local curcontext="$(kubectl config get-contexts)"
-  if [[ "$curcontext" != "" ]]; then
-    local curkube=$(echo ${curcontext} | grep "^*" | awk '{print $2}' | cut -d '.' -f 1 | perl -pe 's/.*_(.*?)/$1/g' | perl -pe 's/^us-central1-//g')
-    local curnamespace=$(echo ${curcontext} | grep '^*' | perl -p -e 's/^\*\s+\S+\s+\S+\s+\S+\s+(\S*)$/$1/g')
+  if [[ -f "${HOME}/.kube/config" ]]; then
+    local curcontext="$(cat ${HOME}/.kube/config | grep "current-context" | awk '{print $2}')"
+    local curnamespace=$(cat ~/.kube/config | yq ".contexts.[].context | select(.cluster==\"$curcontext\") | .namespace")
+    local curkube=$(echo ${curcontext} | perl -pe 's/.*_(.*?)/$1/g' | perl -pe 's/^us-central1-//g')
     local proxy_enabled=""
 
     # COMMON
