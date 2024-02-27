@@ -22,8 +22,6 @@ function iTermSetPromptHeader {
   setTerraformPrompt
   setPyenvPrompt
   setKubernetesPrompt
-  # TODO: The next 1 is slow (~300ms).
-# gdate +"%Y-%m-%d %H:%M:%S.%3N"
   setCloudPrompt
 # gdate +"%Y-%m-%d %H:%M:%S.%3N"
   # setDateTimePrompt
@@ -73,11 +71,13 @@ function setKubernetesPrompt {
 function setCloudPrompt {
   if command -v gcloud &> /dev/null; then
     # This is slow (~300ms)
-    local gcloud_profile=$(gcloud config configurations list --filter='is_active:True' --format json | jq -r '.[].name')
+    # local gcloud_profile=$(gcloud config configurations list --filter='is_active:True' --format json | jq -r '.[].name')
+    local gcloud_profile="default"
     local gcloud_project=$(cat "${HOME}/.config/gcloud/configurations/config_${gcloud_profile}" | grep project | awk '{print $3}')
     # local gcloud_project=$(gcloud config list --format json | jq -r '.core.project')
     # local gcloud_project=$(gcloud config get-value project)
-    local cloud_details="[${gcloud_profile}] ${gcloud_project}"
+    # local cloud_details="[${gcloud_profile}] ${gcloud_project}"
+    local cloud_details="${gcloud_project}"
     export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
   fi
 }
@@ -94,6 +94,9 @@ function iTermSetTitle {
 	if [[ $curdir = "~/dev/"* ]]
 	then
 		curproject=`echo $curdir/ | perl -p -e 's#^.*/dev/(\S+?)/.*$#$1#g'`
+	elif [[ $curdir = "~/groq/"* ]]
+	then
+		curproject=`echo $curdir/ | perl -p -e 's#^.*/groq/(\S+?)/.*$#$1#g'`
 	else
 		curproject=${curdir: -12}
 	fi
