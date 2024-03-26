@@ -9,6 +9,7 @@
 . $HOME/.zsh/zsh_terraform
 . $HOME/.zsh/zsh_git
 . $HOME/.zsh/zsh_node
+. $HOME/.zsh/zsh_pnpm
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
