@@ -1,9 +1,10 @@
 #! /bin/zsh
-
 . $HOME/.zsh/ohmyzshrc
 
 # Language Specific Files
-. $HOME/.zsh/zsh_brew # keep this first
+if [[ $(uname) == "Darwin" ]]; then
+  . $HOME/.zsh/zsh_brew # keep this first
+fi
 . $HOME/.zsh/zsh_gcp
 . $HOME/.zsh/zsh_kubernetes
 . $HOME/.zsh/zsh_terraform
