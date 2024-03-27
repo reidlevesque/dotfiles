@@ -11,6 +11,7 @@ function iTermSetPromptHeader {
   local promptcolour=""
   local cloud_details=""
 
+  DEV_VM_PROMPT=""
   PYENV_PROMPT=""
   KUBERNETES_PROMPT=""
   CLOUD_PROMPT=""
@@ -19,12 +20,19 @@ function iTermSetPromptHeader {
   local light_colour=$FG[008]
   local prompt_separator="${light_colour}-----%{$reset_color%}"
 
+  setDevVMPrompt
   setTerraformPrompt
   setPyenvPrompt
   setKubernetesPrompt
   setCloudPrompt
 # gdate +"%Y-%m-%d %H:%M:%S.%3N"
   # setDateTimePrompt
+}
+
+function setDevVMPrompt {
+  if [[ $(uname) == "Linux" ]]; then
+    DEV_VM_PROMPT="$FG[202]{dev-vm}%{$reset_color%} "
+  fi
 }
 
 function setTerraformPrompt {
@@ -78,7 +86,9 @@ function setCloudPrompt {
     # local gcloud_project=$(gcloud config get-value project)
     # local cloud_details="[${gcloud_profile}] ${gcloud_project}"
     local cloud_details="${gcloud_project}"
-    export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
+    if [[ -n "${cloud_details}" ]]; then
+      export CLOUD_PROMPT="${light_colour}${cloud_details}%{$reset_color%} ${prompt_separator} "
+    fi
   fi
 }
 
@@ -104,7 +114,7 @@ function iTermSetTitle {
 }
 
 function setprompt {
-  export PROMPT='${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
+  export PROMPT='${DEV_VM_PROMPT}${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
 $FG[032]%~\
 $(git_prompt_info) \
 %(?..%B[%?%\]%b )\
