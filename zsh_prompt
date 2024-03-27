@@ -31,7 +31,7 @@ function iTermSetPromptHeader {
 
 function setDevVMPrompt {
   if [[ $(uname) == "Linux" ]]; then
-    DEV_VM_PROMPT="$FG[202]{dev-vm}%{$reset_color%} "
+    DEV_VM_PROMPT="$FG[202]{vm}%{$reset_color%} "
   fi
 }
 
@@ -99,6 +99,7 @@ function setDateTimePrompt {
 
 function iTermSetTitle {
 	local curproject=""
+  local dev_vm=""
 	local curdir=$(print -P %~)
 
 	if [[ $curdir = "~/dev/"* ]]
@@ -110,7 +111,12 @@ function iTermSetTitle {
 	else
 		curproject=${curdir: -12}
 	fi
-	echo -n -e "\e]1;${curproject}\a"
+
+  if [[ $(uname) == "Linux" ]]; then
+    dev_vm="{vm} "
+  fi
+
+	echo -n -e "\e]1;${dev_vm}${curproject}\a"
 }
 
 function setprompt {

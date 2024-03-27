@@ -9,6 +9,7 @@
 . $HOME/.zsh/zsh_git
 . $HOME/.zsh/zsh_node
 . $HOME/.zsh/zsh_pnpm
+. $HOME/.zsh/zsh_iterm
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
