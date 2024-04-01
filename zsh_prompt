@@ -8,8 +8,11 @@ function iTermSetPromptHeader {
   local curdir=""
   local curdatetime=""
   local dispkube=""
-  local promptcolour=""
+  local k8s_prompt_colour=""
   local cloud_details=""
+
+  PROMPT_PATH_COLOUR=""
+  PROMPT_SYMBOL_COLOUR=""
 
   DEV_VM_PROMPT=""
   PYENV_PROMPT=""
@@ -20,6 +23,7 @@ function iTermSetPromptHeader {
   local light_colour=$FG[008]
   local prompt_separator="${light_colour}-----%{$reset_color%}"
 
+  setPromptColours
   setDevVMPrompt
   setTerraformPrompt
   setPyenvPrompt
@@ -32,6 +36,16 @@ function iTermSetPromptHeader {
 function setDevVMPrompt {
   if [[ $(uname) == "Linux" ]]; then
     DEV_VM_PROMPT="$FG[202]{vm}%{$reset_color%} "
+  fi
+}
+
+function setPromptColours {
+  if [[ $(uname) == "Linux" ]]; then
+    PROMPT_PATH_COLOUR=$FG[032]
+    PROMPT_SYMBOL_COLOUR=$FG[202]
+  else
+    PROMPT_PATH_COLOUR=$FG[032]
+    PROMPT_SYMBOL_COLOUR=$FG[105]
   fi
 }
 
@@ -59,20 +73,20 @@ function setKubernetesPrompt {
     local proxy_enabled=""
 
     # COMMON
-    [[ "${curkube}" =~ ".*-c.*" ]] && promptcolour=$FG[005]
+    [[ "${curkube}" =~ ".*-c.*" ]] && k8s_prompt_colour=$FG[005]
     # DEV
-    [[ "${curkube}" =~ ".*-d-.*" ]] && promptcolour=$FG[002]
-    [[ "${curkube}" =~ ".*-x-.*" ]] && promptcolour=$FG[002]
+    [[ "${curkube}" =~ ".*-d-.*" ]] && k8s_prompt_colour=$FG[002]
+    [[ "${curkube}" =~ ".*-x-.*" ]] && k8s_prompt_colour=$FG[002]
     # STAGING
-    [[ "${curkube}" =~ ".*-s-.*" ]] && promptcolour=$FG[003]
+    [[ "${curkube}" =~ ".*-s-.*" ]] && k8s_prompt_colour=$FG[003]
     # PROD
-    [[ "${curkube}" =~ ".*-p-.*" ]] && promptcolour=$FG[001]
+    [[ "${curkube}" =~ ".*-p-.*" ]] && k8s_prompt_colour=$FG[001]
 
     if [[ -n "${HTTPS_PROXY}" ]]; then
       proxy_enabled="{*} "
     fi
 
-    export KUBERNETES_PROMPT="${promptcolour}${proxy_enabled}${curkube} | ${curnamespace}%{$reset_color%} ${prompt_separator} "
+    export KUBERNETES_PROMPT="${k8s_prompt_colour}${proxy_enabled}${curkube} | ${curnamespace}%{$reset_color%} ${prompt_separator} "
   fi
 }
 
@@ -120,11 +134,11 @@ function iTermSetTitle {
 }
 
 function setprompt {
-  export PROMPT='${DEV_VM_PROMPT}${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
-$FG[032]%~\
+  export PROMPT='${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
+${DEV_VM_PROMPT}${PROMPT_PATH_COLOUR}%~\
 $(git_prompt_info) \
 %(?..%B[%?%\]%b )\
-$FG[105]%(!.#.»)%{$reset_color%} '
+${PROMPT_SYMBOL_COLOUR}%(!.#.»)%{$reset_color%} '
   export RPROMPT=""
 }
 
