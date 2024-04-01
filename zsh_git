@@ -9,6 +9,7 @@ function clean-git-branches() {
     "dev"
     "main"
     "prod"
+    "head"
   )
 
   local current_branch=$(git branch | sed -n 's/* //p')
@@ -19,7 +20,10 @@ function clean-git-branches() {
   # Remove deleted branches
   git fetch --prune
   git pull
-  git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
+  deleted_branches=$(git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}')
+  for branch in ${deleted_branches}; do
+    git branch -D "${branch}"
+  done
 
   for branch in "${branches[@]}" "${default_branch}"; do
     git checkout "${branch}" 2>/dev/null && git reset --hard origin/${branch} || true
