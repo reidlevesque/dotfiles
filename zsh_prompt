@@ -142,6 +142,15 @@ ${PROMPT_SYMBOL_COLOUR}%(!.#.»)%{$reset_color%} '
   export RPROMPT=""
 }
 
+function shortprompt {
+  export PROMPT='${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
+${DEV_VM_PROMPT}${PROMPT_PATH_COLOUR}$(shrink_path -l -t -s -g -4)\
+$(git_prompt_info) \
+%(?..%B[%?%\]%b )\
+${PROMPT_SYMBOL_COLOUR}%(!.#.»)%{$reset_color%} '
+  export RPROMPT=""
+}
+
 precmd() {
     iTermSetPromptHeader
     iTermSetTitle
