@@ -1,17 +1,9 @@
 #! /bin/zsh
 
-if [[ "$VSCODE_INJECTION" == "1" ]]; then
-  rm -f "$HOME/.zsh/.vscode_env"
-  for i in $(env | grep VSCODE); do
-    echo "export $i" >> "$HOME/.zsh/.vscode_env"
-  done
-else
-  # Prevent an error when we source this file
-  touch "$HOME/.zsh/.vscode_env"
+if [[ $(uname) == "Linux" ]]; then
+  export VSCODE_SERVER=$(ls -td $HOME/.vscode-server/cli/servers/Stable-* | head -1)
+  # needed to be able to open files in VS Code's editor from the command line
+  export VSCODE_IPC_HOOK_CLI="$( ls -td /run/user/$UID/vscode-ipc-*.sock | head -1)"
+
+  PATH="$VSCODE_SERVER/server/bin/remote-cli:$PATH"
 fi
-
-# Always source this in case the values have changed
-. "$HOME/.zsh/.vscode_env"
-
-vscode_path="$(dirname $VSCODE_GIT_ASKPASS_NODE)/bin/remote-cli"
-PATH="$vscode_path:$PATH"
