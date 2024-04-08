@@ -11,6 +11,7 @@
 . $HOME/.zsh/zsh_pnpm
 . $HOME/.zsh/zsh_iterm
 . $HOME/.zsh/zsh_haskell
+. $HOME/.zsh/zsh_vscode
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
