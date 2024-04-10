@@ -1,3 +1,3 @@
 #! /bin/zsh
 
-[ -f "/home/rlevesque/.ghcup/env" ] && . "/home/rlevesque/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env" # ghcup-env

@@ -1,4 +1,9 @@
 #! /bin/zsh
+
+# This needs to be first so that code is in the PATH before we load the vscode omz plugin
+. $HOME/.zsh/zsh_vscode
+
+# Oh My Zsh
 . $HOME/.zsh/ohmyzshrc
 
 # Language Specific Files
@@ -11,7 +16,7 @@
 . $HOME/.zsh/zsh_pnpm
 . $HOME/.zsh/zsh_iterm
 . $HOME/.zsh/zsh_haskell
-. $HOME/.zsh/zsh_vscode
+. $HOME/.zsh/zsh_bake
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
