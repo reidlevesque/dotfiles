@@ -62,6 +62,8 @@ function setTerraformPrompt {
 function setPyenvPrompt {
   if [[ -n "${PYENV_VERSION}" ]]; then
     export PYENV_PROMPT="$FG[172][${PYENV_VERSION}]%{$reset_color%} ${prompt_separator} "
+  elif [[ -n "${BAKE_SET_ENV}" ]]; then
+    export PYENV_PROMPT="$FG[172][bake shell]%{$reset_color%} ${prompt_separator} "
   fi
 }
 
