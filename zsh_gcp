@@ -9,11 +9,11 @@ function gcurl () {
   curl --header "Authorization: Bearer $token" $@
 }
 
-export CLOUDSDK_PYTHON="/Users/reid/.pyenv/shims/python3.9"
+export CLOUDSDK_PYTHON="$HOME/.pyenv/shims/python3"
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
-[ -f '/Users/reid/bin/google-cloud-sdk/path.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/path.zsh.inc'
-[ -f '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/reid/bin/google-cloud-sdk/completion.zsh.inc'
+[ -f '$HOME/bin/google-cloud-sdk/path.zsh.inc' ] && . '$HOME/bin/google-cloud-sdk/path.zsh.inc'
+[ -f '$HOME/bin/google-cloud-sdk/completion.zsh.inc' ] && . '$HOME/bin/google-cloud-sdk/completion.zsh.inc'
 
 function gassets () {
   local project=$1
