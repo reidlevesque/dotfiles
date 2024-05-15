@@ -15,6 +15,7 @@ function iTermSetPromptHeader {
   PROMPT_SYMBOL_COLOUR=""
 
   DEV_VM_PROMPT=""
+  TMUX_PROMPT=""
   PYENV_PROMPT=""
   KUBERNETES_PROMPT=""
   CLOUD_PROMPT=""
@@ -25,6 +26,7 @@ function iTermSetPromptHeader {
 
   setPromptColours
   setDevVMPrompt
+  setTmuxPrompt
   setTerraformPrompt
   setPyenvPrompt
   setKubernetesPrompt
@@ -36,6 +38,12 @@ function iTermSetPromptHeader {
 function setDevVMPrompt {
   if [[ $(uname) == "Linux" ]]; then
     DEV_VM_PROMPT="$FG[202]{vm}%{$reset_color%} "
+  fi
+}
+
+function setTmuxPrompt {
+  if [[ -n "$TMUX_PANE" ]]; then
+    TMUX_PROMPT="$FG[002][tmux~${TMUX_PANE/\%/}]%{$reset_color%} "
   fi
 }
 
@@ -137,7 +145,7 @@ function iTermSetTitle {
 
 function setprompt {
   export PROMPT='${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
-${DEV_VM_PROMPT}${PROMPT_PATH_COLOUR}%~\
+${TMUX_PROMPT}${DEV_VM_PROMPT}${PROMPT_PATH_COLOUR}%~\
 $(git_prompt_info) \
 %(?..%B[%?%\]%b )\
 ${PROMPT_SYMBOL_COLOUR}%(!.#.»)%{$reset_color%} '
@@ -146,7 +154,7 @@ ${PROMPT_SYMBOL_COLOUR}%(!.#.»)%{$reset_color%} '
 
 function shortprompt {
   export PROMPT='${TF_PROMPT}${PYENV_PROMPT}${KUBERNETES_PROMPT}${CLOUD_PROMPT}${DATE_TIME_PROMPT}
-${DEV_VM_PROMPT}${PROMPT_PATH_COLOUR}$(shrink_path -l -t -s -g -4)\
+${TMUX_PROMPT}${DEV_VM_PROMPT}${PROMPT_PATH_COLOUR}$(shrink_path -l -t -s -g -4)\
 $(git_prompt_info) \
 %(?..%B[%?%\]%b )\
 ${PROMPT_SYMBOL_COLOUR}%(!.#.»)%{$reset_color%} '
