@@ -2,6 +2,7 @@
 
 alias g='gcloud'
 alias glogin='gcloud auth login --brief --launch-browser --update-adc'
+#alias glogin='gcloud auth application-default login'
 alias gprojects='gcloud projects list | grep'
 
 function gcurl () {
