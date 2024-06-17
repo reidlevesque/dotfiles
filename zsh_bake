@@ -1,3 +1,0 @@
-#! /bin/zsh
-
-[ -f "$GROQ_CONFIG/zsh/bake-completion.zsh" ] && . "$GROQ_CONFIG/zsh/bake-completion.zsh"

@@ -125,3 +125,18 @@ function prune-repos() {
 
   popd > /dev/null
 }
+
+function gr {
+    local flags=(
+        --slack
+        --update-mr
+        --ci-start
+    )
+    local extras=()
+    case $1 in
+    # push) extras=(--label ReleaseUpdate::NotRequired --ci-start);;
+    push) extras=(--ci-start);;
+    mr-get) extras=(--format=short)
+    esac
+    SFT_AUTH_SOCK= command gr $flags $extras "$@"
+}
