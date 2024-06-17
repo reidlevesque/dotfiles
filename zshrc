@@ -22,9 +22,9 @@
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
 . $HOME/.zsh/zsh_aliases
-. $HOME/.zsh/zsh_environ
-. $HOME/.zsh/zsh_prompt
 . $HOME/.zsh/zsh_completion
+. $HOME/.zsh/zsh_prompt
+. $HOME/.zsh/zsh_environ
 
 # Keep history per shell (i.e. don't share)
 #setopt noincappendhistory

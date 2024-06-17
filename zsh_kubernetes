@@ -11,7 +11,7 @@ alias port-forward-prometheus='k port-forward service/prometheus-server -n monit
 alias port-forward-alertmanager='k port-forward service/prometheus-alertmanager -n monitoring 9093:80'
 alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 
-[[ -f ~/dev/ops-tools/kube/definitive-kuberc.sh ]] && source ~/dev/ops-tools/kube/definitive-kuberc.sh
+[[ -f ~/dev/ops-tools/kube/groq-kuberc.sh ]] && source ~/dev/ops-tools/kube/groq-kuberc.sh
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
