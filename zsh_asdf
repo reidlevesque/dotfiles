@@ -1,4 +1,0 @@
-#! /bin/zsh
-
-asdf_prefix=$(brew --prefix asdf)
-[[ -d $asdf_prefix ]] && . $asdf_prefix/libexec/asdf.sh

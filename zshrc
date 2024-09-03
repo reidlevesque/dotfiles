@@ -17,7 +17,6 @@
 . $HOME/.zsh/zsh_iterm
 . $HOME/.zsh/zsh_haskell
 . $HOME/.zsh/zsh_groq
-. $HOME/.zsh/zsh_asdf
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
@@ -33,3 +32,6 @@
 . $HOME/.zsh/zsh_python # keep this last
 
 [ -f "/home/rlevesque/.ghcup/env" ] && . "/home/rlevesque/.ghcup/env" # ghcup-env
+
+# This makes sure we don't exit with a non-zero status and pollute the shell
+true
