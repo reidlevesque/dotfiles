@@ -16,11 +16,13 @@
 . $HOME/.zsh/zsh_kubernetes
 . $HOME/.zsh/zsh_terraform
 . $HOME/.zsh/zsh_git
-. $HOME/.zsh/zsh_node
 . $HOME/.zsh/zsh_pnpm
 . $HOME/.zsh/zsh_iterm
 . $HOME/.zsh/zsh_haskell
 . $HOME/.zsh/zsh_groq
+
+# These are slow :(
+. $HOME/.zsh/zsh_node
 . $HOME/.zsh/zsh_hermit
 
 # General Purpose Files
