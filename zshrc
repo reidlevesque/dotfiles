@@ -6,6 +6,10 @@
 # Oh My Zsh
 . $HOME/.zsh/ohmyzshrc
 
+# This needs to be before the language specific files so that the completion
+# functions are available for the other plugins.
+. $HOME/.zsh/zsh_completion
+
 # Language Specific Files
 . $HOME/.zsh/zsh_brew # keep this first
 . $HOME/.zsh/zsh_gcp
@@ -17,11 +21,11 @@
 . $HOME/.zsh/zsh_iterm
 . $HOME/.zsh/zsh_haskell
 . $HOME/.zsh/zsh_groq
+. $HOME/.zsh/zsh_hermit
 
 # General Purpose Files
 . $HOME/.zsh/zsh_functions
 . $HOME/.zsh/zsh_aliases
-. $HOME/.zsh/zsh_completion
 . $HOME/.zsh/zsh_prompt
 . $HOME/.zsh/zsh_environ
 
