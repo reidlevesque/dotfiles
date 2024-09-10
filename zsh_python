@@ -10,5 +10,6 @@ fi
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1 # The prompt is set in zsh_prompt
 
 # TODO: These are slow
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# These will be replaced with hermit soon
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"

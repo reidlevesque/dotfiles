@@ -1,5 +1,10 @@
 #! /bin/zsh
 
+PROFILE=false
+if [[ "${PROFILE}" = true ]]; then
+  zmodload zsh/zprof
+fi
+
 # This needs to be first so that code is in the PATH before we load the vscode omz plugin
 . $HOME/.zsh/zsh_vscode
 
@@ -41,3 +46,5 @@
 
 # This makes sure we don't exit with a non-zero status and pollute the shell
 true
+
+# TODO: remove tfenv, pyenv, nvm once we have hermit
