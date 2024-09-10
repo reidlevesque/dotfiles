@@ -40,7 +40,7 @@ fi
 #setopt noincappendhistory
 #setopt nosharehistory
 
-. $HOME/.zsh/zsh_python # keep this last
+# . $HOME/.zsh/zsh_python # keep this last
 
 [ -f "/home/rlevesque/.ghcup/env" ] && . "/home/rlevesque/.ghcup/env" # ghcup-env
 

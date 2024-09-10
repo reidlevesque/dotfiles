@@ -10,7 +10,7 @@ function gcurl () {
   curl --header "Authorization: Bearer $token" $@
 }
 
-export CLOUDSDK_PYTHON="$HOME/.pyenv/shims/python3"
+# export CLOUDSDK_PYTHON="$HOME/.pyenv/shims/python3"
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
 [ -f '$HOME/bin/google-cloud-sdk/path.zsh.inc' ] && . '$HOME/bin/google-cloud-sdk/path.zsh.inc'
