@@ -7,7 +7,7 @@ alias ibrew='arch -x86_64 /usr/local/bin/brew'
 
 # Modern Unix Alternatives
 # https://github.com/ibraheemdev/modern-Unix
-alias ll='exa -l'
+# alias ll='exa -l'
 # alias ag='ag'
 # alias cat='bat'
 # alias df='duf'
