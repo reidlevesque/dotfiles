@@ -33,15 +33,14 @@ function clean-git-branches() {
   git checkout "${current_branch}" || git checkout "${default_branch}"
 }
 
-function hub_repos() {
-  local github_org="definitive-io"
-  source ~/.secrets/hub
+function groq_repos() {
+  local github_org="groq"
 
   local page=1 # 1-based pages :(
   local repos=""
 
   while true; do
-    local page_repos=$(hub api /orgs/${github_org}/repos \
+    local page_repos=$(gh api /orgs/${github_org}/repos \
       -X GET \
       -f per_page=100 \
       -f page=${page} \
@@ -53,19 +52,17 @@ function hub_repos() {
     let "page+=1"
   done
 
-  unset GITHUB_TOKEN
   echo "${repos}"
 }
 
-function hub_archived_repos() {
-  local github_org="definitive-io"
-  source ~/.secrets/hub
+function groq_archived_repos() {
+  local github_org="groq"
 
   local page=1 # 1-based pages :(
   local repos=""
 
   while true; do
-    local page_repos=$(hub api /orgs/${github_org}/repos \
+    local page_repos=$(gh api /orgs/${github_org}/repos \
       -X GET \
       -f per_page=100 \
       -f page=${page} \
@@ -77,16 +74,15 @@ function hub_archived_repos() {
     let "page+=1"
   done
 
-  unset GITHUB_TOKEN
   echo "${repos}"
 }
 
 function clone-all-repos() {
-  local github_org="definitive-io"
+  local github_org="groq"
 
   pushd ~/dev > /dev/null
 
-  for repo in $(hub_repos); do
+  for repo in $(groq_repos); do
     if [[ ! -d "${repo}" ]]; then
       git clone "git@github.com:${github_org}/${repo}.git"
     fi
@@ -112,11 +108,11 @@ function update-all-repos() {
 }
 
 function prune-repos() {
-  local github_org="definitive-io"
+  local github_org="groq"
 
   pushd ~/dev > /dev/null
 
-  for repo in $(hub_archived_repos); do
+  for repo in $(groq_archived_repos); do
     if [[ -d "${repo}" ]]; then
       echo "Deleting ${repo}"
       rm -rf "${repo}"
