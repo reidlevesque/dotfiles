@@ -25,6 +25,7 @@ fi
 . $HOME/.zsh/zsh_iterm
 . $HOME/.zsh/zsh_haskell
 . $HOME/.zsh/zsh_groq
+. $HOME/.zsh/zsh_rust
 
 # These are slow :(
 . $HOME/.zsh/zsh_node
