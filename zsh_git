@@ -6,6 +6,10 @@ fi
 
 unalias gr
 
+function gk() {
+  groqkite gh "$@" --key-file=~/.secrets/groqkite.private-key.pem
+}
+
 function clean-git-branches() {
   declare -a branches=(
     "dev"
