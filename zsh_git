@@ -4,7 +4,8 @@ if (( $+commands[gitleaks] )); then
   eval "$(gitleaks completion zsh)"
 fi
 
-unalias gr
+if alias gr > /dev/null; then unalias gr; fi
+if alias gk > /dev/null; then unalias gk; fi
 
 function gk() {
   groqkite gh "$@" --key-file=~/.secrets/groqkite.private-key.pem
