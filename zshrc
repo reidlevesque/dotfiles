@@ -11,10 +11,6 @@ fi
 # Oh My Zsh
 . $HOME/.zsh/ohmyzshrc
 
-# This needs to be before the language specific files so that the completion
-# functions are available for the other plugins.
-. $HOME/.zsh/zsh_completion
-
 # Language Specific Files
 . $HOME/.zsh/zsh_brew # keep this first
 . $HOME/.zsh/zsh_gcp
@@ -41,9 +37,8 @@ fi
 #setopt noincappendhistory
 #setopt nosharehistory
 
-# . $HOME/.zsh/zsh_python # keep this last
-
-[ -f "/home/rlevesque/.ghcup/env" ] && . "/home/rlevesque/.ghcup/env" # ghcup-env
+# Keep this last
+. $HOME/.zsh/zsh_completion
 
 # This makes sure we don't exit with a non-zero status and pollute the shell
 true
