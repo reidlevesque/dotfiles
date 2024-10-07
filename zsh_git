@@ -17,6 +17,7 @@ function clean-git-branches() {
     "main"
     "prod"
     "head"
+    "production"
   )
 
   local current_branch=$(git branch | sed -n 's/* //p')
