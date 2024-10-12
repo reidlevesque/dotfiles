@@ -1,0 +1,11 @@
+#! /bin/zsh
+
+function aider() {
+  if [[ -f "$HOME/.secrets/aider" ]]; then
+    source "$HOME/.secrets/aider"
+  fi
+  command aider \
+    --model groq/llama-3.1-70b-versatile \
+    --openai-api-base "https://api.groq.com/v1" \
+    "$@"
+}

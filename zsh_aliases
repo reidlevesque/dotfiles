@@ -4,6 +4,7 @@
 
 alias hostip='ipconfig getifaddr en0'
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
+alias python='python3'
 
 # Modern Unix Alternatives
 # https://github.com/ibraheemdev/modern-Unix

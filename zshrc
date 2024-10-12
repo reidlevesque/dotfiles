@@ -23,6 +23,7 @@ fi
 . $HOME/.zsh/zsh_groq
 . $HOME/.zsh/zsh_rust
 . $HOME/.zsh/zsh_ruby
+. $HOME/.zsh/zsh_aider
 
 # These are slow :(
 . $HOME/.zsh/zsh_node
