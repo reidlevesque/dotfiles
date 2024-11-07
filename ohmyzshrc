@@ -73,7 +73,7 @@ plugins=(
   # asdf
   brew
   direnv
-  docker
+  # docker
   gcloud
   git
   kubectl
