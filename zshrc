@@ -24,6 +24,7 @@ fi
 . $HOME/.zsh/zsh_rust
 . $HOME/.zsh/zsh_ruby
 . $HOME/.zsh/zsh_aider
+. $HOME/.zsh/zsh_devvm
 
 # These are slow :(
 . $HOME/.zsh/zsh_node
