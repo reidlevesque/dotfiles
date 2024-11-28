@@ -4,6 +4,9 @@
 [ -f "$GROQ_CONFIG/zsh/gr-completion.zsh" ] && . "$GROQ_CONFIG/zsh/gr-completion.zsh"
 [ -f "$GROQ_CONFIG/zsh/nix.zsh" ] && . "$GROQ_CONFIG/zsh/nix.zsh"
 
+# ssh X tmux
+alias attach="sft ssh --via asabastion-us-central1 --command \"tmux -CC new -As0\""
+
 function refresh () {
   if [ -n "$TMUX" ]; then
     eval $(tmux showenv -s)

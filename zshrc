@@ -5,14 +5,16 @@ if [[ "${PROFILE}" = true ]]; then
   zmodload zsh/zprof
 fi
 
-# This needs to be first so that code is in the PATH before we load the vscode omz plugin
+# Path-Setters
+# We need to load these before ohmyzshrc so that the PATH is set correctly for the plugins
 . $HOME/.zsh/zsh_vscode
+. $HOME/.zsh/zsh_brew # keep this first
+. $HOME/.zsh/zsh_path
 
 # Oh My Zsh
 . $HOME/.zsh/ohmyzshrc
 
 # Language Specific Files
-. $HOME/.zsh/zsh_brew # keep this first
 . $HOME/.zsh/zsh_gcp
 . $HOME/.zsh/zsh_kubernetes
 . $HOME/.zsh/zsh_terraform
@@ -21,10 +23,8 @@ fi
 . $HOME/.zsh/zsh_iterm
 . $HOME/.zsh/zsh_haskell
 . $HOME/.zsh/zsh_groq
-. $HOME/.zsh/zsh_rust
 . $HOME/.zsh/zsh_ruby
 . $HOME/.zsh/zsh_aider
-. $HOME/.zsh/zsh_devvm
 
 # These are slow :(
 . $HOME/.zsh/zsh_node
@@ -45,5 +45,3 @@ fi
 
 # This makes sure we don't exit with a non-zero status and pollute the shell
 true
-
-# TODO: remove tfenv, pyenv, nvm once we have hermit

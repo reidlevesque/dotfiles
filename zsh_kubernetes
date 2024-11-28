@@ -14,7 +14,6 @@ alias knodes="k get node  --sort-by=.metadata.creationTimestamp"
 [[ -f ~/dev/ops-tools/kube/groq-kuberc.sh ]] && source ~/dev/ops-tools/kube/groq-kuberc.sh
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # Telepresence
 # alias tel='telepresence'

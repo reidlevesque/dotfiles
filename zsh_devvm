@@ -1,3 +1,0 @@
-#! /bin/zsh
-
-alias attach="sft ssh --via asabastion-us-central1 --command \"tmux -CC new -As0\""
