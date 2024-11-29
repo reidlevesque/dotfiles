@@ -4,6 +4,8 @@ export HOMEBREW_NO_ENV_HINTS=true
 
 if [[ -x /opt/homebrew/bin/brew ]]; then
   my_brew="/opt/homebrew/bin/brew"
+elif [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  my_brew="/home/linuxbrew/.linuxbrew/bin/brew"
 else
   my_brew=$(which brew)
 fi
