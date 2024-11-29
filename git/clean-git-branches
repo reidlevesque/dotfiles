@@ -1,0 +1,27 @@
+#! /bin/bash
+
+declare -a branches=(
+  "dev"
+  "main"
+  "prod"
+  "head"
+  "production"
+)
+
+current_branch=$(git branch | sed -n 's/* //p')
+default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+
+git checkout "${default_branch}"
+
+# Remove deleted branches
+git fetch --prune
+git pull
+for branch in $(git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}'); do
+  git branch -D "${branch}"
+done
+
+for branch in "${branches[@]}" "${default_branch}"; do
+  git checkout "${branch}" 2>/dev/null && git reset --hard origin/${branch} || true
+done
+
+git checkout "${current_branch}" || git checkout "${default_branch}"

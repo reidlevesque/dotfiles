@@ -15,26 +15,23 @@
     lga = log --graph --abbrev-commit --all --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     graph = log --all --decorate --oneline --graph
     pushf = push --force-with-lease
+    wip = commit --no-verify -m "wip"
+    amendf = !git ci --amend --no-edit && git pushf
+    purge = !~/.zsh/git/clean-git-branches
 [pull]
-	rebase = false
-
+	rebase = true
 [core]
 	pager = delta
-
 [interactive]
     diffFilter = delta --color-only
 [add.interactive]
     useBuiltin = false # required for git 2.37.0
-
 [delta]
     navigate = true
 	side-by-side = true
-
 [merge]
     conflictstyle = diff3
-
 [diff]
     colorMoved = default
-
 [push]
 	autoSetupRemote = true
