@@ -17,7 +17,7 @@
     pushf = push --force-with-lease
     wip = commit --no-verify -m "wip"
     amendf = !git ci --amend --no-edit && git pushf
-    purge = !~/.zsh/git/clean-git-branches
+    up = !~/.zsh/git/clean-git-branches
 [pull]
 	rebase = true
 [core]
