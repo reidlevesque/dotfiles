@@ -3,7 +3,7 @@
 [ -f "$GROQ_CONFIG/zsh/bake-completion.zsh" ] && . "$GROQ_CONFIG/zsh/bake-completion.zsh"
 [ -f "$GROQ_CONFIG/zsh/gr-completion.zsh" ] && . "$GROQ_CONFIG/zsh/gr-completion.zsh"
 [ -f "$GROQ_CONFIG/zsh/nix.zsh" ] && . "$GROQ_CONFIG/zsh/nix.zsh"
-
+[ -f "$GROQ_CONFIG/zsh/fix-sft.zsh" ] && . "$GROQ_CONFIG/zsh/fix-sft.zsh"
 # ssh X tmux
 alias attach="sft ssh --via asabastion-us-central1 --command \"tmux -CC new -As0\""
 
