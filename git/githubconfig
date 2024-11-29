@@ -1,0 +1,5 @@
+[user]
+	name = Reid Levesque
+	email = reidlevesque@users.noreply.github.com
+[include]
+    path = ~/.zsh/git/gitconfig
