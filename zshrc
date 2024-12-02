@@ -25,9 +25,9 @@ fi
 . $HOME/.zsh/zsh_groq
 . $HOME/.zsh/zsh_ruby
 . $HOME/.zsh/zsh_aider
+. $HOME/.zsh/zsh_task
 
 # These are slow :(
-. $HOME/.zsh/zsh_node
 . $HOME/.zsh/zsh_hermit
 
 # General Purpose Files
