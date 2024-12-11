@@ -5,11 +5,7 @@ if (( $+commands[gitleaks] )); then
 fi
 
 if alias gr > /dev/null; then unalias gr; fi
-if alias gk > /dev/null; then unalias gk; fi
-
-function gk() {
-  groqkite gh "$@" --key-file=~/.secrets/groqkite.private-key.pem
-}
+# if alias gk > /dev/null; then unalias gk; fi
 
 function clean-git-branches() {
   ~/.zsh/git/clean-git-branches
@@ -73,20 +69,27 @@ function clone-all-repos() {
   popd > /dev/null
 }
 
-function update-all-repos() {
-  pushd ~/dev > /dev/null
+function update-repo() {
+  local repo=$1
+  local repo_dir="$HOME/dev"
 
-  for repo in $(ls); do
-    if [[ -d "${repo}" ]]; then
-      echo $repo
-      pushd "${repo}" > /dev/null
-      clean-git-branches
-      popd > /dev/null
-      echo
+  pushd ${repo_dir}/${repo} > /dev/null
+  echo "Updating ${repo}"
+  git up
+  popd > /dev/null
+}
+
+function update-all-repos() {
+  local repo_dir="$HOME/dev"
+  # Run update-repo in the background for each repository
+  for repo in $(ls ${repo_dir}); do
+    if [[ -d "${repo_dir}/${repo}" ]]; then
+      echo "Updating ${repo}"
+      (update-repo "${repo}") &
     fi
   done
-
-  popd > /dev/null
+  # Wait for all background jobs to finish
+  wait
 }
 
 function prune-repos() {
