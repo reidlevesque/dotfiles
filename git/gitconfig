@@ -15,7 +15,7 @@
     lga = log --graph --abbrev-commit --all --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     graph = log --all --decorate --oneline --graph
     pushf = push --force-with-lease
-    wip = commit --no-verify -m "wip"
+    wip = commit --no-verify -am "wip"
     amendf = !git ci --amend --no-edit && git pushf
     up = !~/.zsh/git/clean-git-branches
 [pull]
