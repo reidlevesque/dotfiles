@@ -3,5 +3,7 @@
 precmd() {
     iTermSetPromptHeader
     iTermSetTitle
-    fix-sft
+    if whence fix-sft &> /dev/null; then
+        fix-sft
+    fi
 }
