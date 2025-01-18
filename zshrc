@@ -41,6 +41,7 @@ fi
 #setopt nosharehistory
 
 # Keep this last
+. $HOME/.zsh/zsh_precmd
 . $HOME/.zsh/zsh_completion
 
 # This makes sure we don't exit with a non-zero status and pollute the shell
