@@ -1,48 +1,71 @@
 #! /bin/zsh
 
-PROFILE=false
-if [[ "${PROFILE}" = true ]]; then
+# Local Variables
+ZSHRC_TIMING_INFO=false
+ZSHRC_TIMING_DATE_CMD=/opt/homebrew/bin/gdate
+if [[ ! -f "${ZSHRC_TIMING_DATE_CMD}" ]]; then
+  ZSHRC_TIMING_DATE_CMD=date
+fi
+ZSHRC_PROFILE=false
+if [[ "${ZSHRC_PROFILE}" = true ]]; then
   zmodload zsh/zprof
 fi
 
 # Path-Setters
 # We need to load these before ohmyzshrc so that the PATH is set correctly for the plugins
-. $HOME/.zsh/zsh_vscode
-. $HOME/.zsh/zsh_brew # keep this first
-. $HOME/.zsh/zsh_path
+do_source() {
+  local file=$1
+  if [[ "${ZSHRC_TIMING_INFO}" = true ]]; then
+    local start_time=$(${ZSHRC_TIMING_DATE_CMD} +%s.%N)
+    source "$file"
+    local end_time=$(${ZSHRC_TIMING_DATE_CMD} +%s.%N)
+    local total_time_ms=$(bc -l <<< "($end_time - $start_time) * 1000")
+    printf "Sourced %s in %.3f ms\n" "$file" "$total_time_ms"
+  else
+    source "$file"
+  fi
+}
+
+do_source $HOME/.zsh/zsh_vscode
+do_source $HOME/.zsh/zsh_brew # keep this first
+do_source $HOME/.zsh/zsh_path
 
 # Oh My Zsh
-. $HOME/.zsh/ohmyzshrc
+do_source $HOME/.zsh/ohmyzshrc # 200ms
 
 # Language Specific Files
-. $HOME/.zsh/zsh_gcp
-. $HOME/.zsh/zsh_kubernetes
-. $HOME/.zsh/zsh_terraform
-. $HOME/.zsh/zsh_git
-. $HOME/.zsh/zsh_pnpm
-. $HOME/.zsh/zsh_iterm
-. $HOME/.zsh/zsh_haskell
-. $HOME/.zsh/zsh_groq
-. $HOME/.zsh/zsh_ruby
-. $HOME/.zsh/zsh_aider
-. $HOME/.zsh/zsh_task
+do_source $HOME/.zsh/zsh_gcp
+do_source $HOME/.zsh/zsh_kubernetes
+do_source $HOME/.zsh/zsh_terraform
+do_source $HOME/.zsh/zsh_git
+do_source $HOME/.zsh/zsh_pnpm
+do_source $HOME/.zsh/zsh_iterm
+do_source $HOME/.zsh/zsh_haskell
+do_source $HOME/.zsh/zsh_groq
+do_source $HOME/.zsh/zsh_ruby
+do_source $HOME/.zsh/zsh_aider
+do_source $HOME/.zsh/zsh_task
 
 # These are slow :(
-. $HOME/.zsh/zsh_hermit
+do_source $HOME/.zsh/zsh_hermit
 
 # General Purpose Files
-. $HOME/.zsh/zsh_functions
-. $HOME/.zsh/zsh_aliases
-. $HOME/.zsh/zsh_prompt
-. $HOME/.zsh/zsh_environ
+do_source $HOME/.zsh/zsh_functions
+do_source $HOME/.zsh/zsh_aliases
+do_source $HOME/.zsh/zsh_prompt
+do_source $HOME/.zsh/zsh_environ
 
 # Keep history per shell (i.e. don't share)
 #setopt noincappendhistory
 #setopt nosharehistory
 
 # Keep this last
-. $HOME/.zsh/zsh_precmd
-. $HOME/.zsh/zsh_completion
+do_source $HOME/.zsh/zsh_precmd
+
+# Unset local variables
+unset ZSHRC_TIMING_INFO
+unset ZSHRC_TIMING_DATE_CMD
+unset ZSHRC_PROFILE
 
 # This makes sure we don't exit with a non-zero status and pollute the shell
 true

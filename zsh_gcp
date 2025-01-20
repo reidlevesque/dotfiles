@@ -13,8 +13,8 @@ function gcurl () {
 # export CLOUDSDK_PYTHON="$HOME/.pyenv/shims/python3"
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
-[ -f "$(brew --caskroom)/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ] && . "$(brew --caskroom)/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-[ -f "$(brew --caskroom)/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc" ] && . "$(brew --caskroom)/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+[ -f "$HOMEBREW_CASKROOM/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ] && . "$HOMEBREW_CASKROOM/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+[ -f "$HOMEBREW_CASKROOM/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc" ] && . "$HOMEBREW_CASKROOM/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 function gassets () {
   local project=$1
