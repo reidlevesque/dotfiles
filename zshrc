@@ -45,6 +45,7 @@ do_source $HOME/.zsh/zsh_groq
 do_source $HOME/.zsh/zsh_ruby
 do_source $HOME/.zsh/zsh_aider
 do_source $HOME/.zsh/zsh_task
+do_source $HOME/.zsh/zsh_nix
 
 # These are slow :(
 do_source $HOME/.zsh/zsh_hermit
