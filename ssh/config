@@ -11,13 +11,16 @@ Host github.com
 #     ProxyCommand "/usr/local/bin/sft" proxycommand --via asabastion-northamerica-northeast2  %h
 #     UserKnownHostsFile "/Users/reid/Library/Application Support/ScaleFT/proxycommand_known_hosts"
 
+# SFT
 Host rlevesque
   HostName rlevesque
   ForwardAgent yes
   ProxyCommand "/usr/local/bin/sft" proxycommand  %h
   IdentitiesOnly yes
-  ControlMaster auto
-  ControlPath ~/.ssh/ssh_mux_%h_%p_%r
+
+# Tailscale
+# Host rlevesque
+#   User rlevesque
 
 Host *
   ServerAliveInterval 10
@@ -25,3 +28,7 @@ Host *
 #  TCPKeepAlive yes
   ForwardAgent no
   StrictHostKeyChecking=accept-new
+  # Use connection multiplexing to reuse existing connectionshttps://www.notion.so/groq/Eng-Infra-Priorities-for-Jan-Feb-2025-17ea08e6e8a78038b85efa369ba11bd7
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h-%p
+  ControlPersist 600
