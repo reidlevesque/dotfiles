@@ -3,3 +3,9 @@
 	email = reidlevesque@users.noreply.github.com
 [include]
     path = ~/.zsh/git/gitconfig
+[credential "https://github.com"]
+	helper = 
+	helper = !/Users/reid/Library/Caches/hermit/pkg/gh@latest/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/Users/reid/Library/Caches/hermit/pkg/gh@latest/gh auth git-credential

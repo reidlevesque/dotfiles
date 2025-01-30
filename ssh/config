@@ -6,21 +6,12 @@ Host github.com
   IdentityFile ~/.ssh/id_ed25519
   IdentitiesOnly yes
 
-# To use ScaleFT proxycommand, add this configuration block to your $HOME/.ssh/config
-# Match exec "/usr/local/bin/sft resolve -q  %h"
-#     ProxyCommand "/usr/local/bin/sft" proxycommand --via asabastion-northamerica-northeast2  %h
-#     UserKnownHostsFile "/Users/reid/Library/Application Support/ScaleFT/proxycommand_known_hosts"
-
-# SFT
 Host rlevesque
   HostName rlevesque
+  User rlevesque
   ForwardAgent yes
   ProxyCommand "/usr/local/bin/sft" proxycommand  %h
   IdentitiesOnly yes
-
-# Tailscale
-# Host rlevesque
-#   User rlevesque
 
 Host *
   ServerAliveInterval 10
@@ -28,7 +19,7 @@ Host *
 #  TCPKeepAlive yes
   ForwardAgent no
   StrictHostKeyChecking=accept-new
-  # Use connection multiplexing to reuse existing connectionshttps://www.notion.so/groq/Eng-Infra-Priorities-for-Jan-Feb-2025-17ea08e6e8a78038b85efa369ba11bd7
+  # Use connection multiplexing to reuse existing connections
   ControlMaster auto
   ControlPath ~/.ssh/sockets/%r@%h-%p
   ControlPersist 600

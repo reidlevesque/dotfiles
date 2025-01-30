@@ -1,6 +1,3 @@
-[user]
-	name = Reid Levesque
-	email = reidlevesque@users.noreply.github.com
 [init]
 	# templatedir = ~/.git_templates
 	templatedir = ~/.zsh/git/templates
