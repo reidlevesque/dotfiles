@@ -32,3 +32,11 @@
     colorMoved = default
 [push]
 	autoSetupRemote = true
+
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+	path = ~/.zsh/git/github.gitconfig
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+	path = ~/.zsh/git/github.gitconfig
+[includeIf "hasconfig:remote.*.url:git@git.groq.io:*/**"]
+	path = ~/.zsh/git/gitlab.gitconfig
+
