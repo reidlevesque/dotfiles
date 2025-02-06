@@ -80,6 +80,7 @@ plugins=(
   python
   shrink-path
   terraform
+  timer
   vscode
   z
   # command-not-found # This makes things slow
