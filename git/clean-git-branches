@@ -1,4 +1,29 @@
 #! /bin/bash
+set -eo pipefail
+
+debug="false"
+if [[ "${1:-}" == "-d" ]]; then
+  debug="true"
+fi
+
+timer() {
+  local cmd="$1"
+  local desc="$2"
+  if [[ "$debug" == "true" ]]; then
+    echo -n "${desc}..." >&2
+    start_time=$(gdate +%s.%N)
+  else
+    echo "${desc}..." >&2
+  fi
+
+  eval "$cmd"
+
+  if [[ "$debug" == "true" ]]; then
+    end_time=$(gdate +%s.%N)
+    duration_ms=$(bc -l <<< "($end_time - $start_time)/1")
+    printf " took %.3fs\n" "$duration_ms" >&2
+  fi
+}
 
 declare -a branches=(
   "dev"
@@ -8,20 +33,26 @@ declare -a branches=(
   "production"
 )
 
-current_branch=$(git branch | sed -n 's/* //p')
-default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+current_branch=$(timer "git branch --show-current" "Getting current branch")
+# default_branch=$(timer "git remote show origin | sed -n '/HEAD branch/s/.*: //p'" "Getting default branch")
+default_branch=$(timer "cat $(git rev-parse --git-dir)/refs/remotes/origin/HEAD | sed 's#.*origin/##'" "Getting default branch")
 
-git checkout "${default_branch}"
+timer "git checkout ${default_branch}" "Switching to default branch"
+timer "git pull --prune" "Pulling latest changes"
 
-# Remove deleted branches
-git fetch --prune
-git pull
-for branch in $(git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}'); do
-  git branch -D "${branch}"
+echo "Cleaning up deleted branches..."
+branches_to_delete=$(git branch -vv | grep 'origin/.*: gone]' || true)
+if [ -n "${branches_to_delete}" ]; then
+  for branch in $(echo "${branches_to_delete}" | awk '{print $1}'); do
+    timer "git branch -D '${branch}'" "Removing branch: ${branch}"
+  done
+fi
+
+echo "Updating local branches..."
+for branch in "${branches[@]}"; do
+  if git show-ref --verify --quiet "refs/heads/origin/${branch}"; then
+    timer "git checkout ${branch} && git reset --hard origin/${branch}" "Updating branch: ${branch}"
+  fi
 done
 
-for branch in "${branches[@]}" "${default_branch}"; do
-  git checkout "${branch}" 2>/dev/null && git reset --hard origin/${branch} || true
-done
-
-git checkout "${current_branch}" || git checkout "${default_branch}"
+timer "git checkout ${current_branch}" "Returning to original branch" || timer "git checkout ${default_branch}" "Falling back to default branch"
