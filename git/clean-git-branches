@@ -36,6 +36,9 @@ declare -a branches=(
 current_branch=$(timer "git branch --show-current" "Getting current branch")
 # default_branch=$(timer "git remote show origin | sed -n '/HEAD branch/s/.*: //p'" "Getting default branch")
 default_branch=$(timer "cat $(git rev-parse --git-dir)/refs/remotes/origin/HEAD | sed 's#.*origin/##'" "Getting default branch")
+if [[ -z "${default_branch}" ]]; then
+  default_branch=$(timer "git remote show origin | sed -n '/HEAD branch/s/.*: //p'" "Getting default branch")
+fi
 
 timer "git checkout ${default_branch}" "Switching to default branch"
 timer "git pull --prune" "Pulling latest changes"
