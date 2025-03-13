@@ -4,6 +4,7 @@
 alias kx='kubectx'
 alias kn='kubens'
 alias kg="k get -o yaml"
+alias kd="k describe"
 alias kpf="k port-forward"
 alias kpods="k get pods | grep "
 alias ksecrets="k get secrets | grep "
