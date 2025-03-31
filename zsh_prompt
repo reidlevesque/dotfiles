@@ -79,7 +79,7 @@ function setPyenvPrompt {
 function setKubernetesPrompt {
   if [[ -f "${HOME}/.kube/config" ]]; then
     local curcontext="$(cat ${HOME}/.kube/config | grep "current-context" | awk '{print $2}')"
-    local curnamespace=$(cat ~/.kube/config | yq ".contexts.[].context | select(.cluster==\"$curcontext\") | .namespace")
+    local curnamespace=$(cat ~/.kube/config | yq ".contexts.[].context | select(.cluster | contains(\"$curcontext\")) | .namespace" | head -n 1)
     local curkube=$(echo ${curcontext} | perl -pe 's/.*_(.*?)/$1/g' | perl -pe 's/^us-central1-//g')
     local proxy_enabled=""
 
