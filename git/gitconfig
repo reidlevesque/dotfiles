@@ -15,6 +15,7 @@
     wip = commit --no-verify -am "wip"
     amendf = !git ci --amend --no-edit && git pushf
     up = !~/.zsh/git/clean-git-branches
+    fco = "!f() { git fetch origin \"$1\" && git checkout \"$1\"; }; f"
 [pull]
 	rebase = true
 [core]
