@@ -86,13 +86,13 @@ function setKubernetesPrompt {
     if [[ "${curkube}" =~ ".*-c.*" ]]; then
       # COMMON
       k8s_prompt_colour=$FG[005]
-    elif [[ "${curkube}" =~ ".*-d-.*" || "${curkube}" =~ ".*-x-.*" ]]; then
+    elif [[ "${curkube}" =~ ".*-d-.*" || "${curkube}" =~ ".*-x-.*" || "${curkube}" =~ ".*-pre.*" ]]; then
       # DEV
       k8s_prompt_colour=$FG[002]
-    elif [[ "${curkube}" =~ ".*-s-.*" || "${curkube}" =~ "lab.*ts\.net"  ]]; then
+    elif [[ "${curkube}" =~ ".*-s-.*" || "${curkube}" =~ ".*-infra.*" || "${curkube}" =~ "lab.*ts\.net"  ]]; then
       # STAGING
       k8s_prompt_colour=$FG[003]
-    elif [[ "${curkube}" =~ ".*-p-.*" || "${curkube}" =~ "prod.*ts\.net" ]]; then
+    elif [[ "${curkube}" =~ ".*-p-.*" || "${curkube}" =~ ".*-prod.*" || "${curkube}" =~ "prod.*ts\.net" ]]; then
       # PROD
       k8s_prompt_colour=$FG[001]
     fi
