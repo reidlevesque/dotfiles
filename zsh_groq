@@ -17,3 +17,7 @@ autoload -Uz refresh
 function preexec {
   refresh
 }
+
+function failed_ci_diag_tasks() {
+  python3 ~/.zsh/builder_tasks.py "$@"
+}
