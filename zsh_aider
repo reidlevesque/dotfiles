@@ -5,7 +5,7 @@ function aider() {
     source "$HOME/.secrets/aider"
   fi
   command aider \
-    --model groq/llama-3.1-70b-versatile \
+    --model groq/deepseek-r1-distill-llama-70b \
     --openai-api-base "https://api.groq.com/v1" \
     "$@"
 }
