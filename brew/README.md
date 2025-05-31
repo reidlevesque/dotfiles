@@ -2,7 +2,10 @@
 
 ## Generating Brewfile
 
-`brew bundle dump`
+```
+rm Brewfile && \
+brew bundle dump
+```
 
 ## Applying Brewfile
 
