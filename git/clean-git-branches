@@ -42,6 +42,7 @@ fi
 
 timer "git checkout ${default_branch}" "Switching to default branch"
 timer "git pull --prune" "Pulling latest changes"
+timer "git fetch --tags --force" "Fetching latest tags"
 
 echo "Cleaning up deleted branches..."
 branches_to_delete=$(git branch -vv | grep 'origin/.*: gone]' || true)
