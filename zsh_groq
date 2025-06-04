@@ -18,6 +18,11 @@ function preexec {
   refresh
 }
 
+function builder_tasks() {
+  brake-query builder-tasks "$1" \
+    "$(date +"%m-%d-%Y")" "$(date -d "tomorrow" +"%m-%d-%Y")"
+}
+
 function failed_ci_diag_tasks() {
   python3 ~/.zsh/builder_tasks.py "$@"
 }
