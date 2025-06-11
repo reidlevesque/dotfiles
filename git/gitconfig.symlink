@@ -1,5 +1,5 @@
 [init]
-	templatedir = $DOTFILES/git/templates
+	templatedir = ~/.dotfiles/git/templates
 [alias]
     co = checkout
     ci = commit
@@ -13,7 +13,7 @@
     pushf = push --force-with-lease
     wip = commit --no-verify -am "wip"
     amendf = !git ci --amend --no-edit && git pushf
-    up = !$DOTFILES/git/clean-git-branches
+    up = !~/.dotfiles/git/clean-git-branches
     fco = "!f() { git fetch origin \"$1\" && git checkout \"$1\"; }; f"
 [pull]
 	rebase = true
@@ -34,11 +34,11 @@
 	autoSetupRemote = true
 
 [includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
-	path = $DOTFILES/git/github.gitconfig
+	path = ~/.dotfiles/git/github.gitconfig
 [includeIf "hasconfig:remote.*.url:https://github.com/**"]
-	path = $DOTFILES/git/github.gitconfig
+	path = ~/.dotfiles/git/github.gitconfig
 [includeIf "hasconfig:remote.*.url:git@git.groq.io:*/**"]
-	path = $DOTFILES/git/gitlab.gitconfig
+	path = ~/.dotfiles/git/gitlab.gitconfig
 
 [credential "https://github.com"]
 	helper =
