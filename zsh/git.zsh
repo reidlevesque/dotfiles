@@ -8,7 +8,7 @@ if alias gr > /dev/null; then unalias gr; fi
 # if alias gk > /dev/null; then unalias gk; fi
 
 function clean-git-branches() {
-  ~/.zsh/git/clean-git-branches
+  $DOTFILES/git/clean-git-branches
 }
 
 function groq_repos() {

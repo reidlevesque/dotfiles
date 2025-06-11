@@ -1,0 +1,10 @@
+theme = synthwave
+theme = grape
+
+focus-follows-mouse = true
+
+window-save-state = always
+window-padding-balance = true
+
+font-family = "Monaco"
+font-size = 13

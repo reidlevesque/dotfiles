@@ -24,5 +24,5 @@ function builder_tasks() {
 }
 
 function failed_ci_diag_tasks() {
-  python3 ~/.zsh/builder_tasks.py "$@"
+  python3 $DOTFILES/scripts/builder_tasks.py "$@"
 }

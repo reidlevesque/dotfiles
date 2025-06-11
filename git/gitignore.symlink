@@ -1,0 +1,6 @@
+.DS_Store
+.env
+.vagrant/
+.hermit/
+.repl-history
+.aider*
