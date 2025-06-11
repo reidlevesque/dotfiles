@@ -78,3 +78,4 @@ git pull
 - [ ] Add install.sh to iterm
 - [ ] Add install.sh to KeyBindings
 - [ ] Review lox's git setup
+- [ ] Add hermit folder from lox's dotfiles

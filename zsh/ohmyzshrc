@@ -80,8 +80,8 @@ plugins=(
   python
   shrink-path
   terraform
-  timer
-  vscode
+  # timer # Breaks amp terminal in cursor
+  # vscode # Breaks amp terminal in cursor
   z
   # command-not-found # This makes things slow
 

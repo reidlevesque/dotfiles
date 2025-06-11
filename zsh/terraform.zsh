@@ -11,9 +11,6 @@ alias t='terraform'
 alias iterraform='/usr/local/bin/terraform' # x86_64
 alias tdocs='terraform-docs markdown . > README.md' # TODO: rework
 
-# tf-wrapper.sh
-export PATH=$PATH:$HOME/dev/gcp-projects/modules/cicd
-
 function tvalidate() {
   terraform fmt
   terraform validate
