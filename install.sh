@@ -10,6 +10,12 @@ export ICLOUD_CONFIG=~/Library/Mobile\ Documents/com\~apple\~CloudDocs/Config
 
 echo -e "\\n› Creating symlinks"
 for src in $(find `pwd` -name '*.symlink') ; do
+  if [[ $src == *.md.symlink ]]; then
+    ln -sfv $src "$HOME/$(basename "${src%.*}")"
+  else
+    ln -sfv $src "$HOME/.$(basename "${src%.*}")"
+  fi
+
   ln -sfv $src "$HOME/.$(basename "${src%.*}")"
 done
 
