@@ -1,0 +1,13 @@
+[kubernetes]
+disabled = false
+
+[gcloud]
+disabled = true
+
+[time]
+disabled = true
+
+[cmd_duration]
+disabled = false
+min_time = 0
+show_milliseconds = true

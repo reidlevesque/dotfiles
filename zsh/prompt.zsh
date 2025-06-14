@@ -167,8 +167,9 @@ ${PROMPT_SYMBOL_COLOUR}%(!.#.»)%{$reset_color%} '
 }
 
 precmd() {
-    iTermSetPromptHeader
-    iTermSetTitle
+  iTermSetPromptHeader
+  iTermSetTitle
 }
 
-setprompt
+eval "$(starship init zsh)"
+# setprompt
