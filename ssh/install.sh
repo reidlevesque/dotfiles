@@ -4,7 +4,9 @@ test -d ~/.ssh || {
 	mkdir ~/.ssh
 }
 
-ln -sfv "$DOTFILES"/ssh/config ~/.ssh/config
+if [[ "$(uname)" == "Darwin" ]]; then
+	ln -sfv "$DOTFILES"/ssh/config ~/.ssh/config
+fi
 
 # test -f "${ICLOUD_CONFIG}/ssh_config" || {
 # 	touch ~/.ssh/config.private

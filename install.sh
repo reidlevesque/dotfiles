@@ -19,8 +19,10 @@ for src in $(find `pwd` -name '*.symlink') ; do
   ln -sfv $src "$HOME/.$(basename "${src%.*}")"
 done
 
-echo -e "\\n> Installing Bundle"
-brew bundle install
+if [[ -f "Brewfile.$(uname)" ]]; then
+  echo -e "\\n> Installing Bundle"
+  brew bundle install --file="Brewfile.$(uname)"
+fi
 
 find "$DOTFILES" -name 'install.sh' -mindepth 2 -print0 | while read -d $'\0' file; do
   echo -e "\\n> Running installer $file"
