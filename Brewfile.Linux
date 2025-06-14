@@ -1,0 +1,7 @@
+brew "direnv"
+brew "git-delta"
+brew "go-task"
+brew "node"
+brew "pre-commit"
+brew "starship"
+brew "the_silver_searcher"
