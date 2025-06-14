@@ -1,3 +1,8 @@
+format = "$all$directory$character"
+
+[directory]
+disabled = false
+
 [kubernetes]
 disabled = false
 
