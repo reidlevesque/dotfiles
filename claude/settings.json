@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr:*)",
+      "Bash(go:*)",
+      "Bash(task:*)"
+    ]
+  },
+  "defaultMode": "allowEdits",
+  "includeCoAuthoredBy": false
+}
