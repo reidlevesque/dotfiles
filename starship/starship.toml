@@ -6,13 +6,17 @@ disabled = false
 [kubernetes]
 disabled = false
 
-[gcloud]
-disabled = true
-
-[time]
-disabled = true
-
 [cmd_duration]
 disabled = false
 min_time = 0
 show_milliseconds = true
+
+# Disabled plugins
+[gcloud]
+disabled = true
+[time]
+disabled = true
+[docker_context]
+disabled = true
+[golang]
+disabled = true
