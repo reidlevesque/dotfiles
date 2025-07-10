@@ -1,5 +1,5 @@
 [init]
-	templatedir = ~/.dotfiles/git/templates
+#	templatedir = ~/.dotfiles/git/templates
 [alias]
     co = checkout
     ci = commit
@@ -42,7 +42,7 @@
 
 [credential "https://github.com"]
 	helper =
-	helper = !~/.local/share/hermit/bin/gh auth git-credential
+	helper = !~/.cache/hermit/pkg/gh-2.75.0/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !~/.local/share/hermit/bin/gh auth git-credential
+	helper = !~/.cache/hermit/pkg/gh-2.75.0/gh auth git-credential
