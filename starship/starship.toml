@@ -2,6 +2,9 @@ format = "$all$directory$character"
 
 [directory]
 disabled = false
+truncate_to_repo = true
+truncation_length = 0
+repo_root_style = 'white bold'
 
 [kubernetes]
 disabled = false
