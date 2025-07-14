@@ -28,3 +28,15 @@ function builder_tasks() {
 function failed_ci_diag_tasks() {
   python3 $DOTFILES/scripts/builder_tasks.py "$@"
 }
+
+function add_slurm_user() {
+  user=$1
+
+  if [ -z "$user" ]; then
+    echo "Usage: add_slurm_user <username>"
+    return 1
+  fi
+
+  echo y | sacctmgr add user "$user" account=compiler fairshare=100
+  echo y | sacctmgr modify user "$user" set DefaultAccount=compiler
+}
