@@ -42,7 +42,7 @@
 
 [credential "https://github.com"]
 	helper =
-	helper = !~/.cache/hermit/pkg/gh-2.75.0/gh auth git-credential
+	helper = !~/.local/share/hermit/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !~/.cache/hermit/pkg/gh-2.75.0/gh auth git-credential
+	helper = !~/.local/share/hermit/bin/gh auth git-credential
