@@ -14,6 +14,10 @@ disabled = false
 min_time = 0
 show_milliseconds = true
 
+[status]
+disabled = false
+format = '[\[$status\] ]($style)'
+
 # Disabled plugins
 [gcloud]
 disabled = true
