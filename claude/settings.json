@@ -7,9 +7,19 @@
       "Bash(git checkout:*)",
       "Bash(gh pr:*)",
       "Bash(go:*)",
-      "Bash(task:*)"
+      "Bash(go list:*)",
+      "Bash(go mod:*)",
+      "Bash(go run:*)",
+      "Bash(go test:*)",
+      "Bash(go build:*)",
+      "Bash(go doc:*)",
+      "Bash(task:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Fetch(https://github.com/)",
+      "Fetch(https://raw.githubusercontent.com/)"
     ]
   },
-  "defaultMode": "allowEdits",
   "includeCoAuthoredBy": false
 }
