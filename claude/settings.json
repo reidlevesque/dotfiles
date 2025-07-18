@@ -19,7 +19,8 @@
       "Bash(ls:*)",
       "Fetch(https://github.com/)",
       "Fetch(https://raw.githubusercontent.com/)"
-    ]
+    ],
+    "defaultMode": "acceptEdits"
   },
   "includeCoAuthoredBy": false
 }
