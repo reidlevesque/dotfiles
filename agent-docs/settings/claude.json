@@ -17,10 +17,24 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(ls:*)",
+      "Bash(touch:*)",
+      "Bash(which:*)",
+      "Bash(type:*)",
+      "Bash(echo:*)",
+      "Bash(printf:*)",
+      "Bash(test:*)",
+      "Bash(shellcheck:*)",
       "Fetch(https://github.com/)",
-      "Fetch(https://raw.githubusercontent.com/)"
+      "Fetch(https://raw.githubusercontent.com/)",
+      "Fetch(domain:docs.anthropic.com)",
+      "Fetch(domain:github.com)",
+      "Fetch(domain:stackoverflow.com)",
+      "Fetch(domain:nodejs.org)",
+      "Fetch(domain:go.dev)",
+      "Fetch(domain:ziglang.org)"
     ],
     "defaultMode": "acceptEdits"
   },
-  "includeCoAuthoredBy": false
+  "includeCoAuthoredBy": false,
+  "cleanupPeriodDays": 30
 }

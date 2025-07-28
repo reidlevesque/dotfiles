@@ -1,0 +1,47 @@
+{
+  "amp.commands.allowlist": [
+    "git commit",
+    "git add",
+    "git push",
+    "git checkout",
+    "gh pr",
+    "go",
+    "go list",
+    "go mod",
+    "go run",
+    "go test",
+    "go build",
+    "go doc",
+    "task",
+    "grep",
+    "find",
+    "ls",
+    "touch",
+    "which",
+    "type",
+    "echo",
+    "printf",
+    "test"
+  ],
+  "amp.mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--headless"
+      ],
+      "_target": "global"
+    },
+    "flux-operator-mcp": {
+      "command": "flux-operator-mcp",
+      "args": [
+        "serve",
+        "--read-only"
+      ],
+      "env": {
+        "KUBECONFIG": "~/.kube/config"
+      }
+    }
+  }
+}
