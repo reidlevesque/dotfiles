@@ -15,8 +15,6 @@ while IFS= read -r -d '' src; do
   else
     ln -sfv "$src" "$HOME/.$(basename "${src%.*}")"
   fi
-
-  ln -sfv "$src" "$HOME/.$(basename "${src%.*}")"
 done < <(find "$DOTFILES" -name '*.symlink' -print0)
 
 if [[ -f "Brewfile.$(uname)" ]]; then
