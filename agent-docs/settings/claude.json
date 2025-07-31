@@ -33,6 +33,10 @@
       "Fetch(domain:go.dev)",
       "Fetch(domain:ziglang.org)"
     ],
+    "deny": [
+      "Bash(terraform state mv:*)",
+      "Bash(terraform state rm:*)"
+    ],
     "defaultMode": "acceptEdits"
   },
   "includeCoAuthoredBy": false,
