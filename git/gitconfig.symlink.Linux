@@ -1,0 +1,48 @@
+[init]
+#	templatedir = ~/.dotfiles/git/templates
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    cp = cherry-pick
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    lg = log --graph --abbrev-commit --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    lga = log --graph --abbrev-commit --all --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    graph = log --all --decorate --oneline --graph
+    pushf = push --force-with-lease
+    wip = commit --no-verify -am "wip"
+    amendf = !git ci --amend --no-edit && git pushf
+    up = !~/.dotfiles/git/clean-git-branches
+    fco = "!f() { git fetch origin \"$1\" && git checkout \"$1\"; }; f"
+[pull]
+	rebase = true
+[core]
+	pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[add.interactive]
+    useBuiltin = false # required for git 2.37.0
+[delta]
+    navigate = true
+	side-by-side = true
+[merge]
+    conflictstyle = diff3
+[diff]
+    colorMoved = default
+[push]
+	autoSetupRemote = true
+
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+	path = ~/.dotfiles/git/github.gitconfig
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+	path = ~/.dotfiles/git/github.gitconfig
+[includeIf "hasconfig:remote.*.url:git@git.groq.io:*/**"]
+	path = ~/.dotfiles/git/gitlab.gitconfig
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !~/.cache/hermit/pkg/gh-2.76.2/gh auth git-credential
+[credential "https://github.com"]
+	helper =
+	helper = !~/.cache/hermit/pkg/gh-2.76.2/gh auth git-credential

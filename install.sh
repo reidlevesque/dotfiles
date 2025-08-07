@@ -9,13 +9,19 @@ export DOTFILES; DOTFILES=$(pwd)
 export ICLOUD_CONFIG=~/Library/Mobile\ Documents/com\~apple\~CloudDocs/Config
 
 echo -e "\\n› Creating symlinks"
+shared_symlinks='*.symlink'
+platform_symlinks="*.symlink.$(uname)"
+
 while IFS= read -r -d '' src; do
   if [[ $src == *.md.symlink ]]; then
     ln -sfv "$src" "$HOME/$(basename "${src%.*}")"
   else
     ln -sfv "$src" "$HOME/.$(basename "${src%.*}")"
   fi
-done < <(find "$DOTFILES" -name '*.symlink' -print0)
+done < <(find "$DOTFILES" -name "$shared_symlinks" -print0)
+while IFS= read -r -d '' src; do
+  ln -sfv "$src" "$HOME/.$(basename "${src%.*.*}")"
+done < <(find "$DOTFILES" -name "$platform_symlinks" -print0)
 
 if [[ -f "Brewfile.$(uname)" ]]; then
   echo -e "\\n> Installing Bundle"
