@@ -26,9 +26,10 @@ function wol-clifford() {
 
 function dev() {
   if [[ -z "$1" ]]; then
-    echo "Usage: dev <repo-name>"
-    echo "Opens new iTerm tab, cds to ~/dev/<repo-name>, runs git up, and opens VS Code"
-    return 1
+    # No parameter - run in current directory
+    git up &
+    code .
+    return 0
   fi
 
   local repo_path="$HOME/dev/$1"
