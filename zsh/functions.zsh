@@ -23,3 +23,40 @@ function wol-clifford() {
   local server_ip=$(dig +short andreaandreid.ddns.net)
   wakeonlan -i "${server_ip}" -p 42464 "2c:f0:5d:98:71:fc"
 }
+
+function dev() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: dev <repo-name>"
+    echo "Opens new iTerm tab, cds to ~/dev/<repo-name>, runs git up, and opens VS Code"
+    return 1
+  fi
+
+  local repo_path="$HOME/dev/$1"
+
+  if [[ ! -d "$repo_path" ]]; then
+    echo "Directory $repo_path does not exist"
+    return 1
+  fi
+
+  # AppleScript to open new iTerm tab and run commands
+  osascript -e "
+    tell application \"iTerm\"
+      tell current window
+        create tab with default profile
+        tell current session
+          write text \"cd '$repo_path'\"
+          write text \"git up &\"
+          write text \"code .\"
+        end tell
+      end tell
+    end tell
+  "
+}
+
+# Tab completion for dev function
+_dev() {
+  local -a repos
+  repos=(${HOME}/dev/*(/:t))
+  _describe 'repositories' repos
+}
+compdef _dev dev
