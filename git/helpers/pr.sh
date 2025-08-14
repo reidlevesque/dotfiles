@@ -1,0 +1,104 @@
+#! /bin/bash
+set -eo pipefail
+
+# Check if commit message is provided
+if [[ $# -ne 1 ]]; then
+    echo "Usage: git pr \"commit message\"" >&2
+    echo "Example: git pr \"feat: add user authentication\"" >&2
+    exit 1
+fi
+
+commit_message="$1"
+
+# Validate conventional commit format
+if [[ ! "$commit_message" =~ ^(feat|fix|chore|wip):.+ ]]; then
+    echo "Error: Commit message must follow conventional commit format (feat:, fix:, chore:, or wip:)" >&2
+    echo "Example: git pr \"feat: add user authentication\"" >&2
+    exit 1
+fi
+
+# Check if we're in a git repository
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+    echo "Error: Not in a git repository" >&2
+    exit 1
+fi
+
+# Check if there are any changes in the repository
+if git diff --quiet && git diff --cached --quiet && [[ -z $(git ls-files --others --exclude-standard) ]]; then
+    echo "Error: No changes detected in repository" >&2
+    exit 1
+fi
+
+# Stage files if no staged changes exist
+if git diff --cached --quiet; then
+    echo "Staging all changes..."
+    git add -A
+fi
+
+current_branch=$(git branch --show-current)
+default_branch=$(cat "$(git rev-parse --git-dir)/refs/remotes/origin/HEAD" | sed 's#.*origin/##' 2>/dev/null || git remote show origin | sed -n '/HEAD branch/s/.*: //p' 2>/dev/null || echo "main")
+
+# If on default branch, create a new branch, otherwise use current branch
+if [[ "$current_branch" == "$default_branch" ]]; then
+    # Generate branch name from commit message
+    branch_suffix=$(echo "$commit_message" | sed 's/^[^:]*: *//' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//' | tr ' ' '-' | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]//g')
+    branch_name="reid/$branch_suffix"
+    echo "Creating branch: $branch_name"
+    git checkout -b "$branch_name"
+else
+    echo "Using current branch: $current_branch"
+fi
+
+# Check if we should amend instead of creating new commit
+use_force_push=false
+if [[ "$current_branch" != "$default_branch" ]]; then
+    # Get the last commit message on this branch
+    last_commit_msg=$(git log -1 --pretty=format:"%s" 2>/dev/null || echo "")
+
+    # Check if this branch has commits ahead of default branch
+    commits_ahead=$(git rev-list --count "$default_branch..$current_branch" 2>/dev/null || echo "0")
+
+    if [[ "$commits_ahead" -gt 0 && "$last_commit_msg" == "$commit_message" ]]; then
+        echo "Amending previous commit with same message: $commit_message"
+        git commit --amend --no-edit
+        use_force_push=true
+    else
+        echo "Committing changes with message: $commit_message"
+        git commit -m "$commit_message"
+    fi
+else
+    echo "Committing changes with message: $commit_message"
+    git commit -m "$commit_message"
+fi
+
+# Push with appropriate flags
+current_branch=$(git branch --show-current)
+echo "Pushing branch to remote..."
+if [[ "$use_force_push" == "true" ]]; then
+    git push --force-with-lease
+else
+    git push -u origin "$current_branch"
+fi
+
+echo "Creating pull request..."
+pr_output=$(gh pr create --title "$commit_message" --body "" 2>&1 || true)
+
+# Check if PR already exists or was created
+if echo "$pr_output" | grep -q "already exists"; then
+    # Extract existing PR URL
+    pr_url=$(echo "$pr_output" | grep "https://github.com" || true)
+    echo "PR already exists"
+elif echo "$pr_output" | grep -q "https://github.com"; then
+    # New PR created
+    pr_url=$(echo "$pr_output" | grep "https://github.com" || true)
+    echo "PR created"
+else
+    echo "Failed to create PR"
+    pr_url=""
+fi
+
+# Open PR in browser on macOS
+if [[ "$(uname)" == "Darwin" ]] && [[ -n "$pr_url" ]]; then
+    echo "Opening PR in browser..."
+    open "$pr_url"
+fi
