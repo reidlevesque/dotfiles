@@ -13,7 +13,8 @@
     pushf = push --force-with-lease
     wip = commit --no-verify -am "wip"
     amendf = !git ci --amend --no-edit && git pushf
-    up = !~/.dotfiles/git/clean-git-branches
+    up = !~/.dotfiles/git/helpers/up.sh
+    pr = !~/.dotfiles/git/helpers/pr.sh
     fco = "!f() { git fetch origin \"$1\" && git checkout \"$1\"; }; f"
 [pull]
 	rebase = true
