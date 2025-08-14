@@ -39,17 +39,48 @@ function dev() {
     return 1
   fi
 
-  # AppleScript to open new iTerm tab and run commands
+  # AppleScript to find existing tab or create new one
   osascript -e "
     tell application \"iTerm\"
-      tell current window
-        create tab with default profile
-        tell current session
-          write text \"cd '$repo_path'\"
-          write text \"git up &\"
-          write text \"code .\"
+      set repoName to \"$1\"
+      set repoPath to \"$repo_path\"
+      set foundTab to false
+
+      repeat with theWindow in windows
+        repeat with theTab in tabs of theWindow
+          if name of current session of theTab contains repoName then
+            select theTab
+            tell current session of theTab
+              if (get variable named \"user.session_path\") is not equal to repoPath then
+                split horizontally with default profile
+                delay 0.3
+                tell last session of theTab
+                  write text \"cd '$repo_path'\"
+                  write text \"git up &\"
+                  write text \"code .\"
+                end tell
+              else
+                write text \"git up &\"
+                write text \"code .\"
+              end if
+            end tell
+            set foundTab to true
+            exit repeat
+          end if
+        end repeat
+        if foundTab then exit repeat
+      end repeat
+
+      if not foundTab then
+        tell current window
+          create tab with default profile
+          tell current session
+            write text \"cd '$repo_path'\"
+            write text \"git up &\"
+            write text \"code .\"
+          end tell
         end tell
-      end tell
+      end if
     end tell
   "
 }
