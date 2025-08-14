@@ -51,18 +51,9 @@ function dev() {
           if name of current session of theTab contains repoName then
             select theTab
             tell current session of theTab
-              if (get variable named \"user.session_path\") is not equal to repoPath then
-                split horizontally with default profile
-                delay 0.3
-                tell last session of theTab
-                  write text \"cd '$repo_path'\"
-                  write text \"git up &\"
-                  write text \"code .\"
-                end tell
-              else
-                write text \"git up &\"
-                write text \"code .\"
-              end if
+              set pwdCmd to \"pwd\"
+              set checkCmd to pwdCmd & \" | grep -q \" & quoted form of repoPath & \" && { git up &; code .; }\"
+              write text checkCmd
             end tell
             set foundTab to true
             exit repeat
