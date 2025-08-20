@@ -28,6 +28,7 @@ if [[ "$current_branch" == "$default_branch" ]]; then
     branch_name="reid/$branch_suffix"
     echo "Creating branch: $branch_name"
     git checkout -b "$branch_name"
+    current_branch=$(git branch --show-current)
 else
     echo "Using current branch: $current_branch"
 fi
