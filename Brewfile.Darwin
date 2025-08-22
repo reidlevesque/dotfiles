@@ -13,6 +13,7 @@ tap "planetscale/tap"
 tap "puppetlabs/puppet"
 tap "stripe/stripe-cli"
 
+brew "atuin"
 brew "aom"
 brew "argocd"
 brew "bat"

@@ -53,6 +53,7 @@ do_source $DOTFILES/zsh/ruby.zsh
 do_source $DOTFILES/zsh/aider.zsh
 do_source $DOTFILES/zsh/task.zsh
 do_source $DOTFILES/zsh/nix.zsh
+do_source $DOTFILES/zsh/atuin.zsh
 
 # These are slow :(
 do_source $DOTFILES/zsh/hermit.zsh
