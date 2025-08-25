@@ -48,12 +48,12 @@ function dev() {
 
       repeat with theWindow in windows
         repeat with theTab in tabs of theWindow
-          if name of current session of theTab contains repoName then
+          if name of current session of theTab is repoName then
             select theTab
             tell current session of theTab
-              set pwdCmd to \"pwd\"
-              set checkCmd to pwdCmd & \" | grep -q \" & quoted form of repoPath & \" && { git up &; code .; }\"
-              write text checkCmd
+              write text \"cd \" & quoted form of repoPath
+              write text \"git up &\"
+              write text \"code .\"
             end tell
             set foundTab to true
             exit repeat
