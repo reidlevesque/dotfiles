@@ -5,7 +5,7 @@ commit_message="${1:-}"
 commit_body="${2:-}"
 
 # Validate conventional commit format
-if [[ -n "$commit_message" ]] && [[ ! "$commit_message" =~ ^(feat|fix|chore|wip):.+ ]]; then
+if [[ -n "$commit_message" ]] && [[ ! "$commit_message" =~ ^(feat|fix|chore|wip)(!)?:.+ ]]; then
     echo "Error: Commit message must follow conventional commit format (feat:, fix:, chore:, or wip:)" >&2
     echo "Example: git pr \"feat: add user authentication\"" >&2
     exit 1
