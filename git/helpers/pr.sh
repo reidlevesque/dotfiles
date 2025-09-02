@@ -98,8 +98,10 @@ else
     pr_url=""
 fi
 
-# Open PR in browser on macOS
+# Copy PR URL to clipboard and open in browser on macOS
 if [[ "$(uname)" == "Darwin" ]] && [[ -n "$pr_url" ]]; then
+    echo "$pr_url" | pbcopy
+    echo "PR URL copied to clipboard"
     echo "Opening PR in browser..."
     open "$pr_url"
 fi
