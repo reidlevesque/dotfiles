@@ -17,6 +17,21 @@ if ! git rev-parse --git-dir >/dev/null 2>&1; then
     exit 1
 fi
 
+# Detect repository type (GitHub or GitLab)
+remote_url=$(git remote get-url origin 2>/dev/null || echo "")
+if [[ "$remote_url" =~ github\.com ]]; then
+    repo_type="github"
+elif [[ "$remote_url" =~ git\.groq\.io ]]; then
+    repo_type="gitlab"
+else
+    echo "Error: Repository must be hosted on GitHub or git.groq.io" >&2
+    echo "Remote URL: $remote_url" >&2
+    echo "Install 'gh' for GitHub or 'glab' for GitLab repositories" >&2
+    exit 1
+fi
+
+echo "Detected $repo_type repository"
+
 use_force_push=false
 current_branch=$(git branch --show-current)
 default_branch=$(cat "$(git rev-parse --git-dir)/refs/remotes/origin/HEAD" | sed 's#.*origin/##' 2>/dev/null || git remote show origin | sed -n '/HEAD branch/s/.*: //p' 2>/dev/null || echo "main")
@@ -81,27 +96,51 @@ else
 fi
 
 echo "Creating pull request..."
-pr_output=$(gh pr create --title "$commit_message" --body "$commit_body" 2>&1 || true)
+if [[ "$repo_type" == "github" ]]; then
+    pr_output=$(gh pr create --title "$commit_message" --body "$commit_body" 2>&1 || true)
 
-# Check if PR already exists or was created
-if echo "$pr_output" | grep -q "already exists"; then
-    # Extract existing PR URL
-    pr_url=$(echo "$pr_output" | grep "https://github.com" || true)
-    echo "PR already exists"
-elif echo "$pr_output" | grep -q "https://github.com"; then
-    # New PR created
-    pr_url=$(echo "$pr_output" | grep "https://github.com" || true)
-    echo "PR created"
-else
-    echo "Failed to create PR"
-    echo "$pr_output" >&2
-    pr_url=""
+    # Check if PR already exists or was created
+    if echo "$pr_output" | grep -q "already exists"; then
+        # Extract existing PR URL
+        pr_url=$(echo "$pr_output" | grep "https://github.com" || true)
+        echo "PR already exists: $pr_url"
+    elif echo "$pr_output" | grep -q "https://github.com"; then
+        # New PR created
+        pr_url=$(echo "$pr_output" | grep "https://github.com" || true)
+        echo "PR created: $pr_url"
+    else
+        echo "Failed to create PR"
+        echo "$pr_output" >&2
+        pr_url=""
+    fi
+elif [[ "$repo_type" == "gitlab" ]]; then
+    pr_output=$(glab mr create --title "$commit_message" --description "$commit_body" 2>&1 || true)
+
+    # Check if MR already exists or was created
+    if echo "$pr_output" | grep -q "already exists"; then
+        # Extract existing MR URL
+        pr_url=$(echo "$pr_output" | grep "https://git\.groq\.io" || true)
+        echo "MR already exists: $pr_url"
+    elif echo "$pr_output" | grep -q "https://git\.groq\.io"; then
+        # New MR created
+        pr_url=$(echo "$pr_output" | grep "https://git\.groq\.io" || true)
+        echo "MR created: $pr_url"
+    else
+        echo "Failed to create MR"
+        echo "$pr_output" >&2
+        pr_url=""
+    fi
 fi
 
-# Copy PR URL to clipboard and open in browser on macOS
+# Copy PR/MR URL to clipboard and open in browser on macOS
 if [[ "$(uname)" == "Darwin" ]] && [[ -n "$pr_url" ]]; then
     echo "$pr_url" | pbcopy
-    echo "PR URL copied to clipboard"
-    echo "Opening PR in browser..."
+    if [[ "$repo_type" == "github" ]]; then
+        echo "PR URL copied to clipboard"
+        echo "Opening PR in browser..."
+    else
+        echo "MR URL copied to clipboard"
+        echo "Opening MR in browser..."
+    fi
     open "$pr_url"
 fi
