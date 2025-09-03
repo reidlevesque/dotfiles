@@ -1,4 +1,5 @@
 brew "atuin"
+brew "codex"
 brew "direnv"
 brew "git-delta"
 brew "go-task"

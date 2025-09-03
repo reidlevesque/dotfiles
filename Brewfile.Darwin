@@ -21,6 +21,7 @@ brew "blueutil"
 brew "bottom"
 brew "certifi"
 brew "cloc"
+brew "codex"
 brew "colima", restart_service: :changed
 brew "coreutils"
 brew "detect-secrets"
