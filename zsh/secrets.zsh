@@ -1,5 +1,6 @@
 #! /bin/zsh
 
+mkdir -p "$HOME/.secrets"
 for file in "$HOME/.secrets"/*; do
   chmod 600 "$file"
 done
