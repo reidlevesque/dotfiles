@@ -63,6 +63,7 @@ do_source $DOTFILES/zsh/functions.zsh
 do_source $DOTFILES/zsh/aliases.zsh
 do_source $DOTFILES/zsh/prompt.zsh
 do_source $DOTFILES/zsh/environ.zsh
+do_source $DOTFILES/zsh/secrets.zsh
 
 # Keep history per shell (i.e. don't share)
 #setopt noincappendhistory
