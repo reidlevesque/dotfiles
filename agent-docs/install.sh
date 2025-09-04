@@ -19,6 +19,7 @@ process_template() {
   local name_without_ext="${filename%.*}"
   local template_name="${name_without_ext}.tpl.md"
   local template_file="$SCRIPT_DIR/$template_name"
+  local common_template="$SCRIPT_DIR/common.tpl.md"
 
   echo -e "\n${GREEN}Setting up $filename...${NC}"
 
@@ -27,6 +28,13 @@ process_template() {
     mkdir -p "$(dirname "$destination")"
     # Process template - replace {{REPO_PATH}} with actual path
     sed "s|{{REPO_PATH}}|$SCRIPT_DIR|g" "$template_file" >"$destination"
+
+    # Append common bits if common.tpl.md exists
+    if [ -f "$common_template" ]; then
+      echo "" >>"$destination"  # Add blank line separator
+      sed "s|{{REPO_PATH}}|$SCRIPT_DIR|g" "$common_template" >>"$destination"
+    fi
+
     echo -e "${GREEN}✓ Created $filename${NC}"
   else
     echo -e "${RED}Error: $template_name not found${NC}"
@@ -75,16 +83,13 @@ if [ -d "$SCRIPT_DIR/commands" ]; then
   echo -e "${GREEN}✓ Installed $count commands${NC}"
 fi
 
-# 2. Create CLAUDE.md from template
+# 2. Create md files from template
 process_template "$HOME/.claude/CLAUDE.md"
-
-# 3. Create AGENT.md from template
 process_template "$HOME/.config/AGENT.md"
+process_template "$HOME/.config/AGENTS.md"
 
-# 4. Optional: Install claude settings
+# 3. Optional: Install tool settings
 link_settings claude "$HOME/.claude/settings.json"
-
-# 5. Optional: Install amp settings
 link_settings amp "$HOME/.config/amp/settings.json"
 
 # Done
@@ -93,4 +98,5 @@ echo
 echo -e "Commands installed to: ${BLUE}~/.claude/commands/${NC}"
 echo -e "Claude memory: ${BLUE}~/.claude/CLAUDE.md${NC}"
 echo -e "AmpCode memory: ${BLUE}~/.config/AGENT.md${NC}"
+echo -e "Agents: ${BLUE}~/.config/AGENTS.md${NC}"
 echo -e "\nType ${BLUE}/${NC} in Claude Code to see available commands"
