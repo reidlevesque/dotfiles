@@ -66,6 +66,41 @@ link_settings() {
   fi
 }
 
+# Function to merge settings from template into existing config
+merge_settings() {
+  local tool="$1"
+  local config_file="$2"
+
+  local repo_settings="$SCRIPT_DIR/settings/$tool.json"
+
+  echo -e "\n${GREEN}$tool configuration...${NC}"
+
+  if [ ! -f "$repo_settings" ]; then
+    echo -e "${YELLOW}No settings template found for $tool${NC}"
+    return 0
+  fi
+
+  if [ ! -f "$config_file" ]; then
+    echo -e "${YELLOW}Config file $config_file not found, creating from template${NC}"
+    mkdir -p "$(dirname "$config_file")"
+    cp "$repo_settings" "$config_file"
+    echo -e "${GREEN}✓ Created config from template${NC}"
+  else
+    echo -e "${YELLOW}Merging settings into existing config${NC}"
+    
+    # Use jq to merge the repo settings into the existing config
+    # The + operator merges objects, with the right side taking precedence
+    if command -v jq >/dev/null 2>&1; then
+      local temp_file; temp_file=$(mktemp)
+      jq -s '.[0] * .[1]' "$config_file" "$repo_settings" > "$temp_file" && mv "$temp_file" "$config_file"
+      echo -e "${GREEN}✓ Merged settings${NC}"
+    else
+      echo -e "${RED}jq not available - cannot merge settings automatically${NC}"
+      echo -e "${YELLOW}Manual merge required: $repo_settings -> $config_file${NC}"
+    fi
+  fi
+}
+
 echo -e "${BLUE}Agent Docs Installer${NC}"
 echo -e "${BLUE}====================${NC}"
 echo
@@ -91,6 +126,7 @@ process_template "$HOME/.config/AGENTS.md"
 # 3. Optional: Install tool settings
 link_settings claude "$HOME/.claude/settings.json"
 link_settings amp "$HOME/.config/amp/settings.json"
+merge_settings claude-mcp "$HOME/.claude.json"
 
 # Done
 echo -e "\n${GREEN}✅ Installation complete!${NC}"
