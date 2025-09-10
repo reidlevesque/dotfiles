@@ -39,41 +39,60 @@ function dev() {
     return 1
   fi
 
-  # AppleScript to find existing tab or create new one
-  osascript -e "
-    tell application \"iTerm\"
-      set repoName to \"$1\"
-      set repoPath to \"$repo_path\"
-      set foundTab to false
+  # OS-specific terminal automation
+  if [[ "$(uname)" == "Darwin" ]]; then
+    # AppleScript to find existing tab or create new one (macOS)
+    osascript -e "
+      tell application \"iTerm\"
+        set repoName to \"$1\"
+        set repoPath to \"$repo_path\"
+        set foundTab to false
 
-      repeat with theWindow in windows
-        repeat with theTab in tabs of theWindow
-          if name of current session of theTab is repoName then
-            select theTab
-            tell current session of theTab
-              write text \"cd \" & quoted form of repoPath
+        repeat with theWindow in windows
+          repeat with theTab in tabs of theWindow
+            if name of current session of theTab is repoName then
+              select theTab
+              tell current session of theTab
+                write text \"cd \" & quoted form of repoPath
+                write text \"git up &\"
+                write text \"code .\"
+              end tell
+              set foundTab to true
+              exit repeat
+            end if
+          end repeat
+          if foundTab then exit repeat
+        end repeat
+
+        if not foundTab then
+          tell current window
+            create tab with default profile
+            tell current session
+              write text \"cd '$repo_path'\"
               write text \"git up &\"
               write text \"code .\"
             end tell
-            set foundTab to true
-            exit repeat
-          end if
-        end repeat
-        if foundTab then exit repeat
-      end repeat
-
-      if not foundTab then
-        tell current window
-          create tab with default profile
-          tell current session
-            write text \"cd '$repo_path'\"
-            write text \"git up &\"
-            write text \"code .\"
           end tell
-        end tell
-      end if
-    end tell
-  "
+        end if
+      end tell
+    "
+  elif [[ "$(uname)" == "Linux" ]]; then
+    # tmux window management (Linux)
+    local window_name="$1"
+    
+    if tmux list-windows -F "#{window_name}" 2>/dev/null | grep -q "^${window_name}$"; then
+      # Window exists, switch to it and run commands
+      tmux select-window -t "${window_name}"
+      tmux send-keys -t "${window_name}" "cd '$repo_path'" C-m
+      tmux send-keys -t "${window_name}" "git up &" C-m
+      tmux send-keys -t "${window_name}" "code ." C-m
+    else
+      # Create new window and run commands
+      tmux new-window -n "${window_name}" -c "$repo_path"
+      tmux send-keys -t "${window_name}" "git up &" C-m
+      tmux send-keys -t "${window_name}" "code ." C-m
+    fi
+  fi
 }
 
 # Tab completion for dev function
