@@ -58,7 +58,8 @@ elif [[ "$1" == "rm" ]]; then
     fi
     
     # Get list of worktrees (excluding the main one)
-    worktrees=$(git worktree list --porcelain | grep -E '^worktree ' | sed 's/^worktree //' | grep -v "$(git rev-parse --show-toplevel)")
+    main_worktree=$(git rev-parse --show-toplevel)
+    worktrees=$(git worktree list --porcelain | grep -E '^worktree ' | sed 's/^worktree //' | grep -v "^${main_worktree}$")
     
     if [[ -z "$worktrees" ]]; then
         echo "No additional worktrees found"
