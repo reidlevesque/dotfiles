@@ -11,6 +11,9 @@ if [[ "$1" == "add" ]] && [[ $# -ge 2 ]]; then
     fi
     branch_name="$2"
     
+    # Remember the current branch to checkout later
+    current_branch=$(git branch --show-current)
+    
     # Get repo name and sanitize branch name for directory
     repo_name=$(basename "$(git rev-parse --show-toplevel)")
     sanitized_branch=$(echo "$branch_name" | sed 's/\//-/g')
@@ -50,6 +53,12 @@ if [[ "$1" == "add" ]] && [[ $# -ge 2 ]]; then
     fi
 
     echo "Worktree created at $worktree_dir"
+    
+    # 5. Return to the original branch
+    if [[ -n "$current_branch" ]]; then
+        echo "Returning to original branch: $current_branch"
+        git checkout "$current_branch"
+    fi
 elif [[ "$1" == "rm" ]]; then
     # Interactive worktree removal with fzf
     if ! command -v fzf >/dev/null 2>&1; then
