@@ -44,10 +44,15 @@ timer "git checkout ${default_branch}" "Switching to default branch"
 timer "git pull --prune" "Pulling latest changes"
 timer "git fetch --tags --force" "Fetching latest tags"
 
-echo "Cleaning up deleted branches..."
+echo "Cleaning up deleted branches and their worktrees..."
 branches_to_delete=$(git branch -vv | grep 'origin/.*: gone]' || true)
 if [ -n "${branches_to_delete}" ]; then
-  for branch in $(echo "${branches_to_delete}" | awk '{print $1}'); do
+  for branch in $(echo "${branches_to_delete}" | awk '{gsub(/^[*+][ ]*/, ""); print $1}'); do
+    # Remove worktree if it exists for this branch
+    worktree_path=$(git worktree list --porcelain | awk '/^worktree / {path=$0; gsub("^worktree ", "", path)} /^branch refs\/heads\/'"${branch//\//\\/}"'$/ {print path; found=1} /^$/ {if(found) exit; path=""; found=0}' || true)
+    if [ -n "${worktree_path}" ]; then
+      timer "git worktree remove '${worktree_path}' --force" "Removing worktree: ${worktree_path}"
+    fi
     timer "git branch -D '${branch}'" "Removing branch: ${branch}"
   done
 fi
