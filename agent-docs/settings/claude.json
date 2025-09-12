@@ -34,7 +34,8 @@
       "Fetch(domain:stackoverflow.com)",
       "Fetch(domain:nodejs.org)",
       "Fetch(domain:go.dev)",
-      "Fetch(domain:ziglang.org)"
+      "Fetch(domain:ziglang.org)",
+      "Web Search(*)"
     ],
     "deny": [
       "Bash(terraform state mv:*)",
