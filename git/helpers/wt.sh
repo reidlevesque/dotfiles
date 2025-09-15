@@ -10,10 +10,10 @@ if [[ "$1" == "add" ]] && [[ $# -ge 2 ]]; then
         exit 1
     fi
     branch_name="$2"
-    
+
     # Remember the current branch to checkout later
     current_branch=$(git branch --show-current)
-    
+
     # Get repo name and sanitize branch name for directory
     repo_name=$(basename "$(git rev-parse --show-toplevel)")
     sanitized_branch=$(echo "$branch_name" | sed 's/\//-/g')
@@ -53,31 +53,33 @@ if [[ "$1" == "add" ]] && [[ $# -ge 2 ]]; then
     fi
 
     echo "Worktree created at $worktree_dir"
-    
+
     # 5. Return to the original branch
     if [[ -n "$current_branch" ]]; then
         echo "Returning to original branch: $current_branch"
         git checkout "$current_branch"
     fi
+
+    echo "run 'dev ${repo_name}_${sanitized_branch}' to open the worktree in VS Code"
 elif [[ "$1" == "rm" ]]; then
     # Interactive worktree removal with fzf
     if ! command -v fzf >/dev/null 2>&1; then
         echo "Error: fzf is required for interactive worktree removal" >&2
         exit 1
     fi
-    
+
     # Get list of worktrees (excluding the main one)
     main_worktree=$(git rev-parse --show-toplevel)
     worktrees=$(git worktree list --porcelain | grep -E '^worktree ' | sed 's/^worktree //' | grep -v "^${main_worktree}$")
-    
+
     if [[ -z "$worktrees" ]]; then
         echo "No additional worktrees found"
         exit 0
     fi
-    
+
     # Let user select worktree to remove
     selected=$(echo "$worktrees" | fzf --prompt="Select worktree to remove: " --height=40%)
-    
+
     if [[ -n "$selected" ]]; then
         echo "Removing worktree: $selected"
         git worktree remove "$selected"

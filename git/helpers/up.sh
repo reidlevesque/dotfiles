@@ -33,8 +33,15 @@ declare -a branches=(
   "production"
 )
 
+is_worktree=$(git rev-parse --is-inside-work-tree >/dev/null 2>&1 && [ "$(git rev-parse --git-common-dir)" != "$(git rev-parse --git-dir)" ] && echo "true" || echo "false")
+if [[ "$is_worktree" == "true" ]]; then
+  timer "git pull --prune" "Pulling latest changes"
+  timer "git fetch --tags --force" "Fetching latest tags"
+  exit 0
+fi
+
+# In main repo - do full update
 current_branch=$(timer "git branch --show-current" "Getting current branch")
-# default_branch=$(timer "git remote show origin | sed -n '/HEAD branch/s/.*: //p'" "Getting default branch")
 default_branch=$(timer "cat $(git rev-parse --git-dir)/refs/remotes/origin/HEAD | sed 's#.*origin/##'" "Getting default branch")
 if [[ -z "${default_branch}" ]]; then
   default_branch=$(timer "git remote show origin | sed -n '/HEAD branch/s/.*: //p'" "Getting default branch")
