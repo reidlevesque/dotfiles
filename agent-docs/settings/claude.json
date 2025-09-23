@@ -43,8 +43,8 @@
     ],
     "defaultMode": "acceptEdits"
   },
+  "model": "opus",
   "feedbackSurveyState": {
     "lastShownTime": 1754425548865
-  },
-  "model": "opusplan"
+  }
 }

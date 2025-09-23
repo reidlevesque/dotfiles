@@ -21,7 +21,11 @@
     "type",
     "echo",
     "printf",
-    "test"
+    "test",
+    "chmod",
+    "awk",
+    "sed",
+    "mv"
   ],
   "amp.mcpServers": {
     "playwright": {
@@ -43,5 +47,6 @@
         "KUBECONFIG": "~/.kube/config"
       }
     }
-  }
+  },
+  "amp.cacheDirectory": "/Users/reid/.cache/amp"
 }
