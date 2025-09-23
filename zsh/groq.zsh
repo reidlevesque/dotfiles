@@ -7,7 +7,8 @@ if [ -n "$GROQ_CONFIG" ]; then
   [ -f "$GROQ_CONFIG/zsh/fix-sft.zsh" ] && . "$GROQ_CONFIG/zsh/fix-sft.zsh"
 fi
 # ssh X tmux
-alias attach="sft ssh --command \"tmux -CC new -As0\""
+# alias attach="sft ssh --command \"tmux -CC new -As0\""
+alias attach="ssh  \"tmux -CC new -As0\""
 alias redeploy="sudo -i GROQ_LOG_CONFIG=stderr-also =groq_deploy_client --production-run"
 
 function refresh () {
