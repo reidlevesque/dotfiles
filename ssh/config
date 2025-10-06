@@ -11,11 +11,11 @@ Match exec "/usr/local/bin/sft resolve -q  %h"
     UserKnownHostsFile "/Users/reid/Library/Application Support/ScaleFT/proxycommand_known_hosts"
 
 Host rlevesque
-  HostName rlevesque-1
+  HostName rlevesque
   User rlevesque
   ForwardAgent yes
   IdentitiesOnly yes
-  # ProxyCommand "/usr/local/bin/sft" proxycommand  %h
+  ProxyCommand "/usr/local/bin/sft" proxycommand  %h
 
 Host *
   ServerAliveInterval 10
