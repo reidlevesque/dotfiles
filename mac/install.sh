@@ -4,7 +4,7 @@ set -euo pipefail
 # Only run on macOS
 if [[ "$(uname)" != "Darwin" ]]; then
     echo "This script is only for macOS"
-    exit 1
+    exit
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
