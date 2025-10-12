@@ -36,6 +36,7 @@
 - Stage changes and show diff before committing
 - Keep commits atomic and focused
 - When making branches, prefix them with `reid/`
+- When creating worktrees, put them in `~/dev/` and name them `<repo_name>_<branch_name>`
 
 ## Checks
 

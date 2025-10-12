@@ -44,6 +44,10 @@
     "defaultMode": "acceptEdits"
   },
   "model": "opus",
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  },
+  "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754425548865
   }
