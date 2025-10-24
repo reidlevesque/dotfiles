@@ -4,10 +4,14 @@ set -eo pipefail
 commit_message="${1:-}"
 commit_body="${2:-}"
 
-# Validate conventional commit format
-if [[ -n "$commit_message" ]] && [[ ! "$commit_message" =~ ^(feat|fix|chore|wip)(!)?:.+ ]]; then
+# Validate conventional commit format (with optional scope)
+# Pattern: type(scope)?!?: description
+commit_pattern='^(feat|fix|chore|wip)(\([^)]+\))?(!)?:.+'
+if [[ -n "$commit_message" ]] && [[ ! "$commit_message" =~ $commit_pattern ]]; then
     echo "Error: Commit message must follow conventional commit format (feat:, fix:, chore:, or wip:)" >&2
-    echo "Example: git pr \"feat: add user authentication\"" >&2
+    echo "Examples:" >&2
+    echo "  git pr \"feat: add user authentication\"" >&2
+    echo "  git pr \"fix(EI-473): resolve login issue\"" >&2
     exit 1
 fi
 
