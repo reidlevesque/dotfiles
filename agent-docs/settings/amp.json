@@ -46,6 +46,13 @@
       "env": {
         "KUBECONFIG": "~/.kube/config"
       }
+    },
+    "buildkite": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.buildkite.com/mcp"
+      ]
     }
   },
   "amp.cacheDirectory": "/Users/reid/.cache/amp"

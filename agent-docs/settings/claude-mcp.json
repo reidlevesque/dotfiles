@@ -7,6 +7,10 @@
     "linear": {
       "type": "sse",
       "url": "https://mcp.linear.app/sse"
+    },
+    "buildkite": {
+      "type": "http",
+      "url": "https://mcp.buildkite.com/mcp"
     }
   }
 }
