@@ -15,6 +15,7 @@
     amendf = !git ci --amend --no-edit && git pushf
     up = !~/.dotfiles/git/helpers/up.sh
     pr = !~/.dotfiles/git/helpers/pr.sh
+    mr = !~/.dotfiles/git/helpers/mr.sh
     wt = !~/.dotfiles/git/helpers/wt.sh
     fco = "!f() { git fetch origin \"$1\" && git checkout \"$1\"; }; f"
 [pull]
