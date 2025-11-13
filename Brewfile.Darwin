@@ -97,6 +97,7 @@ brew "stripe/stripe-cli/stripe"
 
 cask "1password"
 cask "1password-cli"
+cask "codex"
 cask "cursor", args: { appdir: "/Applications" }
 cask "gimp"
 cask "iterm2"
