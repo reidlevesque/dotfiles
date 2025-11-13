@@ -11,6 +11,10 @@
     "buildkite": {
       "type": "http",
       "url": "https://mcp.buildkite.com/mcp"
+    },
+    "model-registry": {
+      "type": "http",
+      "url": "https://model-registry-api.groq.io/mcp"
     }
   }
 }
