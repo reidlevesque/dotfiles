@@ -24,7 +24,6 @@ brew "glib"
 brew "certifi"
 brew "pycparser"
 brew "ripgrep"
-brew "codex"
 brew "colima", restart_service: :changed
 brew "coreutils"
 brew "curl"

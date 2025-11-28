@@ -42,10 +42,7 @@
 	path = ~/.dotfiles/git/github.gitconfig
 [includeIf "hasconfig:remote.*.url:git@git.groq.io:*/**"]
 	path = ~/.dotfiles/git/gitlab.gitconfig
-
 [credential "https://github.com"]
-	helper =
-	helper = !~/.local/share/hermit/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-	helper =
-	helper = !~/.local/share/hermit/bin/gh auth git-credential
+	helper = !gh auth git-credential
