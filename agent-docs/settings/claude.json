@@ -43,7 +43,6 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "model": "opus",
   "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754425548865
