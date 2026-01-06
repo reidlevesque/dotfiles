@@ -1,8 +1,8 @@
 [user]
 	name = Reid Levesque
 	email = reidlevesque@users.noreply.github.com
-	# signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKKk6xmrK4YJ/PhB4CBQgcdv9tLytS5J7OtAzygpx/QU git-signing-key
-# [gpg]
-# 	format = ssh
-# [commit]
-# 	gpgsign = true
+	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP1NnHTG/TMdVed6zijGVgqccbWJIu5QNxblScrbfKNk git-signing-key
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
