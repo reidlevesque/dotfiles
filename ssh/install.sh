@@ -6,6 +6,7 @@ test -d ~/.ssh || {
 
 if [[ "$(uname)" == "Darwin" ]]; then
 	ln -sfv "$DOTFILES"/ssh/config ~/.ssh/config
+	mkdir -p ~/.ssh/sockets
 fi
 
 # test -f "${ICLOUD_CONFIG}/ssh_config" || {

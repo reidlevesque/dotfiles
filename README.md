@@ -26,7 +26,7 @@ These dotfiles help configure:
 ## Installation
 
 ```bash
-git clone https://github.com/reidlevesque/dotfiles.git ~/.dotfiles
+git clone git@github.com:reidlevesque/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./bootstrap.sh
 ```

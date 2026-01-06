@@ -11,8 +11,8 @@ function clean-git-branches() {
   $DOTFILES/git/clean-git-branches
 }
 
-function groq_repos() {
-  local github_org="groq"
+function get_repos() {
+  local github_org=$1
 
   local page=1 # 1-based pages :(
   local repos=""
@@ -33,8 +33,8 @@ function groq_repos() {
   echo "${repos}"
 }
 
-function groq_archived_repos() {
-  local github_org="groq"
+function get_archived_repos() {
+  local github_org=$1
 
   local page=1 # 1-based pages :(
   local repos=""
@@ -55,14 +55,29 @@ function groq_archived_repos() {
   echo "${repos}"
 }
 
+function clone-all-lpu-quarantine-repos() {
+  local github_org="lpu-quarantine"
+
+  mkdir -p ~/github/${github_org}
+  pushd ~/github/${github_org} > /dev/null
+
+  for repo in $(get_repos ${github_org}); do
+    if [[ ! -d "${repo}" ]]; then
+      gh repo clone ${github_org}/${repo}
+    fi
+  done
+
+  popd > /dev/null
+}
+
 function clone-all-repos() {
-  local github_org="groq"
+  local github_org="lpu"
 
   pushd ~/dev > /dev/null
 
-  for repo in $(groq_repos); do
+  for repo in $(get_repos ${github_org}); do
     if [[ ! -d "${repo}" ]]; then
-      git clone "git@github.com:${github_org}/${repo}.git"
+      gh repo clone ${github_org}/${repo}
     fi
   done
 
@@ -97,7 +112,7 @@ function prune-repos() {
 
   pushd ~/dev > /dev/null
 
-  for repo in $(groq_archived_repos); do
+  for repo in $(get_archived_repos ${github_org}); do
     if [[ -d "${repo}" ]]; then
       echo "Deleting ${repo}"
       rm -rf "${repo}"
