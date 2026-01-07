@@ -32,11 +32,33 @@ function dev() {
     return 0
   fi
 
-  local repo_path="$HOME/dev/$1"
-
-  if [[ ! -d "$repo_path" ]]; then
-    echo "Directory $repo_path does not exist"
+  # Search for the repo in ~/dev/<github|gitlab>/<org>/$1
+  local repo_path=""
+  local search_results=()
+  
+  # Find all matching repos in subdirectories
+  while IFS= read -r -d '' path; do
+    search_results+=("$path")
+  done < <(find "$HOME/dev" -mindepth 3 -maxdepth 3 -type d -name "$1" -print0 2>/dev/null)
+  
+  if [[ ${#search_results[@]} -eq 0 ]]; then
+    echo "Repository '$1' not found in ~/dev"
     return 1
+  elif [[ ${#search_results[@]} -eq 1 ]]; then
+    repo_path="${search_results[1]}"
+  else
+    echo "Multiple repositories found:"
+    for i in {1..${#search_results[@]}}; do
+      echo "  $i) ${search_results[$i]}"
+    done
+    echo -n "Select repository (1-${#search_results[@]}): "
+    read selection
+    if [[ "$selection" =~ ^[0-9]+$ ]] && [[ "$selection" -ge 1 ]] && [[ "$selection" -le ${#search_results[@]} ]]; then
+      repo_path="${search_results[$selection]}"
+    else
+      echo "Invalid selection"
+      return 1
+    fi
   fi
 
   # OS-specific terminal automation
@@ -98,7 +120,16 @@ function dev() {
 # Tab completion for dev function
 _dev() {
   local -a repos
-  repos=(${HOME}/dev/*(/:t))
-  _describe 'repositories' repos
+  local -a repo_names
+  
+  # Find all repos in ~/dev/*/*/* (github/gitlab -> org -> repo)
+  for repo in ${HOME}/dev/*/*/*(/:t); do
+    repo_names+=("$repo")
+  done
+  
+  # Remove duplicates and sort
+  repo_names=(${(u)repo_names})
+  
+  _describe 'repositories' repo_names
 }
 compdef _dev dev
