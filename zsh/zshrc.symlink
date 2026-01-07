@@ -54,6 +54,8 @@ do_source $DOTFILES/zsh/aider.zsh
 do_source $DOTFILES/zsh/task.zsh
 do_source $DOTFILES/zsh/nix.zsh
 do_source $DOTFILES/zsh/atuin.zsh
+do_source $DOTFILES/zsh/mise.zsh
+do_source $DOTFILES/zsh/nv.zsh
 
 # These are slow :(
 do_source $DOTFILES/zsh/hermit.zsh

@@ -131,12 +131,12 @@ function iTermSetTitle {
   local dev_vm=""
 	local curdir=$(print -P %~)
 
-	if [[ $curdir = "~/dev/"* ]]
+	if [[ $curdir = "~/dev/github/"* ]]
 	then
-		curproject=`echo $curdir/ | perl -p -e 's#^~/dev/(\S+?)/.*$#$1#g'`
-	elif [[ $curdir = "~/groq/"* ]]
+		curproject=`echo $curdir/ | perl -p -e 's#^~/dev/github/\S+?/(\S+?)/.*$#$1#g'`
+	elif [[ $curdir = "~/dev/gitlab/"* ]]
 	then
-		curproject=`echo $curdir/ | perl -p -e 's#^~/groq/(\S+?)/.*$#$1#g'`
+		curproject=`echo $curdir/ | perl -p -e 's#^~/dev/gitlab/\S+?/(\S+?)/.*$#$1#g'`
 	else
 		curproject=${curdir: -12}
 	fi

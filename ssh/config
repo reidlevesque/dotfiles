@@ -1,3 +1,5 @@
+Include /Users/rlevesque/.colima/ssh_config
+
 Host rlevesque
   HostName rlevesque
   User rlevesque

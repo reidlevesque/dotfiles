@@ -41,7 +41,9 @@
 [includeIf "hasconfig:remote.*.url:https://github.com/**"]
 	path = ~/.dotfiles/git/github.gitconfig
 [includeIf "hasconfig:remote.*.url:git@git.groq.io:*/**"]
-	path = ~/.dotfiles/git/gitlab.gitconfig
+	path = ~/.dotfiles/git/gitlab.groq.gitconfig
+[includeIf "hasconfig:remote.*.url:git@gitlab-master.nvidia.com:*/**"]
+	path = ~/.dotfiles/git/gitlab.nvidia.gitconfig
 [credential "https://github.com"]
 	helper = !gh auth git-credential
 [credential "https://gist.github.com"]

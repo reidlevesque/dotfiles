@@ -55,33 +55,27 @@ function get_archived_repos() {
   echo "${repos}"
 }
 
-function clone-all-lpu-quarantine-repos() {
-  local github_org="lpu-quarantine"
+function clone_all_repos() {
+  local github_org=$1
 
-  mkdir -p ~/github/${github_org}
-  pushd ~/github/${github_org} > /dev/null
+  mkdir -p ~/dev/github/${github_org}
+  pushd ~/dev/github/${github_org} > /dev/null
 
   for repo in $(get_repos ${github_org}); do
-    if [[ ! -d "${repo}" ]]; then
-      gh repo clone ${github_org}/${repo}
-    fi
+  if [[ ! -d "${repo}" ]]; then
+    gh repo clone ${github_org}/${repo}
+  fi
   done
 
   popd > /dev/null
 }
 
-function clone-all-repos() {
-  local github_org="lpu"
+function clone-all-lpu-quarantine-repos() {
+  clone_all_repos "lpu-quarantine"
+}
 
-  pushd ~/dev > /dev/null
-
-  for repo in $(get_repos ${github_org}); do
-    if [[ ! -d "${repo}" ]]; then
-      gh repo clone ${github_org}/${repo}
-    fi
-  done
-
-  popd > /dev/null
+function clone-all-lpu-repos() {
+  clone_all_repos "nvidia-lpu"
 }
 
 function update-repo() {
