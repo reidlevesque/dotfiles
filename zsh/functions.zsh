@@ -25,10 +25,16 @@ function wol-clifford() {
 }
 
 function dev() {
+  # Save original PATH to restore it at the end
+  # This prevents the function from breaking PATH in the current terminal
+  local saved_path="${PATH}"
+  
   if [[ -z "$1" ]]; then
     # No parameter - run in current directory
     git up &
     code .
+    # Restore PATH before returning
+    PATH="${saved_path}"
     return 0
   fi
 
@@ -37,12 +43,15 @@ function dev() {
   local search_results=()
   
   # Find all matching repos in subdirectories
+  # Use full path to find to avoid PATH issues
   while IFS= read -r -d '' path; do
     search_results+=("$path")
-  done < <(find "$HOME/dev" -mindepth 3 -maxdepth 3 -type d -name "$1" -print0 2>/dev/null)
+  done < <(/usr/bin/find "$HOME/dev" -mindepth 3 -maxdepth 3 -type d -name "$1" -print0 2>/dev/null)
   
   if [[ ${#search_results[@]} -eq 0 ]]; then
     echo "Repository '$1' not found in ~/dev"
+    # Restore PATH before returning
+    PATH="${saved_path}"
     return 1
   elif [[ ${#search_results[@]} -eq 1 ]]; then
     repo_path="${search_results[1]}"
@@ -57,14 +66,18 @@ function dev() {
       repo_path="${search_results[$selection]}"
     else
       echo "Invalid selection"
+      # Restore PATH before returning
+      PATH="${saved_path}"
       return 1
     fi
   fi
 
   # OS-specific terminal automation
-  if [[ "$(uname)" == "Darwin" ]]; then
+  # Use full path to uname to avoid PATH issues
+  if [[ "$(/usr/bin/uname)" == "Darwin" ]]; then
     # AppleScript to find existing tab or create new one (macOS)
-    osascript -e "
+    # Use full path to osascript to avoid PATH issues
+    /usr/bin/osascript -e "
       tell application \"iTerm\"
         set repoName to \"$1\"
         set repoPath to \"$repo_path\"
@@ -98,7 +111,9 @@ function dev() {
         end if
       end tell
     "
-  elif [[ "$(uname)" == "Linux" ]]; then
+    # Restore PATH before returning
+    PATH="${saved_path}"
+  elif [[ "$(/usr/bin/uname)" == "Linux" ]]; then
     # tmux window management (Linux)
     local window_name="$1"
     
@@ -114,6 +129,8 @@ function dev() {
       tmux send-keys -t "${window_name}" "git up &" C-m
       tmux send-keys -t "${window_name}" "code ." C-m
     fi
+    # Restore PATH before returning
+    PATH="${saved_path}"
   fi
 }
 

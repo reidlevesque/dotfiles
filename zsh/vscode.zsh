@@ -1,6 +1,6 @@
 #! /bin/zsh
 
-if [[ $(uname) == "Linux" ]]; then
+if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
   function code {
     local VSCODE_SERVER=$(ls -td $HOME/.cursor-server/cli/servers/Stable-*[0-9] | head -1)
     # needed to be able to open files in VS Code's editor from the command line

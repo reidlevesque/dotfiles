@@ -37,7 +37,7 @@ function iTermSetPromptHeader {
 }
 
 function setDevVMPrompt {
-  if [[ $(uname) == "Linux" ]]; then
+  if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
     DEV_VM_PROMPT="$FG[202]{vm}%{$reset_color%} "
   fi
 }
@@ -49,7 +49,7 @@ function setTmuxPrompt {
 }
 
 function setPromptColours {
-  if [[ $(uname) == "Linux" ]]; then
+  if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
     PROMPT_PATH_COLOUR=$FG[032]
     PROMPT_SYMBOL_COLOUR=$FG[202]
   else
@@ -141,7 +141,7 @@ function iTermSetTitle {
 		curproject=${curdir: -12}
 	fi
 
-  if [[ $(uname) == "Linux" ]]; then
+  if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
     dev_vm="{vm} "
   fi
 
