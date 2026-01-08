@@ -44,9 +44,10 @@ function dev() {
   
   # Find all matching repos in subdirectories
   # Use full path to find to avoid PATH issues
+  # -L flag follows symlinks
   while IFS= read -r -d '' path; do
     search_results+=("$path")
-  done < <(/usr/bin/find "$HOME/dev" -mindepth 3 -maxdepth 3 -type d -name "$1" -print0 2>/dev/null)
+  done < <(/usr/bin/find -L "$HOME/dev" -mindepth 3 -maxdepth 3 -type d -name "$1" -print0 2>/dev/null)
   
   if [[ ${#search_results[@]} -eq 0 ]]; then
     echo "Repository '$1' not found in ~/dev"
@@ -140,7 +141,8 @@ _dev() {
   local -a repo_names
   
   # Find all repos in ~/dev/*/*/* (github/gitlab -> org -> repo)
-  for repo in ${HOME}/dev/*/*/*(/:t); do
+  # Follow symlinks with (:A) to resolve them, then get basename with (:t)
+  for repo in ${HOME}/dev/*/*/*(/N:A:t) ${HOME}/dev/*/*/*(@N:A:t); do
     repo_names+=("$repo")
   done
   
