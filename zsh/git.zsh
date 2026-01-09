@@ -63,7 +63,7 @@ function clone_all_repos() {
 
   for repo in $(get_repos ${github_org}); do
   if [[ ! -d "${repo}" ]]; then
-    gh repo clone ${github_org}/${repo}
+    git clone git@github.com:${github_org}/${repo}.git
   fi
   done
 
