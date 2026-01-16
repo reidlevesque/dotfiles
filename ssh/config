@@ -1,11 +1,18 @@
 Include /Users/rlevesque/.colima/ssh_config
 
-Host rlevesque
-  HostName rlevesque
-  User rlevesque
-  ForwardAgent yes
-  IdentitiesOnly yes
-  ProxyCommand "/usr/local/bin/sft" proxycommand  %h
+Host enginfra-shared
+  HostName enginfra-shared
+  User rlevesque_nvidia_com
+  #ProxyCommand gcloud compute ssh --listen-on-stdin --zone us-west1-a --tunnel-through-iap --project nv-hwlpu-20260103060253
+  IdentityFile ~/.ssh/google_compute_engine
+  ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
+
+Host devvm-rlevesque
+  HostName devvm-rlevesque
+  User rlevesque_nvidia_com
+  #ProxyCommand gcloud compute ssh --listen-on-stdin --zone us-west1-a --tunnel-through-iap --project nv-hwlpu-20260103060253
+  IdentityFile ~/.ssh/google_compute_engine
+  ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
 
 Host *
   ServerAliveInterval 10
