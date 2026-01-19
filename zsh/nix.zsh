@@ -1,5 +1,9 @@
 #! /bin/zsh
 
+if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+
 function ns() {
     if [ $# -lt 1 ]; then
         echo "Usage: ns <package> [command arguments]"
