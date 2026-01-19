@@ -1,11 +1,9 @@
 brew "atuin"
-brew "codex"
 brew "direnv"
+brew "git"
 brew "git-delta"
 brew "go-task"
 brew "node"
 brew "pre-commit"
 brew "starship"
 brew "the_silver_searcher"
-
-cask "codex"
