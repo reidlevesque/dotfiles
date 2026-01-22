@@ -48,7 +48,7 @@ do_source $DOTFILES/zsh/git.zsh
 do_source $DOTFILES/zsh/pnpm.zsh
 do_source $DOTFILES/zsh/iterm.zsh
 do_source $DOTFILES/zsh/haskell.zsh
-do_source $DOTFILES/zsh/groq.zsh
+do_source $DOTFILES/zsh/bake.zsh
 do_source $DOTFILES/zsh/ruby.zsh
 do_source $DOTFILES/zsh/aider.zsh
 do_source $DOTFILES/zsh/task.zsh
@@ -56,6 +56,7 @@ do_source $DOTFILES/zsh/nix.zsh
 do_source $DOTFILES/zsh/atuin.zsh
 do_source $DOTFILES/zsh/mise.zsh
 do_source $DOTFILES/zsh/nv.zsh
+do_source $DOTFILES/zsh/ssh.zsh
 
 # These are slow :(
 do_source $DOTFILES/zsh/hermit.zsh

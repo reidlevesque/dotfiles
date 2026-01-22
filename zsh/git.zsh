@@ -7,10 +7,6 @@ fi
 if alias gr > /dev/null; then unalias gr; fi
 # if alias gk > /dev/null; then unalias gk; fi
 
-function clean-git-branches() {
-  $DOTFILES/git/clean-git-branches
-}
-
 function get_repos() {
   local github_org=$1
 
@@ -89,12 +85,23 @@ function update-repo() {
 }
 
 function update-all-repos() {
-  local repo_dir="$HOME/dev"
+  local github_dir="$HOME/dev/github"
   # Run update-repo in the background for each repository
-  for repo in $(ls ${repo_dir}); do
-    if [[ -d "${repo_dir}/${repo}" ]]; then
-      echo "Updating ${repo}"
-      (update-repo "${repo}") &
+  for org_dir in ${github_dir}/*; do
+    if [[ -d "${org_dir}" ]]; then
+      for repo_dir in ${org_dir}/*; do
+        if [[ -d "${repo_dir}" ]]; then
+          local repo_name=$(basename ${repo_dir})
+          local org_name=$(basename ${org_dir})
+          echo "Updating ${org_name}/${repo_name}"
+          (
+            pushd ${repo_dir} > /dev/null
+            mise trust -a
+            git up
+            popd > /dev/null
+          ) &
+        fi
+      done
     fi
   done
   # Wait for all background jobs to finish
