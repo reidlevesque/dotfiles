@@ -7,7 +7,7 @@ alias ibrew='arch -x86_64 /usr/local/bin/brew'
 alias python='python3'
 alias claude="claude --allow-dangerously-skip-permissions"
 alias ca='cursor agent'
-alias codex='codex --sandbox danger-full-access --ask-for-approval never'
+# alias codex='codex --sandbox danger-full-access --ask-for-approval never'
 
 # Modern Unix Alternatives
 # https://github.com/ibraheemdev/modern-Unix
