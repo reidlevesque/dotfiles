@@ -43,12 +43,13 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "alwaysThinkingEnabled": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754425548865
-  },
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true
+  },
+  "alwaysThinkingEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "feedbackSurveyState": {
+    "lastShownTime": 1754425548865
   }
 }
