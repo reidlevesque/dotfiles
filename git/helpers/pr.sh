@@ -1,6 +1,21 @@
 #! /bin/bash
 set -eo pipefail
 
+# Parse options
+draft_flag=""
+while [[ "$1" == --* ]]; do
+    case "$1" in
+        --draft)
+            draft_flag="--draft"
+            shift
+            ;;
+        *)
+            echo "Error: Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+done
+
 commit_message="${1:-}"
 commit_body="${2:-}"
 
@@ -101,7 +116,7 @@ fi
 
 echo "Creating pull request..."
 if [[ "$repo_type" == "github" ]]; then
-    pr_output=$(gh pr create --title "$commit_message" --body "$commit_body" 2>&1 || true)
+    pr_output=$(gh pr create --title "$commit_message" --body "$commit_body" $draft_flag 2>&1 || true)
 
     # Check if PR already exists or was created
     if echo "$pr_output" | grep -q "already exists"; then
@@ -118,7 +133,11 @@ if [[ "$repo_type" == "github" ]]; then
         pr_url=""
     fi
 elif [[ "$repo_type" == "gitlab" ]]; then
-    pr_output=$(glab mr create --title "$commit_message" --description "$commit_body" 2>&1 || true)
+    gitlab_draft_flag=""
+    if [[ -n "$draft_flag" ]]; then
+        gitlab_draft_flag="--draft"
+    fi
+    pr_output=$(glab mr create --title "$commit_message" --description "$commit_body" $gitlab_draft_flag 2>&1 || true)
 
     # Check if MR already exists or was created
     if echo "$pr_output" | grep -q "already exists"; then
