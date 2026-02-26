@@ -8,7 +8,7 @@ Host enginfra-shared
 
 Host devvm-rlevesque
   HostName devvm-rlevesque
-  User rlevesque_nvidia_com
+  User rlevesque
   ForwardAgent yes
   IdentitiesOnly yes
   IdentityFile ~/.ssh/google_compute_engine
