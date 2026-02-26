@@ -109,18 +109,33 @@ function update-all-repos() {
 }
 
 function prune-repos() {
-  local github_org="groq"
+  local github_org=$1
 
-  pushd ~/dev > /dev/null
+  if [[ -z "${github_org}" ]]; then
+    echo "Usage: prune-repos <github_org>"
+    return 1
+  fi
 
-  for repo in $(get_archived_repos ${github_org}); do
-    if [[ -d "${repo}" ]]; then
-      echo "Deleting ${repo}"
-      rm -rf "${repo}"
+  local org_dir=~/dev/github/${github_org}
+  [[ ! -d "${org_dir}" ]] && return 0
+
+  pushd "${org_dir}" > /dev/null
+
+  local keep_repos=("${(f)$(get_repos ${github_org})}")
+  keep_repos=("${(@)keep_repos:#}")  # remove empty elements
+
+  for dir in *(/); do
+    if [[ "${keep_repos[(Ie)${dir}]}" -eq 0 ]]; then
+      echo "Deleting ${dir}"
+      rm -rf "${dir}"
     fi
   done
 
   popd > /dev/null
+}
+
+function prune-lpu-repos() {
+  prune-repos "nvidia-lpu"
 }
 
 function gr {
