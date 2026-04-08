@@ -45,8 +45,8 @@ function dev() {
   # Find all matching repos in subdirectories
   # Use full path to find to avoid PATH issues
   # -L flag follows symlinks
-  while IFS= read -r -d '' path; do
-    search_results+=("$path")
+  while IFS= read -r -d '' repo_match; do
+    search_results+=("$repo_match")
   done < <(/usr/bin/find -L "$HOME/dev" -mindepth 3 -maxdepth 3 -type d -name "$1" -print0 2>/dev/null)
   
   if [[ ${#search_results[@]} -eq 0 ]]; then
@@ -72,6 +72,9 @@ function dev() {
       return 1
     fi
   fi
+
+  # Ensure later command lookups use the original PATH.
+  PATH="${saved_path}"
 
   # OS-specific terminal automation
   # Use full path to uname to avoid PATH issues
