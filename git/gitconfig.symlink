@@ -36,6 +36,9 @@
 [push]
 	autoSetupRemote = true
 
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+
 [includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
 	path = ~/.dotfiles/git/github.gitconfig
 [includeIf "hasconfig:remote.*.url:https://github.com/**"]
