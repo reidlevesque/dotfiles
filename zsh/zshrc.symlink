@@ -57,6 +57,7 @@ do_source $DOTFILES/zsh/atuin.zsh
 do_source $DOTFILES/zsh/mise.zsh
 do_source $DOTFILES/zsh/nv.zsh
 do_source $DOTFILES/zsh/ssh.zsh
+do_source $DOTFILES/zsh/nvm.zsh
 
 # These are slow :(
 do_source $DOTFILES/zsh/hermit.zsh
