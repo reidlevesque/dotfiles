@@ -22,6 +22,7 @@
 	rebase = true
 [core]
 	pager = delta
+	excludesFile = ~/.gitignore
 [interactive]
     diffFilter = delta --color-only
 [add.interactive]
