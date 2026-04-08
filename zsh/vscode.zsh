@@ -92,7 +92,7 @@ if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
 
   function code {
     emulate -L zsh
-    local cursor_cli ipc_hook cli_log status
+    local cursor_cli ipc_hook cli_log exit_status
 
     cursor_cli="$(_cursor_remote_cli)"
     ipc_hook="$(_cursor_ipc_hook)"
@@ -106,12 +106,12 @@ if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
         return 0
       fi
 
-      status=$?
+      exit_status=$?
 
       if ! grep -qE 'Unable to connect to VS Code server|ECONNREFUSED' "$cli_log"; then
         cat "$cli_log" >&2
         rm -f "$cli_log"
-        return $status
+        return $exit_status
       fi
 
       rm -f "$cli_log"

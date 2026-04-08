@@ -1,3 +1,4 @@
 antigenrc.zwc
 Brewfile.lock.json
 .mypy_cache/
+/.codex
