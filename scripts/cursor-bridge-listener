@@ -1,0 +1,107 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use File::Basename qw(dirname);
+use File::Path qw(make_path);
+use IO::Socket::UNIX;
+use Socket qw(SOCK_STREAM SOMAXCONN);
+
+$ENV{PATH} = join(
+  ":",
+  grep { defined $_ && length $_ }
+  split(/:/, $ENV{PATH} // ""),
+  qw(/opt/homebrew/bin /usr/local/bin /usr/bin /bin /usr/sbin /sbin)
+);
+
+my $socket_path = $ARGV[0] // die "usage: cursor-bridge-listener SOCKET_PATH\n";
+
+sub encode_path {
+  my ($path) = @_;
+  $path =~ s/([^A-Za-z0-9\-._~\/])/sprintf("%%%02X", ord($1))/ge;
+  return $path;
+}
+
+sub cursor_cli {
+  for my $candidate (
+    (grep { length $_ } map { "$_/cursor" } split(/:/, $ENV{PATH} // "")),
+    "/Applications/Cursor.app/Contents/Resources/app/bin/cursor",
+  ) {
+    return $candidate if -x $candidate;
+  }
+
+  return undef;
+}
+
+sub launch_cursor {
+  my ($authority, $kind, $target) = @_;
+  my $cursor_cli = cursor_cli();
+  my @args;
+
+  if ($kind eq "folder") {
+    my $folder_target = $target;
+    $folder_target =~ s{/$}{};
+    @args = ("--folder-uri", "vscode-remote://${authority}" . encode_path($folder_target) . "/");
+  } elsif ($kind eq "file") {
+    @args = ("--file-uri", "vscode-remote://${authority}" . encode_path($target));
+  } else {
+    @args = ("--remote", $authority, $target);
+  }
+
+  if (defined $cursor_cli) {
+    exec { $cursor_cli } $cursor_cli, @args;
+  }
+
+  exec { "/usr/bin/open" } "/usr/bin/open", "-a", "Cursor", "--args", @args;
+}
+
+sub cleanup_and_exit {
+  unlink $socket_path;
+  exit 0;
+}
+
+$SIG{INT} = \&cleanup_and_exit;
+$SIG{TERM} = \&cleanup_and_exit;
+
+my $socket_dir = dirname($socket_path);
+make_path($socket_dir) if !-d $socket_dir;
+unlink $socket_path;
+
+my $server = IO::Socket::UNIX->new(
+  Type   => SOCK_STREAM,
+  Local  => $socket_path,
+  Listen => SOMAXCONN,
+) or die "failed to create socket at $socket_path: $!\n";
+
+chmod 0600, $socket_path;
+
+while (1) {
+  my $client = $server->accept();
+  next if !defined $client;
+
+  my $request = do {
+    local $/;
+    scalar(<$client>) // "";
+  };
+
+  close $client;
+
+  my ($authority, $kind, $target) = split /\n/, $request, 3;
+  next if !defined $authority || !length $authority;
+  next if !defined $kind || !length $kind;
+  next if !defined $target || !length $target;
+
+  $target =~ s/\n+\z//;
+
+  my $pid = fork();
+  next if !defined $pid;
+
+  if ($pid == 0) {
+    open STDIN, "<", "/dev/null" or exit 1;
+    open STDOUT, ">", "/dev/null" or exit 1;
+    open STDERR, ">", "/dev/null" or exit 1;
+    launch_cursor($authority, $kind, $target);
+    exit 1;
+  }
+}

@@ -8,13 +8,13 @@ attach () {
 		cursor-bridge-start >/dev/null 2>&1 || true
 	fi
 
-	ssh_command="ssh -o StreamLocalBindUnlink=yes -R ${CURSOR_BRIDGE_REMOTE_SOCKET}:${CURSOR_BRIDGE_LOCAL_SOCKET} devvm-rlevesque -t 'tmux -CC new -As0'"
+	ssh_command="ssh -o ExitOnForwardFailure=yes -o StreamLocalBindUnlink=yes -R ${CURSOR_BRIDGE_REMOTE_SOCKET}:${CURSOR_BRIDGE_LOCAL_SOCKET} devvm-rlevesque -t 'tmux -CC new -As0'"
 
 	if [[ "$TERM_PROGRAM" != "iTerm.app" ]]
 	then
 		/usr/bin/osascript -e "tell application \"iTerm\" to create window with default profile command \"$ssh_command\""
 	else
-		ssh -o StreamLocalBindUnlink=yes -R "${CURSOR_BRIDGE_REMOTE_SOCKET}:${CURSOR_BRIDGE_LOCAL_SOCKET}" devvm-rlevesque -t 'tmux -CC new -As0'
+		ssh -o ExitOnForwardFailure=yes -o StreamLocalBindUnlink=yes -R "${CURSOR_BRIDGE_REMOTE_SOCKET}:${CURSOR_BRIDGE_LOCAL_SOCKET}" devvm-rlevesque -t 'tmux -CC new -As0'
 	fi
 }
 # Old sft version:

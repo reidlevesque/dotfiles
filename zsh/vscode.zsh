@@ -5,80 +5,13 @@ export CURSOR_BRIDGE_LOCAL_SOCKET="${CURSOR_BRIDGE_LOCAL_SOCKET:-$HOME/.cursor-b
 export CURSOR_BRIDGE_REMOTE_SOCKET="${CURSOR_BRIDGE_REMOTE_SOCKET:-/tmp/cursor-bridge.sock}"
 export CURSOR_BRIDGE_PID_FILE="${CURSOR_BRIDGE_PID_FILE:-${TMPDIR:-/tmp}/cursor-bridge.pid}"
 export CURSOR_BRIDGE_LOG_FILE="${CURSOR_BRIDGE_LOG_FILE:-${TMPDIR:-/tmp}/cursor-bridge.log}"
+export CURSOR_BRIDGE_LISTENER="${CURSOR_BRIDGE_LISTENER:-$DOTFILES/scripts/cursor-bridge-listener}"
 
 function _cursor_remote_authority() {
   print -r -- "ssh-remote+${CURSOR_REMOTE_HOST_ALIAS}"
 }
 
 if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Darwin" ]]; then
-  function _cursor_local_cli() {
-    if command -v cursor >/dev/null 2>&1; then
-      command -v cursor
-      return 0
-    fi
-
-    if [[ -x "/Applications/Cursor.app/Contents/Resources/app/bin/cursor" ]]; then
-      print -r -- "/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
-      return 0
-    fi
-
-    return 1
-  }
-
-  function _cursor_local_open() {
-    emulate -L zsh
-    local authority="$1"
-    local kind="$2"
-    local target="$3"
-    local cursor_cli=""
-
-    cursor_cli="$(_cursor_local_cli 2>/dev/null)" || true
-
-    if [[ "$kind" == "folder" ]]; then
-      if [[ -n "$cursor_cli" ]]; then
-        "$cursor_cli" --folder-uri "vscode-remote://${authority}${target%/}/" >/dev/null 2>&1 &
-      else
-        open -a Cursor --args --folder-uri "vscode-remote://${authority}${target%/}/" >/dev/null 2>&1 &
-      fi
-      return 0
-    fi
-
-    if [[ "$kind" == "file" ]]; then
-      if [[ -n "$cursor_cli" ]]; then
-        "$cursor_cli" --file-uri "vscode-remote://${authority}${target}" >/dev/null 2>&1 &
-      else
-        open -a Cursor --args --file-uri "vscode-remote://${authority}${target}" >/dev/null 2>&1 &
-      fi
-      return 0
-    fi
-
-    if [[ -n "$cursor_cli" ]]; then
-      "$cursor_cli" --remote "$authority" "$target" >/dev/null 2>&1 &
-    else
-      open -a Cursor --args --remote "$authority" "$target" >/dev/null 2>&1 &
-    fi
-  }
-
-  function _cursor_bridge_listener() {
-    emulate -L zsh
-    local request authority kind target
-
-    trap 'rm -f "$CURSOR_BRIDGE_LOCAL_SOCKET" "$CURSOR_BRIDGE_PID_FILE"' EXIT INT TERM
-
-    while true; do
-      rm -f "$CURSOR_BRIDGE_LOCAL_SOCKET"
-      request="$(nc -lU "$CURSOR_BRIDGE_LOCAL_SOCKET" 2>/dev/null)" || continue
-      authority="${request%%$'\n'*}"
-      request="${request#*$'\n'}"
-      kind="${request%%$'\n'*}"
-      target="${request#*$'\n'}"
-      target="${target%%$'\n'*}"
-
-      [[ -z "$authority" || -z "$kind" || -z "$target" ]] && continue
-      _cursor_local_open "$authority" "$kind" "$target"
-    done
-  }
-
   function cursor-bridge-start() {
     emulate -L zsh
     local bridge_pid=""
@@ -93,12 +26,12 @@ if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Darwin" ]]; then
 
     rm -f "$CURSOR_BRIDGE_LOCAL_SOCKET" "$CURSOR_BRIDGE_PID_FILE"
 
-    if ! command -v nc >/dev/null 2>&1; then
-      print -u2 -- "cursor-bridge-start: nc is required to listen for remote Cursor requests."
+    if [[ ! -x "$CURSOR_BRIDGE_LISTENER" ]]; then
+      print -u2 -- "cursor-bridge-start: listener script is missing or not executable at ${CURSOR_BRIDGE_LISTENER}."
       return 1
     fi
 
-    (_cursor_bridge_listener) >>"$CURSOR_BRIDGE_LOG_FILE" 2>&1 &
+    "$CURSOR_BRIDGE_LISTENER" "$CURSOR_BRIDGE_LOCAL_SOCKET" >>"$CURSOR_BRIDGE_LOG_FILE" 2>&1 </dev/null &
     bridge_pid=$!
     disown "$bridge_pid" 2>/dev/null || true
     print -r -- "$bridge_pid" > "$CURSOR_BRIDGE_PID_FILE"
@@ -159,15 +92,29 @@ if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
 
   function code {
     emulate -L zsh
-    local cursor_cli ipc_hook
+    local cursor_cli ipc_hook cli_log status
 
     cursor_cli="$(_cursor_remote_cli)"
     ipc_hook="$(_cursor_ipc_hook)"
 
     if [[ -n "$cursor_cli" && -n "$ipc_hook" ]]; then
+      cli_log="$(mktemp "${TMPDIR:-/tmp}/cursor-code.XXXXXX")" || return 1
       export VSCODE_IPC_HOOK_CLI="$ipc_hook"
-      "$cursor_cli" "$@"
-      return $?
+
+      if "$cursor_cli" "$@" >"$cli_log" 2>&1; then
+        rm -f "$cli_log"
+        return 0
+      fi
+
+      status=$?
+
+      if ! grep -qE 'Unable to connect to VS Code server|ECONNREFUSED' "$cli_log"; then
+        cat "$cli_log" >&2
+        rm -f "$cli_log"
+        return $status
+      fi
+
+      rm -f "$cli_log"
     fi
 
     if (( $# > 1 )); then
