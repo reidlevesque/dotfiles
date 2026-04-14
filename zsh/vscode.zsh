@@ -75,10 +75,16 @@ if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
     emulate -L zsh
     local target="$1"
     local kind="$2"
+    local remote_port="${CURSOR_BRIDGE_REMOTE_PORT:-}"
 
     if ! command -v nc >/dev/null 2>&1; then
       print -u2 -- "code: nc is required for the Cursor bridge fallback."
       return 1
+    fi
+
+    if [[ -n "$remote_port" ]]; then
+      printf '%s\n%s\n%s\n' "$(_cursor_remote_authority)" "$kind" "$target" | nc -N 127.0.0.1 "$remote_port"
+      return $?
     fi
 
     if [[ ! -S "$CURSOR_BRIDGE_REMOTE_SOCKET" ]]; then
