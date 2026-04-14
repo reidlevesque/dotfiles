@@ -40,12 +40,41 @@ install_homebrew_if_missing() {
 }
 
 install_oh_my_zsh_if_missing() {
-  if [[ -d "${ZSH:-$HOME/.oh-my-zsh}" ]]; then
+  local zsh_dir="${ZSH:-$HOME/.oh-my-zsh}"
+  local omz_entrypoint="$zsh_dir/oh-my-zsh.sh"
+
+  if [[ -f "$omz_entrypoint" ]]; then
     return
   fi
 
+  if [[ -e "$zsh_dir" && ! -d "$zsh_dir" ]]; then
+    echo "Cannot install Oh My Zsh: $zsh_dir exists and is not a directory." >&2
+    exit 1
+  fi
+
+  if ! command -v git >/dev/null 2>&1; then
+    echo "Cannot install Oh My Zsh: git is not available." >&2
+    exit 1
+  fi
+
   echo -e "\\n> Installing Oh My Zsh"
-  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  if [[ -d "$zsh_dir" ]]; then
+    local tmp_dir tmp_omz_dir
+    tmp_dir="$(mktemp -d)"
+    tmp_omz_dir="$tmp_dir/oh-my-zsh"
+
+    git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$tmp_omz_dir"
+    cp -R "$tmp_omz_dir"/. "$zsh_dir"/
+    rm -rf "$tmp_dir"
+  else
+    git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$zsh_dir"
+  fi
+
+  if [[ ! -f "$omz_entrypoint" ]]; then
+    echo "Oh My Zsh install did not create $omz_entrypoint." >&2
+    exit 1
+  fi
 }
 
 install_or_update_mise() {

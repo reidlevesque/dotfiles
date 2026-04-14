@@ -91,7 +91,11 @@ plugins=(
   zsh-syntax-highlighting # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 )
 
-do_source $ZSH/oh-my-zsh.sh
+if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
+  do_source "$ZSH/oh-my-zsh.sh"
+else
+  print -u2 "Oh My Zsh is not installed at $ZSH. Run $DOTFILES/install.sh."
+fi
 
 # make pasting fast again
 # zstyle ':bracketed-paste-magic' active-widgets '.self-*'
