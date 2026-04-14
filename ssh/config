@@ -14,6 +14,11 @@ Host devvm-rlevesque
   IdentityFile ~/.ssh/google_compute_engine
   ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
 
+Host omni-rlevesque
+  HostName nvdigd0tp9pri59
+  User rlevesque
+  ProxyCommand /usr/local/bin/tsh proxy ssh %r@%h
+
 Host *
   ServerAliveInterval 10
   ServerAliveCountMax 4
