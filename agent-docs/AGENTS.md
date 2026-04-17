@@ -6,6 +6,22 @@ Slash commands live in `~/.claude/commands/`. Type `/` in Claude Code to see wha
 
 Command source files are in `@/Users/rlevesque/.dotfiles/agent-docs/commands/`.
 
+## Local CLIs
+
+These local CLIs are available and should be preferred when they fit the task:
+
+- Outlook: `outlook-cli`
+- JIRA: `jira-cli`
+- Confluence: `confluence-cli`
+- Calendar: `calendar-cli`
+- Buildkite: `bk`
+
+Additional installed CLI tools are available in `/opt/homebrew/bin`, including:
+
+- `concur-cli`, `databricks-cli`, `dl-cli`, `gdrive-cli`, `glean-cli`, `helios-cli`, `itss-cli`, `meeting-cli`, `nicc-cli`, `nspect-cli`, `nvbugs-cli`, `omni-cli`, `onedrive-cli`, `onenote-cli`, `pagerduty-cli`, `redis-cli`, `redmine-cli`, `sfdc-cli`, `sharepoint-cli`, `slack-cli`, `smartsheet-cli`, `starfleet-cli`, `teams-cli`, and `transcript-cli`
+
+To inspect the current machine inventory, run `printf '%s\n' /opt/homebrew/bin/*-cli`.
+
 ## Documentation
 
 ### Agent Tooling
