@@ -1,17 +1,13 @@
 Include /Users/rlevesque/.colima/ssh_config
 
-Host enginfra-shared
-  HostName enginfra-shared
-  User rlevesque_nvidia_com
-  IdentityFile ~/.ssh/google_compute_engine
-  ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
-
 Host devvm-rlevesque
   HostName devvm-rlevesque
   User rlevesque
+  AddKeysToAgent yes
   ForwardAgent yes
   IdentitiesOnly yes
   IdentityFile ~/.ssh/google_compute_engine
+  UserKnownHostsFile ~/.ssh/google_compute_known_hosts
   ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
 
 Host omni-rlevesque
@@ -20,12 +16,17 @@ Host omni-rlevesque
   ProxyCommand /usr/local/bin/tsh proxy ssh %r@%h
 
 Host *
-  ServerAliveInterval 10
-  ServerAliveCountMax 4
-#  TCPKeepAlive yes
-  ForwardAgent no
-  StrictHostKeyChecking=accept-new
-  # Use connection multiplexing to reuse existing connections
-  ControlMaster auto
-  ControlPath ~/.ssh/sockets/%r@%h-%p
+  Compression yes
   ControlPersist 600
+  ConnectTimeout 60
+  AddKeysToAgent no
+  ForwardAgent no
+  ServerAliveInterval 60
+  ServerAliveCountMax 120
+  TCPKeepAlive yes
+
+#   StrictHostKeyChecking=accept-new
+  # Use connection multiplexing to reuse existing connections
+# ControlMaster auto
+# ControlPath ~/.ssh/sockets/%r@%h-%p
+# ControlPersist 600
