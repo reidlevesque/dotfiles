@@ -1,8 +1,9 @@
 [user]
 	name = Reid Levesque
 	email = reidlevesque@users.noreply.github.com
-	signingkey = ~/.ssh/id_ed25519.pub
 [gpg]
 	format = ssh
+[gpg "ssh"]
+	defaultKeyCommand = /bin/bash -lc "$HOME/.dotfiles/git/helpers/signing-key.sh"
 [commit]
 	gpgsign = true
