@@ -7,6 +7,5 @@ brew "node"
 brew "pre-commit"
 brew "starship"
 brew "the_silver_searcher"
-brew "buildkite/buildkite/bk@3"
 
 cask "codex"
