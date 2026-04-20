@@ -49,9 +49,10 @@ To inspect the current machine inventory, run `printf '%s\n' /opt/homebrew/bin/*
 
 ## Git Workflow
 
-- Use Conventional Commits.
+- Use Conventional Commits for commits and PR titles.
 - Keep commits atomic and focused.
 - When making branches, prefix them with `reid/`.
+- Never make merge commits when resolving conflicts. Instead rebase against the default branch.
 
 ## Checks
 
