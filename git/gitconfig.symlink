@@ -2,6 +2,8 @@
 #	templatedir = ~/.dotfiles/git/templates
 [alias]
     co = checkout
+    sw = switch
+    swf = switch --ignore-other-worktrees
     ci = commit
     st = status
     br = branch
