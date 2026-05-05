@@ -7,13 +7,26 @@ Host devvm-rlevesque
   ForwardAgent yes
   IdentitiesOnly yes
   IdentityFile ~/.ssh/google_compute_engine
-  UserKnownHostsFile ~/.ssh/google_compute_known_hosts
+  # UserKnownHostsFile ~/.ssh/google_compute_known_hosts
   ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
 
 Host omni-rlevesque
   HostName nvdigd0tp9pri59
   User rlevesque
   ProxyCommand /usr/local/bin/tsh proxy ssh %r@%h
+
+Host devcontainer
+  HostName 127.0.0.1
+  User vscode
+  Port 23348
+  HostKeyAlias devcontainer
+
+Host devvm-devcontainer
+  HostName 127.0.0.1
+  User vscode
+  Port 27641
+  HostKeyAlias devvm-devcontainer
+  ProxyJump devvm-rlevesque
 
 Host *
   Compression yes
