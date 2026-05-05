@@ -60,6 +60,8 @@ To inspect the current machine inventory, run `printf '%s\n' /opt/homebrew/bin/*
 
 ## Git Workflow
 
+- Before creating a new branch or a `git worktree`, run `git up` first so your
+  branch or worktree starts from current upstream.
 - Use Conventional Commits for commits and PR titles.
 - Keep commits atomic and focused.
 - When making branches, prefix them with `reid/`.
