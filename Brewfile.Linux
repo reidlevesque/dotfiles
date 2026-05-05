@@ -9,3 +9,4 @@ brew "starship"
 brew "the_silver_searcher"
 
 cask "codex"
+cask "claude-code"

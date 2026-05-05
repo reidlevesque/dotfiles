@@ -2,4 +2,4 @@
 
 mkdir -p ~/.config
 rm -rf ~/.config/atuin
-ln -sfv $DOTFILES/atuin ~/.config/
+ln -sfv "$DOTFILES/atuin" ~/.config/
