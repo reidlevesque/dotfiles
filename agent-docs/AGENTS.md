@@ -27,6 +27,9 @@ Additional installed CLI tools are available in `/opt/homebrew/bin`, including:
 
 To inspect the current machine inventory, run `printf '%s\n' /opt/homebrew/bin/*-cli`.
 
+If `mise` blocks a needed command because local configuration must be trusted,
+run `mise trust` and then retry the command.
+
 ## Documentation
 
 ### Agent Tooling
