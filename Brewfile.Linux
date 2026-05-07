@@ -1,3 +1,5 @@
+tap "ai-cli/ai-pim-utils", "https://outlook-cli-80d21a.gitlab-master-pages.nvidia.com/homebrew-ai-pim-utils.git"
+
 brew "atuin"
 brew "direnv"
 brew "git"

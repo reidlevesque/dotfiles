@@ -96,8 +96,57 @@ install_or_update_mise() {
   curl -fsSL https://mise.run | MISE_INSTALL_PATH="$mise_bin" sh
 }
 
+install_apt_dependencies() {
+  local aptfile
+  local package
+  local packages_to_install=()
+
+  aptfile="Aptfile.$(uname)"
+
+  if [[ ! -f "$aptfile" ]]; then
+    return
+  fi
+
+  if ! command -v apt-get >/dev/null 2>&1; then
+    echo "Cannot install $aptfile: apt-get is not available." >&2
+    exit 1
+  fi
+
+  while IFS= read -r package || [[ -n "$package" ]]; do
+    package="${package%%#*}"
+    package="${package#"${package%%[![:space:]]*}"}"
+    package="${package%"${package##*[![:space:]]}"}"
+
+    if [[ -z "$package" ]]; then
+      continue
+    fi
+
+    if ! dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q "ok installed"; then
+      packages_to_install+=("$package")
+    fi
+  done < "$aptfile"
+
+  if (( ${#packages_to_install[@]} == 0 )); then
+    return
+  fi
+
+  echo -e "\\n> Installing apt dependencies"
+  sudo apt-get install -y "${packages_to_install[@]}"
+}
+
+install_linux_homebrew_casks() {
+  if [[ "$(uname)" != "Linux" ]]; then
+    return
+  fi
+
+  # brew bundle skips casks on Linux, but this cask has working Linux artifacts.
+  echo -e "\\n> Installing Linux Homebrew casks"
+  brew install --cask "ai-cli/ai-pim-utils/ai-pim-utils"
+}
+
 install_oh_my_zsh_if_missing
 install_or_update_mise
+install_apt_dependencies
 
 echo -e "\\n› Creating symlinks"
 shared_symlinks='*.symlink'
@@ -118,6 +167,7 @@ if [[ -f "Brewfile.$(uname)" ]]; then
   install_homebrew_if_missing
   echo -e "\\n> Installing Bundle"
   brew bundle install --file="Brewfile.$(uname)"
+  install_linux_homebrew_casks
 fi
 
 install_scripts=()
