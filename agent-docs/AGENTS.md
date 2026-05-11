@@ -64,7 +64,8 @@ run `mise trust` and then retry the command.
 ## Git Workflow
 
 - Before creating a new branch or a `git worktree`, run `git up` first so your
-  branch or worktree starts from current upstream.
+branch or worktree starts from current upstream. If `git up` fails, run `git
+fetch` and create a new worktree from origin/main.
 - Use Conventional Commits for commits and PR titles.
 - Keep commits atomic and focused.
 - When making branches, prefix them with `reid/`.
