@@ -71,6 +71,7 @@ run `mise trust` and then retry the command.
 - Open PRs in draft mode by default.
 - If a PR triggers a Codex code review Buildkite pipeline, unblock the
   waiting step so the review runs.
+_ If a draft PR doesn't run CI by default, unblock it in the buildkite pipeline.
 - Never make merge commits when resolving conflicts. Instead rebase against
   the default branch.
 
