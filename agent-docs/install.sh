@@ -11,6 +11,15 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENTS_FILE="$SCRIPT_DIR/AGENTS.md"
 
+# External skills are managed from normal source clones under ~/dev. Each entry:
+# name|repo_path|skill_relative_path|install_command
+# install_command runs from repo_path. Leave it empty when no extra install step
+# is needed.
+TURBO_REVIEW_INSTALL_COMMAND="bash \"$SCRIPT_DIR/installers/turbo-review.sh\""
+EXTERNAL_SKILLS=(
+  "turbo-review|$HOME/dev/gitlab-master/achristensen/kungfu|turbo-review|$TURBO_REVIEW_INSTALL_COMMAND"
+)
+
 # Function to link the consolidated AGENTS.md file
 link_agents_file() {
   local destination="$1"
@@ -101,7 +110,7 @@ merge_settings() {
     echo -e "${GREEN}✓ Created config from template${NC}"
   else
     echo -e "${YELLOW}Merging settings into existing config${NC}"
-    
+
     # Use jq to merge the repo settings into the existing config
     # The + operator merges objects, with the right side taking precedence
     if command -v jq >/dev/null 2>&1; then
@@ -113,6 +122,77 @@ merge_settings() {
       echo -e "${YELLOW}Manual merge required: $repo_settings -> $config_file${NC}"
     fi
   fi
+}
+
+link_skill() {
+  local name="$1"
+  local skill_path="$2"
+  local destination_root="$3"
+  local destination="$destination_root/$name"
+
+  mkdir -p "$destination_root"
+
+  if [ -L "$destination" ]; then
+    rm -f "$destination"
+  elif [ -e "$destination" ]; then
+    echo -e "${YELLOW}Skipping $destination; it exists and is not a symlink${NC}"
+    return 0
+  fi
+
+  ln -s "$skill_path" "$destination"
+  echo -e "${GREEN}✓ Linked $destination -> $skill_path${NC}"
+}
+
+run_skill_install_command() {
+  local name="$1"
+  local repo_path="$2"
+  local install_command="$3"
+
+  if [ -z "$install_command" ]; then
+    return 0
+  fi
+
+  echo -e "${GREEN}Running $name install command...${NC}"
+  if (cd "$repo_path" && bash -eu -o pipefail -c "$install_command"); then
+    echo -e "${GREEN}✓ Ran $name install command${NC}"
+  else
+    echo -e "${YELLOW}Install command failed for $name; skill symlinks were still created${NC}"
+  fi
+}
+
+install_external_skills() {
+  local entry
+  local name
+  local repo_path
+  local skill_relative_path
+  local install_command
+  local skill_path
+
+  echo -e "\n${GREEN}Installing external skills...${NC}"
+
+  for entry in "${EXTERNAL_SKILLS[@]}"; do
+    IFS='|' read -r name repo_path skill_relative_path install_command <<<"$entry"
+
+    if ! git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      echo -e "${YELLOW}Skipping $name; clone not found at $repo_path${NC}"
+      continue
+    fi
+
+    echo -e "${GREEN}Updating $name clone...${NC}"
+    if ! (cd "$repo_path" && git up); then
+      echo -e "${YELLOW}git up failed for $name at $repo_path; continuing with existing checkout${NC}"
+    fi
+
+    skill_path="$repo_path/$skill_relative_path"
+    if [ ! -f "$skill_path/SKILL.md" ]; then
+      echo -e "${YELLOW}Skipping $name; $skill_path/SKILL.md was not found${NC}"
+      continue
+    fi
+
+    link_skill "$name" "$skill_path" "$HOME/.codex/skills"
+    link_skill "$name" "$skill_path" "$HOME/.claude/skills"
+    run_skill_install_command "$name" "$repo_path" "$install_command"
+  done
 }
 
 echo -e "${BLUE}Agent Docs Installer${NC}"
@@ -143,10 +223,15 @@ link_settings claude "$HOME/.claude/settings.json"
 link_settings amp "$HOME/.config/amp/settings.json"
 merge_settings claude-mcp "$HOME/.claude.json"
 
+# 4. External skills managed from source clones
+install_external_skills
+
 # Done
 echo -e "\n${GREEN}✅ Installation complete!${NC}"
 echo
 echo -e "Commands installed to: ${BLUE}~/.claude/commands/${NC}"
 echo -e "Agents config: ${BLUE}~/.config/AGENTS.md${NC}"
 echo -e "Codex config: ${BLUE}~/.codex/AGENTS.md${NC}"
+echo -e "Codex skills: ${BLUE}~/.codex/skills/${NC}"
+echo -e "Claude skills: ${BLUE}~/.claude/skills/${NC}"
 echo -e "\nType ${BLUE}/${NC} in Claude Code to see available commands"
