@@ -73,5 +73,8 @@ do_source $DOTFILES/zsh/secrets.zsh
 #setopt noincappendhistory
 #setopt nosharehistory
 
+# conflux-lite Codex telemetry env
+[ -f /Users/rlevesque/.conflux-lite/env.sh ] && . /Users/rlevesque/.conflux-lite/env.sh
+
 # Keep this last
 do_source $DOTFILES/zsh/precmd.zsh

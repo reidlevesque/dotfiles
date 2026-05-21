@@ -6,8 +6,6 @@ Host devvm-rlevesque
   AddKeysToAgent yes
   ForwardAgent yes
   IdentitiesOnly yes
-  # IdentityFile ~/.ssh/google_compute_engine
-  # UserKnownHostsFile ~/.ssh/google_compute_known_hosts
   ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
 
 Host omni-rlevesque
@@ -30,16 +28,13 @@ Host devvm-devcontainer
 
 Host *
   Compression yes
-  ControlPersist 600
-  ConnectTimeout 60
   AddKeysToAgent no
   ForwardAgent no
   ServerAliveInterval 60
   ServerAliveCountMax 120
   TCPKeepAlive yes
-
-#   StrictHostKeyChecking=accept-new
   # Use connection multiplexing to reuse existing connections
-# ControlMaster auto
-# ControlPath ~/.ssh/sockets/%r@%h-%p
-# ControlPersist 600
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h-%p
+  ControlPersist 600
+#   StrictHostKeyChecking=accept-new
