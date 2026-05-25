@@ -64,20 +64,23 @@ run `mise trust` and then retry the command.
 ## Git Workflow
 
 - Before creating a new branch or a `git worktree`, run `git up` first so your
-branch or worktree starts from current upstream. If `git up` fails, run `git
-fetch` and create a new worktree from origin/main.
+  branch or worktree starts from current upstream. If `git up` fails, run
+  `git fetch` and create a new worktree from origin/main.
 - Use Conventional Commits for commits and PR titles.
 - Keep commits atomic and focused.
 - When making branches, prefix them with `reid/`.
 - Open PRs in draft mode by default.
 - If a PR triggers a Codex code review Buildkite pipeline, unblock the
   waiting step so the review runs.
-_ If a draft PR doesn't run CI by default, unblock it in the buildkite pipeline.
+- If a draft PR doesn't run CI by default, unblock it in the buildkite pipeline.
 - Never make merge commits when resolving conflicts. Instead rebase against
   the default branch.
 
 ## PR Feedback
 
+- When posting a PR comment or review reply, prefix the comment with the running
+  agent's lowercase name in square brackets, for example `[codex]` for Codex or
+  `[claude]` for Claude Code.
 - When reviewing PR feedback, ultrathink about whether each comment is valid
   before changing code.
 - If a comment is valid, fix it, push a focused change, reply to the PR
