@@ -4,14 +4,37 @@
 
 # Keep a stable SSH_AUTH_SOCK for long-lived processes such as Codex.
 _stable_ssh_auth_sock="$HOME/.ssh/agent.sock"
-if [ -n "${SSH_AUTH_SOCK:-}" ] &&
-    [ "$SSH_AUTH_SOCK" != "$_stable_ssh_auth_sock" ] &&
-    [ -S "$SSH_AUTH_SOCK" ] &&
-    command -v ssh-add >/dev/null 2>&1 &&
-    ssh-add -l >/dev/null 2>&1; then
-    mkdir -p "$HOME/.ssh"
-    chmod 700 "$HOME/.ssh"
-    ln -sfn "$SSH_AUTH_SOCK" "$_stable_ssh_auth_sock"
+
+_ssh_auth_sock_targets_stable() {
+    _ssh_auth_sock_check="$1"
+
+    [ "$_ssh_auth_sock_check" = "$_stable_ssh_auth_sock" ] && return 0
+
+    while [ -L "$_ssh_auth_sock_check" ]; do
+        _ssh_auth_sock_target="$(readlink "$_ssh_auth_sock_check" 2>/dev/null)" || return 1
+        case "$_ssh_auth_sock_target" in
+            /*) ;;
+            *) _ssh_auth_sock_target="$(dirname "$_ssh_auth_sock_check")/$_ssh_auth_sock_target" ;;
+        esac
+
+        [ "$_ssh_auth_sock_target" = "$_stable_ssh_auth_sock" ] && return 0
+        [ "$_ssh_auth_sock_target" = "$_ssh_auth_sock_check" ] && return 0
+        _ssh_auth_sock_check="$_ssh_auth_sock_target"
+    done
+
+    return 1
+}
+
+_ssh_auth_sock_is_usable() {
+    [ -n "$1" ] &&
+        [ "$1" != "$_stable_ssh_auth_sock" ] &&
+        ! _ssh_auth_sock_targets_stable "$1" &&
+        [ -S "$1" ] &&
+        command -v ssh-add >/dev/null 2>&1 &&
+        SSH_AUTH_SOCK="$1" ssh-add -l >/dev/null 2>&1
+}
+
+_ssh_auth_sock_use_stable() {
     export SSH_AUTH_SOCK="$_stable_ssh_auth_sock"
     if command -v systemctl >/dev/null 2>&1; then
         systemctl --user set-environment SSH_AUTH_SOCK="$SSH_AUTH_SOCK" >/dev/null 2>&1 || true
@@ -19,10 +42,34 @@ if [ -n "${SSH_AUTH_SOCK:-}" ] &&
     if command -v dbus-update-activation-environment >/dev/null 2>&1; then
         dbus-update-activation-environment --systemd SSH_AUTH_SOCK >/dev/null 2>&1 || true
     fi
-elif [ -S "$_stable_ssh_auth_sock" ]; then
-    export SSH_AUTH_SOCK="$_stable_ssh_auth_sock"
+}
+
+_ssh_auth_sock_link_stable() {
+    mkdir -p "$HOME/.ssh"
+    chmod 700 "$HOME/.ssh"
+    ln -sfn "$1" "$_stable_ssh_auth_sock"
+    _ssh_auth_sock_use_stable
+}
+
+if _ssh_auth_sock_is_usable "${SSH_AUTH_SOCK:-}"; then
+    _ssh_auth_sock_link_stable "$SSH_AUTH_SOCK"
+else
+    for _ssh_auth_sock_candidate in $(find /tmp -maxdepth 2 -path '/tmp/ssh-*/agent.*' -type s -user "$(id -un)" -printf '%T@ %p\n' 2>/dev/null | sort -rn | sed 's/^[^ ]* //'); do
+        if _ssh_auth_sock_is_usable "$_ssh_auth_sock_candidate"; then
+            _ssh_auth_sock_link_stable "$_ssh_auth_sock_candidate"
+            break
+        fi
+    done
+
+    if [ "${SSH_AUTH_SOCK:-}" != "$_stable_ssh_auth_sock" ] &&
+        [ -S "$_stable_ssh_auth_sock" ] &&
+        SSH_AUTH_SOCK="$_stable_ssh_auth_sock" ssh-add -l >/dev/null 2>&1; then
+        _ssh_auth_sock_use_stable
+    fi
 fi
-unset _stable_ssh_auth_sock
+
+unset _stable_ssh_auth_sock _ssh_auth_sock_candidate _ssh_auth_sock_check _ssh_auth_sock_target
+unset -f _ssh_auth_sock_targets_stable _ssh_auth_sock_is_usable _ssh_auth_sock_use_stable _ssh_auth_sock_link_stable 2>/dev/null || true
 
 # If running bash, include .bashrc when it exists.
 if [ -n "${BASH_VERSION:-}" ] && [ -f "$HOME/.bashrc" ]; then
