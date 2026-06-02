@@ -71,6 +71,13 @@ fi
 unset _stable_ssh_auth_sock _ssh_auth_sock_candidate _ssh_auth_sock_check _ssh_auth_sock_target
 unset -f _ssh_auth_sock_targets_stable _ssh_auth_sock_is_usable _ssh_auth_sock_use_stable _ssh_auth_sock_link_stable 2>/dev/null || true
 
+export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
+
+if [ -f "$DOTFILES/shell/secrets.sh" ]; then
+    # shellcheck source=/dev/null
+    . "$DOTFILES/shell/secrets.sh"
+fi
+
 # If running bash, include .bashrc when it exists.
 if [ -n "${BASH_VERSION:-}" ] && [ -f "$HOME/.bashrc" ]; then
     # shellcheck source=/dev/null
