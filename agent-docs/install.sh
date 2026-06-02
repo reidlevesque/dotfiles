@@ -74,8 +74,13 @@ link_settings() {
 
   echo -e "\n${GREEN}$tool settings configuration...${NC}"
 
-  if [ -L "$settings_file" ] && [ "$(readlink "$settings_file")" = "$repo_settings" ]; then
-    echo -e "${GREEN}✓ Settings already linked${NC}"
+  if [ -L "$settings_file" ]; then
+    if [ "$(readlink "$settings_file")" = "$repo_settings" ]; then
+      echo -e "${GREEN}✓ Settings already linked${NC}"
+    else
+      ln -sfn "$repo_settings" "$settings_file"
+      echo -e "${GREEN}✓ Relinked settings${NC}"
+    fi
   elif [ -f "$settings_file" ]; then
     echo -e "${YELLOW}Existing settings.json found${NC}"
     echo -e "${YELLOW}Review $repo_settings for recommended settings${NC}"
