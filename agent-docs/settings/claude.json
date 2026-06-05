@@ -1,7 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "alwaysThinkingEnabled": true,
   "cleanupPeriodDays": 30,
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
+    "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT": "http://127.0.0.1:58473/v1/traces",
+    "OTEL_EXPORTER_OTLP_TRACES_PROTOCOL": "http/json",
+    "OTEL_LOGS_EXPORTER": "none",
+    "OTEL_LOG_TOOL_DETAILS": "1",
+    "OTEL_METRICS_EXPORTER": "none",
+    "OTEL_TRACES_EXPORTER": "otlp"
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754425548865
+  },
   "includeCoAuthoredBy": true,
+  "model": "opus[1m]",
   "permissions": {
     "allow": [
       "Bash(git commit:*)",
@@ -37,20 +52,15 @@
       "Fetch(domain:ziglang.org)",
       "Web Search(*)"
     ],
+    "defaultMode": "acceptEdits",
     "deny": [
       "Bash(terraform state mv:*)",
       "Bash(terraform state rm:*)"
-    ],
-    "defaultMode": "acceptEdits"
+    ]
   },
   "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true
+    "autoAllowBashIfSandboxed": true,
+    "enabled": true
   },
-  "alwaysThinkingEnabled": true,
-  "skipDangerousModePermissionPrompt": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754425548865
-  },
-  "model": "opus[1m]"
+  "skipDangerousModePermissionPrompt": true
 }

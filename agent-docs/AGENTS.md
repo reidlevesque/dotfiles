@@ -88,6 +88,13 @@ run `mise trust` and then retry the command.
 - If a comment is not valid, reply to the PR comment with a clear explanation
   of why no code change is needed.
 
+## Node Operations
+
+- Do not suspend, quarantine, reserve, reboot, power-cycle, or otherwise remove
+  Brake nodes from scheduling unless the user explicitly asks for that exact
+  node operation. When CI appears blocked by a bad node, inspect logs and report
+  the suspected node-health issue instead of changing node state.
+
 ## Checks
 
 - Always run formatting before telling the user the job is done.
