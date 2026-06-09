@@ -70,6 +70,9 @@ run `mise trust` and then retry the command.
 - Keep commits atomic and focused.
 - When making branches, prefix them with `reid/`.
 - Open PRs in draft mode by default.
+- Never run `gh auth setup-git`; it rewrites the tracked `~/.gitconfig`
+  symlink target. For GitHub HTTPS auth, rely on the existing credential helper
+  or pass a temporary helper with `git -c`.
 - If a PR triggers a Codex code review Buildkite pipeline, unblock the
   waiting step so the review runs.
 - If a draft PR doesn't run CI by default, unblock it in the buildkite pipeline.
