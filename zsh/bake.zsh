@@ -1,5 +1,7 @@
 #! /bin/zsh
 
+export BAKE_ENVIRONMENT="production-shared-vpc"
+
 if [ -n "$GROQ_CONFIG" ]; then
   [ -f "$GROQ_CONFIG/zsh/bake-completion.zsh" ] && . "$GROQ_CONFIG/zsh/bake-completion.zsh"
   [ -f "$GROQ_CONFIG/zsh/gr-completion.zsh" ] && . "$GROQ_CONFIG/zsh/gr-completion.zsh"
