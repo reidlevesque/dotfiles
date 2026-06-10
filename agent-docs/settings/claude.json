@@ -61,7 +61,7 @@
   },
   "sandbox": {
     "autoAllowBashIfSandboxed": true,
-    "enabled": true
+    "enabled": false
   },
   "skipDangerousModePermissionPrompt": true
 }
