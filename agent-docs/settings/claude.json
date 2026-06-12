@@ -1,8 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "alwaysThinkingEnabled": true,
   "cleanupPeriodDays": 30,
-  "effortLevel": "xhigh",
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
     "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
@@ -13,11 +11,7 @@
     "OTEL_METRICS_EXPORTER": "none",
     "OTEL_TRACES_EXPORTER": "otlp"
   },
-  "feedbackSurveyState": {
-    "lastShownTime": 1754425548865
-  },
   "includeCoAuthoredBy": true,
-  "model": "opus[1m]",
   "permissions": {
     "allow": [
       "Bash(git commit:*)",
@@ -53,15 +47,24 @@
       "Fetch(domain:ziglang.org)",
       "Web Search(*)"
     ],
-    "defaultMode": "bypassPermissions",
     "deny": [
       "Bash(terraform state mv:*)",
       "Bash(terraform state rm:*)"
-    ]
+    ],
+    "defaultMode": "bypassPermissions"
   },
+  "model": "claude-fable-5[1m]",
   "sandbox": {
-    "autoAllowBashIfSandboxed": true,
-    "enabled": false
+    "enabled": false,
+    "autoAllowBashIfSandboxed": true
   },
-  "skipDangerousModePermissionPrompt": true
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
+  "ultracode": true,
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "feedbackSurveyState": {
+    "lastShownTime": 1754425548865
+  }
 }

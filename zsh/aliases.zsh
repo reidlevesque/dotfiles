@@ -5,7 +5,7 @@
 alias hostip='ipconfig getifaddr en0'
 alias ibrew='arch -x86_64 /usr/local/bin/brew'
 alias python='python3'
-alias claude="claude --allow-dangerously-skip-permissions"
+alias claude="claude --allow-dangerously-skip-permissions --model claude-fable-5 --effort xhigh"
 alias ca='cursor agent'
 # alias codex='codex --sandbox danger-full-access --ask-for-approval never'
 
