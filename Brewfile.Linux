@@ -13,5 +13,6 @@ brew "rust"
 brew "starship"
 brew "the_silver_searcher"
 
+cask "ai-cli/ai-pim-utils/ai-pim-utils"
 cask "codex"
-cask "claude-code"
+cask "claude-code@latest"

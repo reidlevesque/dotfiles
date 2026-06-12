@@ -134,16 +134,6 @@ install_apt_dependencies() {
   sudo apt-get install -y "${packages_to_install[@]}"
 }
 
-install_linux_homebrew_casks() {
-  if [[ "$(uname)" != "Linux" ]]; then
-    return
-  fi
-
-  # brew bundle skips casks on Linux, but this cask has working Linux artifacts.
-  echo -e "\\n> Installing Linux Homebrew casks"
-  brew install --cask "ai-cli/ai-pim-utils/ai-pim-utils"
-}
-
 install_oh_my_zsh_if_missing
 install_or_update_mise
 install_apt_dependencies
@@ -166,8 +156,7 @@ done < <(find "$DOTFILES" -name "$platform_symlinks" -print0)
 if [[ -f "Brewfile.$(uname)" ]]; then
   install_homebrew_if_missing
   echo -e "\\n> Installing Bundle"
-  brew bundle install --file="Brewfile.$(uname)"
-  install_linux_homebrew_casks
+  brew bundle install --upgrade --file="Brewfile.$(uname)"
 fi
 
 install_scripts=()
