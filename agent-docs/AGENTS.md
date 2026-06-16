@@ -61,6 +61,11 @@ run `mise trust` and then retry the command.
 - Provide critical code reviews.
 - Skip unnecessary hedging.
 
+## Writing Style
+
+- Use Canadian English spelling and conventions when writing documentation or
+  code comments.
+
 ## Git Workflow
 
 - Before creating a new branch or a `git worktree`, run `git up` first so your
