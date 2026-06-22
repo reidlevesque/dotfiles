@@ -1,0 +1,13 @@
+{
+  "logoAnimation": "off",
+  "sessionDefaultSettings": {
+    "specModeReasoningEffort": "off",
+    "autonomyMode": "auto-high",
+    "model": "gpt-5.4",
+    "reasoningEffort": "xhigh"
+  },
+  "enabledPlugins": {
+    "core@factory-plugins": true,
+    "droid-control@factory-plugins": true
+  }
+}

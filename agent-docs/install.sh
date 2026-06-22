@@ -226,6 +226,7 @@ remove_legacy_agent_file "$HOME/.config/AGENT.md"
 # 3. Optional: Install tool settings
 link_settings claude "$HOME/.claude/settings.json"
 link_settings amp "$HOME/.config/amp/settings.json"
+link_settings droid "$HOME/.factory/settings.json"
 merge_settings claude-mcp "$HOME/.claude.json"
 
 # 4. External skills managed from source clones
