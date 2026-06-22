@@ -1,0 +1,16 @@
+[Unit]
+Description=Factory Droid BYOM daemon
+Documentation=https://docs.factory.ai/cli/features/droid-computers-byom
+ConditionHost=devvm-rlevesque.c.nv-hwlpu-20260103060253.internal
+ConditionPathExists=%h/.local/bin/droid
+
+[Service]
+Type=simple
+Environment=PATH=%h/.local/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=%h/.local/bin/droid daemon --remote-access
+Restart=always
+RestartSec=10
+WorkingDirectory=%h
+
+[Install]
+WantedBy=default.target
