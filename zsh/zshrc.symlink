@@ -74,7 +74,7 @@ do_source $DOTFILES/shell/secrets.sh
 #setopt nosharehistory
 
 # conflux-lite telemetry env
-[ -f "$HOME/.conflux-lite/env.sh" ] && . "$HOME/.conflux-lite/env.sh"
+[ -z "${CONFLUX_LITE_DISABLE:-}" ] && [ -f "$HOME/.conflux-lite/env.sh" ] && . "$HOME/.conflux-lite/env.sh"
 
 # Keep this last
 do_source $DOTFILES/zsh/precmd.zsh
