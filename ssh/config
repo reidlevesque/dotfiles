@@ -1,12 +1,5 @@
+Include ~/.ssh/config.d/*.conf
 Include /Users/rlevesque/.colima/ssh_config
-
-Host devvm-rlevesque
-  HostName devvm-rlevesque
-  User rlevesque
-  AddKeysToAgent yes
-  ForwardAgent yes
-  IdentitiesOnly yes
-  ProxyCommand /opt/homebrew/bin/gcloud compute start-iap-tunnel %h %p --listen-on-stdin --project=nv-hwlpu-20260103060253 --zone=us-central1-a
 
 Host omni-rlevesque
   HostName nvdigd0tp9pri59
@@ -18,13 +11,6 @@ Host devcontainer
   User vscode
   Port 23348
   HostKeyAlias devcontainer
-
-Host devvm-devcontainer
-  HostName 127.0.0.1
-  User vscode
-  Port 27641
-  HostKeyAlias devvm-devcontainer
-  ProxyJump devvm-rlevesque
 
 Host *
   Compression yes

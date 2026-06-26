@@ -1,6 +1,8 @@
 #! /bin/zsh
 
-eval "$(~/.local/bin/mise activate zsh)"
+if [[ ! -f "$HOME/.config/nvidia/lpu-bootstrap.sh" ]]; then
+  eval "$(~/.local/bin/mise activate zsh)"
+fi
 
 mise () {
 	if [ -z "${MISE_GITHUB_TOKEN}" ]

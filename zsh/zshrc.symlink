@@ -78,3 +78,10 @@ do_source $DOTFILES/shell/secrets.sh
 
 # Keep this last
 do_source $DOTFILES/zsh/precmd.zsh
+
+
+### START g2n/laptop-bootstrap.sh ###
+if [[ -f "$HOME/.config/nvidia/lpu-bootstrap.sh" ]]; then
+  source "$HOME/.config/nvidia/lpu-bootstrap.sh"
+fi
+### END g2n/laptop-bootstrap.sh ###
