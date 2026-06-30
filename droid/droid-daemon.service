@@ -1,15 +1,21 @@
 [Unit]
 Description=Factory Droid BYOM daemon
 Documentation=https://docs.factory.ai/cli/features/droid-computers-byom
-ConditionHost=devvm-rlevesque.c.nv-hwlpu-20260103060253.internal
-ConditionPathExists=%h/.local/bin/droid
+ConditionHost=|devvm-rlevesque
+ConditionHost=|devvm-rlevesque.*
+ConditionFileIsExecutable=%h/.local/bin/droid
 
 [Service]
-Type=simple
-Environment=PATH=%h/.local/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Type=exec
+# The lingered user manager starts before the login wrapper selects zsh.
+Environment=SHELL=/bin/zsh
+Environment=TERMINAL_SHELL=/bin/zsh
+Environment=PATH=%h/.local/bin:%h/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/snap/google-cloud-cli/current/bin:%h/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 ExecStart=%h/.local/bin/droid daemon --remote-access
+KillSignal=SIGINT
 Restart=always
 RestartSec=10
+TimeoutStopSec=15
 WorkingDirectory=%h
 
 [Install]
