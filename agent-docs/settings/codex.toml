@@ -10,6 +10,7 @@ service_tier = "priority"
 "gpt-5.5" = 4
 
 [features]
+multi_agent = true
 goals = true
 
 [features.multi_agent_v2]
