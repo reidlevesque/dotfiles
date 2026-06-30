@@ -10,6 +10,7 @@ NC='\033[0m' # No Color
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENTS_FILE="$SCRIPT_DIR/AGENTS.md"
+readonly CODEX_SYSTEM_CONFIG="/etc/codex/config.toml"
 
 # External skills are managed from normal source clones under ~/dev. Each entry:
 # name|repo_path|skill_relative_path|install_command
@@ -69,10 +70,14 @@ remove_legacy_agent_file() {
 link_settings() {
   local tool="$1"
   local settings_file="$2"
-
-  local repo_settings="$SCRIPT_DIR/settings/$tool.json"
+  local repo_settings="${3:-$SCRIPT_DIR/settings/$tool.json}"
 
   echo -e "\n${GREEN}$tool settings configuration...${NC}"
+
+  if [ ! -f "$repo_settings" ]; then
+    echo -e "${RED}Error: $repo_settings not found${NC}"
+    exit 1
+  fi
 
   if [ -L "$settings_file" ]; then
     if [ "$(readlink "$settings_file")" = "$repo_settings" ]; then
@@ -81,17 +86,74 @@ link_settings() {
       ln -sfn "$repo_settings" "$settings_file"
       echo -e "${GREEN}✓ Relinked settings${NC}"
     fi
-  elif [ -f "$settings_file" ]; then
-    echo -e "${YELLOW}Existing settings.json found${NC}"
-    echo -e "${YELLOW}Review $repo_settings for recommended settings${NC}"
-    echo -e "${YELLOW}Run ${BLUE}rm $settings_file${NC} to remove the existing settings${NC}"
-    exit 1
+  elif [ -e "$settings_file" ]; then
+    if [ -f "$settings_file" ] && cmp -s "$settings_file" "$repo_settings"; then
+      rm -f "$settings_file"
+      ln -s "$repo_settings" "$settings_file"
+      echo -e "${GREEN}✓ Replaced identical settings file with symlink${NC}"
+    else
+      echo -e "${YELLOW}Existing $(basename "$settings_file") found${NC}"
+      echo -e "${YELLOW}Review $repo_settings for recommended settings${NC}"
+      echo -e "${YELLOW}Run ${BLUE}rm $settings_file${NC} to remove the existing settings${NC}"
+      exit 1
+    fi
   else
     # Create destination directory if it doesn't exist
     mkdir -p "$(dirname "$settings_file")"
     ln -s "$repo_settings" "$settings_file"
     echo -e "${GREEN}✓ Linked settings${NC}"
   fi
+}
+
+run_as_root() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  elif command -v sudo >/dev/null 2>&1; then
+    sudo "$@"
+  else
+    echo -e "${RED}Error: sudo is required to manage the system Codex configuration${NC}" >&2
+    return 1
+  fi
+}
+
+link_system_settings() {
+  local tool="$1"
+  local settings_file="$2"
+  local repo_settings="$3"
+  local existing_target
+
+  echo -e "\n${GREEN}$tool system settings configuration...${NC}"
+
+  if [ ! -f "$repo_settings" ]; then
+    echo -e "${RED}Error: $repo_settings not found${NC}" >&2
+    exit 1
+  fi
+
+  if [ -L "$settings_file" ]; then
+    existing_target=$(readlink "$settings_file")
+    if [ "$existing_target" = "$repo_settings" ]; then
+      echo -e "${GREEN}✓ System settings already linked${NC}"
+      return 0
+    fi
+
+    echo -e "${RED}Error: $settings_file links to $existing_target; leaving it unchanged${NC}" >&2
+    exit 1
+  fi
+
+  if [ -e "$settings_file" ]; then
+    if [ -f "$settings_file" ] && run_as_root cmp -s "$settings_file" "$repo_settings"; then
+      run_as_root ln -sfn "$repo_settings" "$settings_file"
+      echo -e "${GREEN}✓ Replaced identical system settings file with symlink${NC}"
+      return 0
+    fi
+
+    echo -e "${RED}Error: $settings_file exists and differs; leaving it unchanged${NC}" >&2
+    exit 1
+  fi
+
+  run_as_root mkdir -p "$(dirname "$settings_file")"
+  run_as_root ln -s "$repo_settings" "$settings_file"
+  echo -e "${GREEN}✓ Linked $settings_file -> $repo_settings${NC}"
 }
 
 # Function to merge settings from template into existing config
@@ -224,6 +286,7 @@ remove_legacy_agent_file "$HOME/.claude/CLAUDE.md"
 remove_legacy_agent_file "$HOME/.config/AGENT.md"
 
 # 3. Optional: Install tool settings
+link_system_settings codex "$CODEX_SYSTEM_CONFIG" "$SCRIPT_DIR/settings/codex.toml"
 link_settings claude "$HOME/.claude/settings.json"
 link_settings amp "$HOME/.config/amp/settings.json"
 link_settings droid "$HOME/.factory/settings.json"
@@ -237,7 +300,9 @@ echo -e "\n${GREEN}✅ Installation complete!${NC}"
 echo
 echo -e "Commands installed to: ${BLUE}~/.claude/commands/${NC}"
 echo -e "Agents config: ${BLUE}~/.config/AGENTS.md${NC}"
-echo -e "Codex config: ${BLUE}~/.codex/AGENTS.md${NC}"
+echo -e "Codex instructions: ${BLUE}~/.codex/AGENTS.md${NC}"
+echo -e "Codex common config: ${BLUE}$CODEX_SYSTEM_CONFIG${NC}"
+echo -e "Codex machine config: ${BLUE}~/.codex/config.toml${NC} (unmanaged)"
 echo -e "Codex skills: ${BLUE}~/.codex/skills/${NC}"
 echo -e "Claude skills: ${BLUE}~/.claude/skills/${NC}"
 echo -e "\nType ${BLUE}/${NC} in Claude Code to see available commands"
