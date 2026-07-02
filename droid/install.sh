@@ -13,17 +13,12 @@ droid_service_dst="$droid_service_dir/$droid_service_name"
 current_host="$(hostname -s)"
 manage_systemd_service=false
 systemd_service_restart_required=false
+droid_version_updated=false
 
 run_installer() {
-  local installer_script="${1:-}"
-  local expected_version="${2:-}"
   local new_version
 
-  if [[ -n "$installer_script" ]]; then
-    printf '%s\n' "$installer_script" | sh
-  else
-    curl -fsSL "$installer_url" | sh
-  fi
+  curl -fsSL "$installer_url" | sh
 
   if [[ ! -x "$droid_bin" ]]; then
     echo "Cannot install Droid: $droid_bin was not created." >&2
@@ -36,20 +31,11 @@ run_installer() {
     return 1
   fi
 
-  if [[ -n "$expected_version" && "$new_version" != "$expected_version" ]]; then
-    echo "Droid update did not install the expected version: wanted $expected_version, found $new_version." >&2
-    return 1
-  fi
-
   echo "Droid installed: $new_version"
 }
 
 installed_version() {
   "$droid_bin" --version 2>/dev/null | tr -d '[:space:]'
-}
-
-installer_version() {
-  awk -F '"' '/^VER="/ { print $2; exit }'
 }
 
 get_droid_pids() {
@@ -99,7 +85,6 @@ prepare_systemd_service() {
   fi
 
   if [[ "$current_host" != "$droid_systemd_host" ]]; then
-    echo "Skipping Droid systemd service: this host is $current_host, expected $droid_systemd_host."
     return
   fi
 
@@ -153,9 +138,10 @@ prepare_systemd_service() {
 install_or_update_droid() {
   local current_version=""
   local droid_pids
-  local latest_version
+  local new_version
   local process_status
-  local installer_script
+  local update_output
+  local update_status
 
   if [[ ! -x "$droid_bin" ]]; then
     if droid_pids="$(get_droid_pids)"; then
@@ -184,51 +170,37 @@ install_or_update_droid() {
   fi
 
   current_version="$(installed_version || true)"
-  if ! command -v curl >/dev/null 2>&1; then
-    echo "Cannot check for Droid updates: curl is not available." >&2
-    echo "Droid installed: ${current_version:-unknown}"
-    return
+  if [[ -z "$current_version" ]]; then
+    echo "Cannot determine the installed Droid version." >&2
+    return 1
   fi
 
-  if ! installer_script="$(curl -fsSL "$installer_url")"; then
-    echo "Cannot check for Droid updates; leaving existing installation unchanged." >&2
-    echo "Droid installed: ${current_version:-unknown}"
-    return
-  fi
-
-  latest_version="$(printf '%s\n' "$installer_script" | installer_version)"
-  if [[ -z "$latest_version" ]]; then
-    echo "Cannot determine the latest Droid version; leaving existing installation unchanged." >&2
-    echo "Droid installed: ${current_version:-unknown}"
-    return
-  fi
-
-  if [[ -n "$current_version" && "$current_version" == "$latest_version" ]]; then
-    echo "Droid is current: $current_version"
-    return
-  fi
-
-  # The upstream installer force-kills running Droid processes before replacement.
-  if droid_pids="$(get_droid_pids)"; then
-    echo "Droid update deferred: processes are active (installed ${current_version:-unknown}, latest $latest_version)." >&2
-    echo "Stop Droid when no agents are attached, then rerun this installer."
-    return
+  if update_output="$("$droid_bin" update 2>&1)"; then
+    update_status=0
   else
-    process_status=$?
-    if [[ "$process_status" -ne 1 ]]; then
-      echo "Cannot determine whether Droid is running; update deferred." >&2
-      return
+    update_status=$?
+  fi
+
+  if [[ "$update_status" -ne 0 && -n "$update_output" ]]; then
+    printf '%s\n' "$update_output" >&2
+  fi
+
+  new_version="$(installed_version || true)"
+  if [[ -z "$new_version" ]]; then
+    echo "Cannot determine the installed Droid version after updating." >&2
+    return 1
+  fi
+
+  if [[ "$current_version" == "$new_version" ]]; then
+    if [[ "$update_status" -eq 0 ]]; then
+      echo "Droid is up to date: $current_version"
     fi
+    return "$update_status"
   fi
 
-  if ! managed_service_is_stopped; then
-    echo "Droid update deferred: the systemd service is not fully stopped." >&2
-    echo "When no agents are attached, stop $droid_service_name and rerun this installer."
-    return
-  fi
-
-  echo "Updating Droid from ${current_version:-unknown} to $latest_version."
-  run_installer "$installer_script" "$latest_version"
+  droid_version_updated=true
+  echo "Droid updated from $current_version to $new_version."
+  return "$update_status"
 }
 
 finish_systemd_service() {
@@ -244,12 +216,17 @@ finish_systemd_service() {
     return 1
   fi
 
-  if systemctl --user is-active --quiet "$droid_service_name"; then
+  if [[ "$droid_version_updated" == true ]]; then
+    if ! systemctl --user restart "$droid_service_name"; then
+      return 1
+    fi
+  elif systemctl --user is-active --quiet "$droid_service_name"; then
     # The relay has no drain operation, so do not infer idleness and restart here.
     if [[ "$systemd_service_restart_required" == true ]]; then
       echo "Droid service restart required; the active service was left untouched." >&2
       echo "When no agents are attached, run: systemctl --user restart $droid_service_name" >&2
     fi
+    return
   else
     if droid_pids="$(get_droid_pids)"; then
       echo "Droid systemd service was not started because Droid processes are active: $droid_pids" >&2
@@ -262,7 +239,9 @@ finish_systemd_service() {
       fi
     fi
 
-    systemctl --user start "$droid_service_name"
+    if ! systemctl --user start "$droid_service_name"; then
+      return 1
+    fi
   fi
 
   systemctl --user --no-pager --full status "$droid_service_name"
