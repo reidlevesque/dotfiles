@@ -23,13 +23,15 @@ This installs:
 ## External Skills
 
 External skills are listed in `install.sh` and are expected to be cloned under
-`~/dev`. The installer warns when a clone is missing. When a clone exists, it
-runs `git up`, links the skill into Codex and Claude, and runs any declared
-install command from the clone root.
+`~/dev`. The installer warns when a clone is missing; it does not clone missing
+repositories. When a clone exists, it runs `git up`, links the skill into Codex
+and Claude, and runs any declared install command from the clone root. Skill
+collections link every child directory with a `SKILL.md`.
 
 Current skills:
 
 - `turbo-review`: `/home/rlevesque/dev/gitlab-master/achristensen/kungfu/turbo-review`
+- `nvidia-lpu/skills`: every skill under `/home/rlevesque/dev/github/nvidia-lpu/skills/skills`
 
 ## Usage
 

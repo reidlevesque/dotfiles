@@ -12,13 +12,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENTS_FILE="$SCRIPT_DIR/AGENTS.md"
 readonly CODEX_SYSTEM_CONFIG="/etc/codex/config.toml"
 
-# External skills are managed from normal source clones under ~/dev. Each entry:
+# External skills are managed from normal source clones under ~/dev.
+#
+# Single-skill entries:
 # name|repo_path|skill_relative_path|install_command
 # install_command runs from repo_path. Leave it empty when no extra install step
 # is needed.
+#
+# Collection entries:
+# label|repo_path|skills_relative_dir
+# Every child directory under skills_relative_dir with a SKILL.md is linked.
 TURBO_REVIEW_INSTALL_COMMAND="bash \"$SCRIPT_DIR/installers/turbo-review.sh\""
 EXTERNAL_SKILLS=(
   "turbo-review|$HOME/dev/gitlab-master/achristensen/kungfu|turbo-review|$TURBO_REVIEW_INSTALL_COMMAND"
+)
+EXTERNAL_SKILL_COLLECTIONS=(
+  "nvidia-lpu-skills|$HOME/dev/github/nvidia-lpu/skills|skills"
 )
 
 # Function to link the consolidated AGENTS.md file
@@ -227,6 +236,31 @@ run_skill_install_command() {
   fi
 }
 
+update_external_skill_clone() {
+  local label="$1"
+  local repo_path="$2"
+
+  if ! git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo -e "${YELLOW}Skipping $label; clone not found at $repo_path${NC}"
+    return 1
+  fi
+
+  echo -e "${GREEN}Updating $label clone...${NC}"
+  if ! (cd "$repo_path" && git up); then
+    echo -e "${YELLOW}git up failed for $label at $repo_path; continuing with existing checkout${NC}"
+  fi
+
+  return 0
+}
+
+link_skill_to_agent_tools() {
+  local name="$1"
+  local skill_path="$2"
+
+  link_skill "$name" "$skill_path" "$HOME/.codex/skills"
+  link_skill "$name" "$skill_path" "$HOME/.claude/skills"
+}
+
 install_external_skills() {
   local entry
   local name
@@ -240,14 +274,8 @@ install_external_skills() {
   for entry in "${EXTERNAL_SKILLS[@]}"; do
     IFS='|' read -r name repo_path skill_relative_path install_command <<<"$entry"
 
-    if ! git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-      echo -e "${YELLOW}Skipping $name; clone not found at $repo_path${NC}"
+    if ! update_external_skill_clone "$name" "$repo_path"; then
       continue
-    fi
-
-    echo -e "${GREEN}Updating $name clone...${NC}"
-    if ! (cd "$repo_path" && git up); then
-      echo -e "${YELLOW}git up failed for $name at $repo_path; continuing with existing checkout${NC}"
     fi
 
     skill_path="$repo_path/$skill_relative_path"
@@ -256,9 +284,43 @@ install_external_skills() {
       continue
     fi
 
-    link_skill "$name" "$skill_path" "$HOME/.codex/skills"
-    link_skill "$name" "$skill_path" "$HOME/.claude/skills"
+    link_skill_to_agent_tools "$name" "$skill_path"
     run_skill_install_command "$name" "$repo_path" "$install_command"
+  done
+
+  install_external_skill_collections
+}
+
+install_external_skill_collections() {
+  local entry
+  local label
+  local repo_path
+  local skills_relative_dir
+  local skills_root
+  local skill_path
+  local name
+
+  for entry in "${EXTERNAL_SKILL_COLLECTIONS[@]}"; do
+    IFS='|' read -r label repo_path skills_relative_dir <<<"$entry"
+
+    if ! update_external_skill_clone "$label" "$repo_path"; then
+      continue
+    fi
+
+    skills_root="$repo_path/$skills_relative_dir"
+    if [ ! -d "$skills_root" ]; then
+      echo -e "${YELLOW}Skipping $label; $skills_root was not found${NC}"
+      continue
+    fi
+
+    for skill_path in "$skills_root"/*; do
+      if [ ! -f "$skill_path/SKILL.md" ]; then
+        continue
+      fi
+
+      name="$(basename "$skill_path")"
+      link_skill_to_agent_tools "$name" "$skill_path"
+    done
   done
 }
 
