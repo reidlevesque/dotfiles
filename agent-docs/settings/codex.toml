@@ -5,17 +5,13 @@ approvals_reviewer = "user"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 service_tier = "priority"
+model_verbosity = "low"
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 
 [features]
-multi_agent = true
 goals = true
-
-[features.multi_agent_v2]
-enabled = true
-hide_spawn_agent_metadata = false
 
 [tool_suggest]
 disabled_tools = [{ type = "connector", id = "asdk_app_69a089a326dc8191b32a3f2553f5be2c" }]
