@@ -131,13 +131,3 @@ attach () {
 }
 # Old sft version:
 # alias attach="sft ssh --command \"tmux -CC new -As0\""
-
-function refresh () {
-  if [ -n "$TMUX" ]; then
-    eval $(tmux showenv -s)
-  fi
-}
-autoload -Uz refresh
-function preexec {
-  refresh
-}
