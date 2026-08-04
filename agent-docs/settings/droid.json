@@ -9,5 +9,10 @@
   "enabledPlugins": {
     "core@factory-plugins": true,
     "droid-control@factory-plugins": true
+  },
+  "trustedFolders": {
+    "/home/rlevesque/dev/github/nvidia-lpu/engineering-infrastructure": {
+      "trustedAt": "2026-07-27T18:52:19.409Z"
+    }
   }
 }

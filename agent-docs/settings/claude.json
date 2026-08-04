@@ -53,7 +53,6 @@
     ],
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus[1m]",
   "outputStyle": "Terse",
   "sandbox": {
     "enabled": false,
