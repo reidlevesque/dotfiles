@@ -219,6 +219,43 @@ link_skill() {
   echo -e "${GREEN}✓ Linked $destination -> $skill_path${NC}"
 }
 
+link_output_styles() {
+  local styles_dir="$SCRIPT_DIR/output-styles"
+  local destination_root="$HOME/.claude/output-styles"
+  local style_path
+  local destination
+  local count=0
+
+  echo -e "\n${GREEN}Linking Claude output styles...${NC}"
+
+  if [ ! -d "$styles_dir" ]; then
+    echo -e "${YELLOW}No output styles found at $styles_dir${NC}"
+    return 0
+  fi
+
+  mkdir -p "$destination_root"
+
+  for style_path in "$styles_dir"/*.md; do
+    if [ ! -f "$style_path" ]; then
+      continue
+    fi
+
+    destination="$destination_root/$(basename "$style_path")"
+
+    if [ -L "$destination" ]; then
+      rm -f "$destination"
+    elif [ -e "$destination" ]; then
+      echo -e "${YELLOW}Skipping $destination; it exists and is not a symlink${NC}"
+      continue
+    fi
+
+    ln -s "$style_path" "$destination"
+    count=$((count + 1))
+  done
+
+  echo -e "${GREEN}✓ Linked $count output styles${NC}"
+}
+
 run_skill_install_command() {
   local name="$1"
   local repo_path="$2"
@@ -341,26 +378,30 @@ if [ -d "$SCRIPT_DIR/commands" ]; then
   echo -e "${GREEN}✓ Installed $count commands${NC}"
 fi
 
-# 2. Link consolidated agent instructions and remove old file names
+# 2. Install Claude output styles
+link_output_styles
+
+# 3. Link consolidated agent instructions and remove old file names
 link_agents_file "$HOME/.config/AGENTS.md"
 link_agents_file "$HOME/.codex/AGENTS.md"
 remove_legacy_agent_file "$HOME/.claude/CLAUDE.md"
 remove_legacy_agent_file "$HOME/.config/AGENT.md"
 
-# 3. Optional: Install tool settings
+# 4. Optional: Install tool settings
 link_system_settings codex "$CODEX_SYSTEM_CONFIG" "$SCRIPT_DIR/settings/codex.toml"
 link_settings claude "$HOME/.claude/settings.json"
 link_settings amp "$HOME/.config/amp/settings.json"
 link_settings droid "$HOME/.factory/settings.json"
 merge_settings claude-mcp "$HOME/.claude.json"
 
-# 4. External skills managed from source clones
+# 5. External skills managed from source clones
 install_external_skills
 
 # Done
 echo -e "\n${GREEN}✅ Installation complete!${NC}"
 echo
 echo -e "Commands installed to: ${BLUE}~/.claude/commands/${NC}"
+echo -e "Claude output styles: ${BLUE}~/.claude/output-styles/${NC}"
 echo -e "Agents config: ${BLUE}~/.config/AGENTS.md${NC}"
 echo -e "Codex instructions: ${BLUE}~/.codex/AGENTS.md${NC}"
 echo -e "Codex common config: ${BLUE}$CODEX_SYSTEM_CONFIG${NC}"

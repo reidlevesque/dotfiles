@@ -11,6 +11,7 @@ Slash commands and shared documentation for AI coding assistants.
 This installs:
 
 - Slash commands to `~/.claude/commands/`
+- Output style symlinks to `~/.claude/output-styles/`
 - Agent instructions symlink to `~/.config/AGENTS.md`
 - Codex instructions symlink to `~/.codex/AGENTS.md`
 - Common Codex configuration symlink to `/etc/codex/config.toml` (requires `sudo`)
@@ -41,6 +42,7 @@ Type `/` in Claude Code to see available commands.
 
 - `commands/` - Slash commands
 - `docs/` - Reference documentation
+- `output-styles/` - Claude Code output styles, selected via `outputStyle` in `settings/claude.json`
 - `settings/` - Configuration files
 - `AGENTS.md` - Shared agent instructions
 
