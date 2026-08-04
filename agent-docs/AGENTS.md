@@ -5,7 +5,7 @@
 Slash commands live in `~/.claude/commands/`.
 Type `/` in Claude Code to see what is available.
 
-Command source files are in `@/Users/rlevesque/.dotfiles/agent-docs/commands/`.
+Command source files are in `~/.dotfiles/agent-docs/commands/`.
 
 ## Local CLIs
 
@@ -32,25 +32,28 @@ run `mise trust` and then retry the command.
 
 ## Documentation
 
+Read these on demand when a task touches the topic; they are not loaded
+automatically.
+
 ### Agent Tooling
 
-- `@/Users/rlevesque/.dotfiles/agent-docs/docs/claude-command-guide.md`:
+- `~/.dotfiles/agent-docs/docs/claude-command-guide.md`:
   Creating custom Claude Code commands
-- `@/Users/rlevesque/.dotfiles/agent-docs/docs/mcp-sync-documentation.md`:
+- `~/.dotfiles/agent-docs/docs/mcp-sync-documentation.md`:
   MCP config sync
 
 ### Language Best Practices
 
-- `@/Users/rlevesque/.dotfiles/agent-docs/docs/bash-best-practices.md`:
+- `~/.dotfiles/agent-docs/docs/bash-best-practices.md`:
   Bash scripting (3.2 compatible)
-- `@/Users/rlevesque/.dotfiles/agent-docs/docs/yaml-best-practices.md`:
+- `~/.dotfiles/agent-docs/docs/yaml-best-practices.md`:
   YAML formatting and structure
-- `@/Users/rlevesque/.dotfiles/agent-docs/docs/go-best-practices.md`:
+- `~/.dotfiles/agent-docs/docs/go-best-practices.md`:
   Go development patterns
 
 ### MCP Development
 
-- `@/Users/rlevesque/.dotfiles/agent-docs/docs/mcp-best-practices.md`:
+- `~/.dotfiles/agent-docs/docs/mcp-best-practices.md`:
   MCP server development
 
 ## Feedback Style

@@ -46,6 +46,37 @@ link_agents_file() {
   echo -e "${GREEN}✓ Linked $destination -> $AGENTS_FILE${NC}"
 }
 
+# AGENTS.md documents its own docs and commands with ~/.dotfiles/... paths so one
+# file works on both macOS and Linux. Warn when this clone lives somewhere else,
+# or when a documented path is missing, rather than shipping dead references.
+check_agents_doc_paths() {
+  local expected_root="$HOME/.dotfiles/agent-docs"
+  local reference
+  local resolved
+  local missing=0
+
+  echo -e "\n${GREEN}Checking AGENTS.md documentation paths...${NC}"
+
+  if [ "$SCRIPT_DIR" != "$expected_root" ]; then
+    echo -e "${YELLOW}This clone is at $SCRIPT_DIR, but AGENTS.md documents $expected_root${NC}"
+    echo -e "${YELLOW}Agents will look for docs under $expected_root${NC}"
+  fi
+
+  # SC2088: the tilde is a literal character in the grep pattern, not a path.
+  # shellcheck disable=SC2088
+  while IFS= read -r reference; do
+    resolved="$HOME/${reference#\~/}"
+    if [ ! -e "$resolved" ]; then
+      echo -e "${YELLOW}Missing documented path: $reference${NC}"
+      missing=$((missing + 1))
+    fi
+  done < <(grep -o '~/\.dotfiles/agent-docs/[^`]*' "$AGENTS_FILE" | sort -u)
+
+  if [ "$missing" -eq 0 ]; then
+    echo -e "${GREEN}✓ All documented paths exist${NC}"
+  fi
+}
+
 # Function to remove legacy per-agent instruction files
 remove_legacy_agent_file() {
   local path="$1"
@@ -386,6 +417,7 @@ link_agents_file "$HOME/.config/AGENTS.md"
 link_agents_file "$HOME/.codex/AGENTS.md"
 remove_legacy_agent_file "$HOME/.claude/CLAUDE.md"
 remove_legacy_agent_file "$HOME/.config/AGENT.md"
+check_agents_doc_paths
 
 # 4. Optional: Install tool settings
 link_system_settings codex "$CODEX_SYSTEM_CONFIG" "$SCRIPT_DIR/settings/codex.toml"
