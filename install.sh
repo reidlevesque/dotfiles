@@ -5,7 +5,8 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-export DOTFILES; DOTFILES=$(pwd)
+export DOTFILES
+DOTFILES=$(pwd)
 export ICLOUD_CONFIG=~/Library/Mobile\ Documents/com\~apple\~CloudDocs/Config
 
 load_homebrew_shellenv() {
@@ -124,9 +125,9 @@ install_apt_dependencies() {
     if ! dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q "ok installed"; then
       packages_to_install+=("$package")
     fi
-  done < "$aptfile"
+  done <"$aptfile"
 
-  if (( ${#packages_to_install[@]} == 0 )); then
+  if ((${#packages_to_install[@]} == 0)); then
     return
   fi
 
@@ -139,19 +140,21 @@ install_or_update_mise
 install_apt_dependencies
 
 echo -e "\\n› Creating symlinks"
-shared_symlinks='*.symlink'
-platform_symlinks="*.symlink.$(uname)"
+for src in "$DOTFILES"/*/*.symlink; do
+  [[ -f "$src" ]] || continue
 
-while IFS= read -r -d '' src; do
   if [[ $src == *.md.symlink ]]; then
     ln -sfv "$src" "$HOME/$(basename "${src%.*}")"
   else
     ln -sfv "$src" "$HOME/.$(basename "${src%.*}")"
   fi
-done < <(find "$DOTFILES" -name "$shared_symlinks" -print0)
-while IFS= read -r -d '' src; do
+done
+
+for src in "$DOTFILES"/*/*.symlink."$(uname)"; do
+  [[ -f "$src" ]] || continue
+
   ln -sfv "$src" "$HOME/.$(basename "${src%.*.*}")"
-done < <(find "$DOTFILES" -name "$platform_symlinks" -print0)
+done
 
 if [[ -f "Brewfile.$(uname)" ]]; then
   install_homebrew_if_missing
@@ -159,12 +162,9 @@ if [[ -f "Brewfile.$(uname)" ]]; then
   brew bundle install --upgrade --file="Brewfile.$(uname)"
 fi
 
-install_scripts=()
-while IFS= read -r -d $'\0' script; do
-  install_scripts+=("$script")
-done < <(find "$DOTFILES" -name 'install.sh' -mindepth 2 -print0)
+for script in "$DOTFILES"/*/install.sh; do
+  [[ -f "$script" ]] || continue
 
-for script in "${install_scripts[@]}"; do
   echo -e "\\n> Running installer $script"
   bash -eu -o pipefail "$script"
 done
