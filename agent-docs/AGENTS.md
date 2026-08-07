@@ -68,6 +68,7 @@ automatically.
 
 - Use Canadian English spelling and conventions when writing documentation or
   code comments.
+- Use 24-hour time when communicating times to the user.
 
 ## Git Workflow
 
