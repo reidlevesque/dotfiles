@@ -1,0 +1,110 @@
+{
+  "providers": {
+    "nvidia-inference": {
+      "baseUrl": "https://inference-api.nvidia.com/v1",
+      "api": "openai-completions",
+      "authHeader": true,
+      "models": [
+        {
+          "id": "nvidia/zai-org/eccn-glm-5.2",
+          "name": "GLM-5.2 ECCN (NVIDIA Inference)",
+          "reasoning": true,
+          "input": ["text"],
+          "thinkingLevelMap": {
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          },
+          "contextWindow": 1048576,
+          "maxTokens": 262144,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "compat": {
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": false,
+            "maxTokensField": "max_tokens",
+            "thinkingFormat": "chat-template",
+            "chatTemplateKwargs": {
+              "enable_thinking": { "$var": "thinking.enabled" },
+              "reasoning_effort": { "$var": "thinking.effort", "omitWhenOff": true }
+            },
+            "supportsStrictMode": false,
+            "supportsLongCacheRetention": false
+          }
+        },
+        {
+          "id": "nvidia/deepseek-ai/eccn-deepseek-v4-pro",
+          "name": "DeepSeek V4 Pro ECCN (NVIDIA Inference)",
+          "reasoning": true,
+          "input": ["text"],
+          "thinkingLevelMap": {
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          },
+          "contextWindow": 1048576,
+          "maxTokens": 384000,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "compat": {
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": false,
+            "maxTokensField": "max_tokens",
+            "requiresReasoningContentOnAssistantMessages": true,
+            "thinkingFormat": "chat-template",
+            "chatTemplateKwargs": {
+              "thinking": { "$var": "thinking.enabled" },
+              "reasoning_effort": { "$var": "thinking.effort", "omitWhenOff": true }
+            },
+            "supportsStrictMode": false,
+            "supportsLongCacheRetention": false
+          }
+        },
+        {
+          "id": "nvidia/moonshotai/eccn-kimi-k2.6",
+          "name": "Kimi K2.6 ECCN (NVIDIA Inference)",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "thinkingLevelMap": {
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": null
+          },
+          "contextWindow": 262144,
+          "maxTokens": 262144,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "compat": {
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": false,
+            "maxTokensField": "max_tokens",
+            "thinkingFormat": "chat-template",
+            "chatTemplateKwargs": {
+              "thinking": { "$var": "thinking.enabled" }
+            },
+            "supportsStrictMode": false,
+            "supportsLongCacheRetention": false
+          }
+        },
+        {
+          "id": "nvidia/moonshotai/eccn-kimi-k3-low-preview"
+        },
+        {
+          "id": "nvidia/moonshotai/eccn-kimi-k3-high-preview"
+        },
+        {
+          "id": "nvidia/moonshotai/eccn-kimi-k3-max-preview"
+        }
+      ]
+    }
+  }
+}
