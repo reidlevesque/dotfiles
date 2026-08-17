@@ -415,6 +415,8 @@ link_output_styles
 # 3. Link consolidated agent instructions and remove old file names
 link_agents_file "$HOME/.config/AGENTS.md"
 link_agents_file "$HOME/.codex/AGENTS.md"
+# Pi reads global instructions from ~/.pi/agent/AGENTS.md only.
+link_agents_file "$HOME/.pi/agent/AGENTS.md"
 # Claude Code reads user-level instructions from ~/.claude/CLAUDE.md only; it
 # does not pick up ~/.config/AGENTS.md, so without this link Claude runs with no
 # global instructions at all.
@@ -439,6 +441,7 @@ echo -e "Commands installed to: ${BLUE}~/.claude/commands/${NC}"
 echo -e "Claude output styles: ${BLUE}~/.claude/output-styles/${NC}"
 echo -e "Agents config: ${BLUE}~/.config/AGENTS.md${NC}"
 echo -e "Codex instructions: ${BLUE}~/.codex/AGENTS.md${NC}"
+echo -e "Pi instructions: ${BLUE}~/.pi/agent/AGENTS.md${NC}"
 echo -e "Claude instructions: ${BLUE}~/.claude/CLAUDE.md${NC}"
 echo -e "Codex common config: ${BLUE}$CODEX_SYSTEM_CONFIG${NC}"
 echo -e "Codex machine config: ${BLUE}~/.codex/config.toml${NC} (unmanaged)"
