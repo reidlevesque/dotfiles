@@ -25,6 +25,7 @@ readonly CODEX_SYSTEM_CONFIG="/etc/codex/config.toml"
 TURBO_REVIEW_INSTALL_COMMAND="bash \"$SCRIPT_DIR/installers/turbo-review.sh\""
 EXTERNAL_SKILLS=(
   "turbo-review|$HOME/dev/gitlab-master/achristensen/kungfu|turbo-review|$TURBO_REVIEW_INSTALL_COMMAND"
+  "simple-english|$HOME/dev/github/AminBlg/SimpleEnglish|skills/simple-english|"
 )
 EXTERNAL_SKILL_COLLECTIONS=(
   "nvidia-lpu-skills|$HOME/dev/github/nvidia-lpu/skills|skills"
@@ -327,6 +328,8 @@ link_skill_to_agent_tools() {
 
   link_skill "$name" "$skill_path" "$HOME/.codex/skills"
   link_skill "$name" "$skill_path" "$HOME/.claude/skills"
+  # Pi discovers skills from ~/.agents/skills (agentskills.io standard).
+  link_skill "$name" "$skill_path" "$HOME/.agents/skills"
 }
 
 install_external_skills() {
