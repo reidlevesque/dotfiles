@@ -1,6 +1,6 @@
 {
   "theme": "dark",
   "defaultProvider": "nvidia-inference",
-  "defaultModel": "nvidia/zai-org/eccn-glm-5.2",
+  "defaultModel": "nvidia/moonshotai/eccn-kimi-k3",
   "defaultThinkingLevel": "high"
 }

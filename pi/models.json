@@ -96,13 +96,33 @@
           }
         },
         {
-          "id": "nvidia/moonshotai/eccn-kimi-k3-low-preview"
-        },
-        {
-          "id": "nvidia/moonshotai/eccn-kimi-k3-high-preview"
-        },
-        {
-          "id": "nvidia/moonshotai/eccn-kimi-k3-max-preview"
+          "id": "nvidia/moonshotai/eccn-kimi-k3",
+          "name": "Kimi K3 ECCN (NVIDIA Inference)",
+          "reasoning": true,
+          "input": ["text"],
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": null,
+            "high": "high",
+            "xhigh": null,
+            "max": "max"
+          },
+          "contextWindow": 1048576,
+          "maxTokens": 131072,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+          "compat": {
+            "supportsStore": false,
+            "supportsDeveloperRole": false,
+            "supportsReasoningEffort": true,
+            "maxTokensField": "max_tokens",
+            "requiresReasoningContentOnAssistantMessages": true,
+            "thinkingFormat": "openai",
+            "supportsStrictMode": false,
+            "supportsLongCacheRetention": false,
+            "deferredToolsMode": "kimi"
+          }
         }
       ]
     }
