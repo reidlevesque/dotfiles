@@ -13,6 +13,9 @@
   "trustedFolders": {
     "/home/rlevesque/dev/github/nvidia-lpu/engineering-infrastructure": {
       "trustedAt": "2026-07-27T18:52:19.409Z"
+    },
+    "/home/rlevesque/dev/gitlab-master": {
+      "trustedAt": "2026-08-13T18:14:46.508Z"
     }
   }
 }

@@ -66,5 +66,6 @@
   "theme": "auto",
   "feedbackSurveyState": {
     "lastShownTime": 1754425548865
-  }
+  },
+  "model": "claude-fable-5[1m]"
 }
