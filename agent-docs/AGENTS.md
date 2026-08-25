@@ -76,6 +76,8 @@ automatically.
   branch or worktree starts from current upstream. If `git up` fails, run
   `git fetch` and create a new worktree from origin/main.
 - Use Conventional Commits for commits and PR titles.
+- Always include the Linear ticket ID (e.g. `ABC-123`) in the PR title when
+  the work is associated with a Linear ticket.
 - Keep commits atomic and focused.
 - When making branches, prefix them with `reid/`.
 - Open PRs in draft mode by default.
