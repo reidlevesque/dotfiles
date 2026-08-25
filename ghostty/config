@@ -1,10 +1,27 @@
-theme = synthwave
-theme = grape
-
-focus-follows-mouse = true
-
-window-save-state = always
-window-padding-balance = true
+# Match the active iTerm2 Grape profile.
+theme = Grape
 
 font-family = "Monaco"
 font-size = 13
+font-thicken = false
+bold-color = #9f87ff
+
+selection-foreground = #e6e6e6
+
+cursor-style = block
+cursor-style-blink = false
+cursor-text = #1e1b2e
+shell-integration-features = no-cursor
+
+background-opacity = 1
+background-blur = false
+window-colorspace = srgb
+
+window-padding-x = 5
+window-padding-y = 2
+window-padding-balance = true
+split-divider-color = #8d35c9
+macos-titlebar-style = native
+
+focus-follows-mouse = true
+window-save-state = always
