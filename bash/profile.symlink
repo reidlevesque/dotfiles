@@ -73,6 +73,10 @@ unset -f _ssh_auth_sock_targets_stable _ssh_auth_sock_is_usable _ssh_auth_sock_u
 
 export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
 
+if [ "$(uname -s)" = "Linux" ]; then
+    export BUILDKITE_NO_KEYRING=1
+fi
+
 if [ -f "$DOTFILES/shell/secrets.sh" ]; then
     # shellcheck source=/dev/null
     . "$DOTFILES/shell/secrets.sh"
