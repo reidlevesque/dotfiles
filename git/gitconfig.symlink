@@ -39,9 +39,6 @@
 [push]
 	autoSetupRemote = true
 
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
-
 [includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
 	path = ~/.dotfiles/git/github.gitconfig
 [includeIf "hasconfig:remote.*.url:https://github.com/**"]
@@ -54,3 +51,8 @@
 	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = !gh auth git-credential
+
+# Machine-local overrides (e.g. dev VMs that authenticate over HTTPS).
+# Silently ignored on machines where this file does not exist.
+[include]
+	path = ~/.gitconfig.local
