@@ -129,3 +129,5 @@ if [ -n "${BASH_VERSION:-}" ] && [ -x "$HOME/.local/bin/mise" ]; then
         fi
     }
 fi
+# conflux-lite telemetry env
+[ -z "${CONFLUX_LITE_DISABLE:-}" ] && [ -f "$HOME/.conflux-lite/env.sh" ] && . "$HOME/.conflux-lite/env.sh"
