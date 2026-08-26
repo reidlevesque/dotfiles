@@ -17,6 +17,8 @@ These local CLIs are available and should be preferred when they fit the task:
 - Calendar: `calendar-cli`
 - Buildkite: `bk`
 
+When interacting with Linear, use the `linear` CLI.
+
 Additional installed CLI tools are available in `/opt/homebrew/bin`, including:
 
 - `concur-cli`, `databricks-cli`, `dl-cli`, `gdrive-cli`, `glean-cli`,
