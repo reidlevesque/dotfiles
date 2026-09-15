@@ -8,8 +8,8 @@
 	<array>
 		<string>/usr/local/sbin/sleepwatcher</string>
 		<string>-V</string>
-		<string>-s ~/.zsh/sleepwatcher/sleep-x86</string>
-		<string>-w ~/.zsh/sleepwatcher/wakeup-x86</string>
+		<string>-s ~/.dotfiles/sleepwatcher/sleep-x86</string>
+		<string>-w ~/.dotfiles/sleepwatcher/wakeup-x86</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
