@@ -17,7 +17,7 @@
     "lastShownTime": 1754425548865
   },
   "includeCoAuthoredBy": true,
-  "model": "claude-fable-5[1m]",
+  "model": "claude-fable-5-1[1m]",
   "outputStyle": "Terse",
   "permissions": {
     "allow": [
