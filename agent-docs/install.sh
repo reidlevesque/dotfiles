@@ -21,7 +21,7 @@ readonly CODEX_SYSTEM_CONFIG="/etc/codex/config.toml"
 #
 # Collection entries:
 # label|repo_path|skills_relative_dir
-# Every child directory under skills_relative_dir with a SKILL.md is linked.
+# Each child directory with a SKILL.md is linked unless its name is disabled.
 TURBO_REVIEW_INSTALL_COMMAND="bash \"$SCRIPT_DIR/installers/turbo-review.sh\""
 EXTERNAL_SKILLS=(
   "turbo-review|$HOME/dev/gitlab-master/achristensen/kungfu|turbo-review|$TURBO_REVIEW_INSTALL_COMMAND"
@@ -29,6 +29,10 @@ EXTERNAL_SKILLS=(
 )
 EXTERNAL_SKILL_COLLECTIONS=(
   "nvidia-lpu-skills|$HOME/dev/github/nvidia-lpu/skills|skills"
+)
+# Keep opt-in repository skills from becoming global defaults.
+DISABLED_EXTERNAL_SKILLS=(
+  "claude-review-gate"
 )
 
 # Function to link the consolidated AGENTS.md file
@@ -326,10 +330,46 @@ link_skill_to_agent_tools() {
   local name="$1"
   local skill_path="$2"
 
+  if is_external_skill_disabled "$name"; then
+    echo -e "${YELLOW}Skipping disabled external skill $name${NC}"
+    return 0
+  fi
+
   link_skill "$name" "$skill_path" "$HOME/.codex/skills"
   link_skill "$name" "$skill_path" "$HOME/.claude/skills"
   # Pi discovers skills from ~/.agents/skills (agentskills.io standard).
   link_skill "$name" "$skill_path" "$HOME/.agents/skills"
+}
+
+is_external_skill_disabled() {
+  local name="$1"
+  local disabled_name
+
+  for disabled_name in "${DISABLED_EXTERNAL_SKILLS[@]}"; do
+    if [[ "$name" = "$disabled_name" ]]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+remove_disabled_external_skill_links() {
+  local name
+  local destination_root
+  local destination
+
+  for name in "${DISABLED_EXTERNAL_SKILLS[@]}"; do
+    for destination_root in "$HOME/.codex/skills" "$HOME/.claude/skills" "$HOME/.agents/skills"; do
+      destination="$destination_root/$name"
+      if [[ -L "$destination" ]]; then
+        rm -f "$destination"
+        echo -e "${GREEN}✓ Removed disabled skill link $destination${NC}"
+      elif [[ -e "$destination" ]]; then
+        echo -e "${YELLOW}Leaving disabled skill $destination in place; it is not a symlink${NC}"
+      fi
+    done
+  done
 }
 
 install_external_skills() {
@@ -341,6 +381,7 @@ install_external_skills() {
   local skill_path
 
   echo -e "\n${GREEN}Installing external skills...${NC}"
+  remove_disabled_external_skill_links
 
   for entry in "${EXTERNAL_SKILLS[@]}"; do
     IFS='|' read -r name repo_path skill_relative_path install_command <<<"$entry"
