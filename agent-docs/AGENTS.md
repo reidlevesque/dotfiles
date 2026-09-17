@@ -18,6 +18,7 @@ When these local CLIs fit the task, use them:
 - Buildkite: `bk`
 
 When interacting with Linear, use the `linear` CLI.
+When creating a Linear ticket, use the LEI team.
 
 The `PATH` contains these additional CLI tools:
 
