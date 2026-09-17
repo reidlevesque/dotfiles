@@ -470,7 +470,9 @@ check_agents_doc_paths
 
 # 4. Optional: Install tool settings
 link_system_settings codex "$CODEX_SYSTEM_CONFIG" "$SCRIPT_DIR/settings/codex.toml"
-link_settings claude "$HOME/.claude/settings.json"
+# Claude writes preferences and runtime state to its user settings file. Merge
+# portable defaults instead of linking the file so those writes stay local.
+merge_settings claude "$HOME/.claude/settings.json"
 link_settings amp "$HOME/.config/amp/settings.json"
 link_settings droid "$HOME/.factory/settings.json"
 merge_settings claude-mcp "$HOME/.claude.json"
