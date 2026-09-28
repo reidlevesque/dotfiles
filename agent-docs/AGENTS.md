@@ -1,5 +1,14 @@
 # Agent Configuration
 
+## Task naming
+
+At the start of each new task, use `list_projects` to find its project's
+display name, then use `set_thread_title` to name it
+`<project display name>: <short topic>`.
+
+Start both the project prefix and the short topic with a lowercase letter.
+Keep the topic concise. Preserve titles explicitly supplied by the user.
+
 ## Commands
 
 Slash commands live in `~/.claude/commands/`.
