@@ -88,16 +88,6 @@ if [ -n "${BASH_VERSION:-}" ] && [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"
 fi
 
-# Set PATH so it includes user's private bin if it exists.
-if [ -d "$HOME/bin" ]; then
-    PATH="$HOME/bin:$PATH"
-fi
-
-# Set PATH so it includes user's local bin if it exists.
-if [ -d "$HOME/.local/bin" ]; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
 # Load NVM for login shells so non-interactive bash sessions can find Node-installed CLIs.
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/nvm.sh" ]; then
@@ -133,5 +123,16 @@ if [ -n "${BASH_VERSION:-}" ] && [ -x "$HOME/.local/bin/mise" ]; then
         fi
     }
 fi
+
+# Keep personal wrappers ahead of toolchains, matching zsh/path.zsh.
+if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# Append local bin, matching zsh/path.zsh.
+if [ -d "$HOME/.local/bin" ]; then
+    PATH="$PATH:$HOME/.local/bin"
+fi
+
 # conflux-lite telemetry env
 [ -z "${CONFLUX_LITE_DISABLE:-}" ] && [ -f "$HOME/.conflux-lite/env.sh" ] && . "$HOME/.conflux-lite/env.sh"
