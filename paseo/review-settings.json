@@ -1,0 +1,44 @@
+{
+  "include": {
+    "repositories": [
+      "nvidia-lpu/engineering-infrastructure",
+      "nvidia-lpu/lpu-monorepo",
+      "nvidia-lpu/github",
+      "nvidia-lpu/brake-controller",
+      "nvidia-lpu/nix-daemon-controller",
+      "nvidia-lpu/model-registry",
+      "nvidia-lpu/gcs-cache",
+      "nvidia-lpu/buildkite",
+      "nvidia-lpu/gitops-apps",
+      "nvidia-lpu/lpu-review-agent"
+    ],
+    "authors": [
+      "rbone",
+      "snikch",
+      "mtibben",
+      "elaforge",
+      "maxgrabenhorst",
+      "nateradtke",
+      "Strainy",
+      "omarjatoi",
+      "andrewawagner",
+      "erikkrieg",
+      "reidlevesque",
+      "chandler-barlow",
+      "sulewicz-gq",
+      "gg-nv",
+      "czawistowski-nvidia"
+    ],
+    "teams": ["lpu-eng-infra"],
+    "status": ["ready"],
+    "lastUpdated": "1d"
+  },
+  "exclude": {
+    "authors": ["reidlevesque", "lpu-renovate", "lpukite-write"]
+  },
+  "agentProvider": "claude",
+  "notificationLookback": "7d",
+  "maxDetailFetches": 60,
+  "refreshIntervalMs": 120000,
+  "cacheMaxBytes": 52428800
+}
