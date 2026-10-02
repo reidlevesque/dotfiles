@@ -10,7 +10,9 @@
       "nvidia-lpu/gcs-cache",
       "nvidia-lpu/buildkite",
       "nvidia-lpu/gitops-apps",
-      "nvidia-lpu/lpu-review-agent"
+      "nvidia-lpu/lpu-review-agent",
+      "nvidia-lpu/fleet",
+      "nvidia-lpu/fleet-recipes"
     ],
     "authors": [
       "rbone",
