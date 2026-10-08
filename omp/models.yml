@@ -1,0 +1,85 @@
+# Reuses the key stored by `pi` after `/login nvidia-inference`.
+providers:
+  nvidia-inference:
+    baseUrl: https://inference-api.nvidia.com/v1
+    api: openai-completions
+    apiKey: "!jq -er '.\"nvidia-inference\".key' \"$HOME/.pi/agent/auth.json\""
+    authHeader: true
+    compat:
+      supportsStore: false
+      supportsDeveloperRole: false
+      maxTokensField: max_tokens
+      supportsStrictMode: false
+    models:
+      - id: nvidia/zai-org/eccn-glm-5.2
+        name: GLM-5.2 ECCN (NVIDIA Inference)
+        reasoning: true
+        input: [text]
+        tokenizer: glm5
+        thinking:
+          mode: effort
+          efforts: [high, max]
+          requiresEffort: false
+        contextWindow: 1048576
+        maxTokens: 262144
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsReasoningEffort: false
+          thinkingFormat: qwen-chat-template
+          qwenTemplateReasoningEffort: true
+
+      # The endpoint always thinks and ignores chat template switches, so
+      # thinking cannot be turned off.
+      - id: nvidia/deepseek-ai/eccn-deepseek-v4-pro
+        name: DeepSeek V4 Pro ECCN (NVIDIA Inference)
+        reasoning: true
+        input: [text]
+        thinking:
+          mode: effort
+          efforts: [high, max]
+          requiresEffort: true
+        contextWindow: 1048576
+        maxTokens: 384000
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsReasoningEffort: true
+          thinkingFormat: openai
+          requiresReasoningContentForToolCalls: true
+
+      # omp cannot express a `thinking` chat template switch, so send it
+      # through the request body instead.
+      - id: nvidia/moonshotai/eccn-kimi-k2.6
+        name: Kimi K2.6 ECCN (NVIDIA Inference)
+        reasoning: true
+        input: [text, image]
+        thinking:
+          mode: effort
+          efforts: [high]
+          requiresEffort: false
+        contextWindow: 262144
+        maxTokens: 262144
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsReasoningEffort: false
+          thinkingFormat: openai
+          extraBody:
+            chat_template_kwargs: { thinking: false }
+          whenThinking:
+            extraBody:
+              chat_template_kwargs: { thinking: true }
+
+      - id: nvidia/moonshotai/eccn-kimi-k3
+        name: Kimi K3 ECCN (NVIDIA Inference)
+        reasoning: true
+        input: [text]
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+          requiresEffort: true
+        contextWindow: 1048576
+        maxTokens: 131072
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsReasoningEffort: true
+          thinkingFormat: openai
+          requiresReasoningContentForToolCalls: true
