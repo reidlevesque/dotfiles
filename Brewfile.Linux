@@ -1,4 +1,5 @@
 tap "ai-cli/ai-pim-utils", "https://outlook-cli-80d21a.gitlab-master-pages.nvidia.com/homebrew-ai-pim-utils.git"
+tap "can1357/tap"
 
 brew "atuin"
 brew "direnv"
@@ -13,6 +14,8 @@ brew "pre-commit"
 brew "rust"
 brew "starship"
 brew "the_silver_searcher"
+brew "yq"
+brew "can1357/tap/omp"
 
 cask "ai-cli/ai-pim-utils/ai-pim-utils"
 cask "codex"
