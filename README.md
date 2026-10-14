@@ -37,6 +37,17 @@ The installation process:
 2. Installs Homebrew packages defined in the Brewfile
 3. Runs topic-specific installers for additional setup
 
+### Daily updates
+
+The `autoupdate` topic runs `git pull --ff-only` and then `./install.sh` once a
+day.
+
+- Linux: a systemd user timer. Check it with
+  `journalctl --user -u dotfiles-update`.
+- macOS: a LaunchAgent that checks every hour and at login. It runs when the
+  last successful update is more than 20 hours old. The output of the last run
+  is in `~/.local/state/dotfiles-update/last-run.log`.
+
 ## Structure
 
 The repository follows a modular approach:
