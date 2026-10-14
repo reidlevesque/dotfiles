@@ -1,3 +1,14 @@
+# Host overrides precede includes because SSH uses the first value it reads.
+# Keep each IAP connection independent so a stalled master cannot block new sessions.
+Host devvm-rlevesque
+  ControlMaster no
+  ControlPath none
+  ControlPersist no
+  ServerAliveInterval 15
+  ServerAliveCountMax 3
+  ConnectTimeout 10
+
+Host *
 Include ~/.ssh/config.d/*.conf
 Include /Users/rlevesque/.colima/ssh_config
 
