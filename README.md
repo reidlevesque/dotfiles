@@ -39,8 +39,8 @@ The installation process:
 
 ### Daily updates
 
-The `autoupdate` topic runs `git pull --ff-only` and then `./install.sh` once a
-day.
+The `autoupdate` topic runs `git pull --no-rebase --ff-only` and then
+`./install.sh` once a day.
 
 - Linux: a systemd user timer. Check it with
   `journalctl --user -u dotfiles-update`.

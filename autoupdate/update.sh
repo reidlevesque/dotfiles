@@ -29,7 +29,7 @@ exec >"$state_dir/last-run.log" 2>&1
 echo "> Started $(date)"
 
 cd "$dotfiles_dir"
-GIT_TERMINAL_PROMPT=0 git pull --ff-only
+GIT_TERMINAL_PROMPT=0 git pull --no-rebase --ff-only
 DOTFILES_AUTOUPDATE=1 ./install.sh
 
 echo "$now" >"$stamp"

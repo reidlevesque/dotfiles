@@ -8,6 +8,6 @@ Type=oneshot
 Environment=PATH=%h/.local/bin:%h/bin:%h/.local/share/mise/shims:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:%h/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 Environment=GIT_TERMINAL_PROMPT=0
 WorkingDirectory=%h/.dotfiles
-ExecStart=git pull --ff-only
+ExecStart=git pull --no-rebase --ff-only
 ExecStart=%h/.dotfiles/install.sh
 TimeoutStartSec=1h
