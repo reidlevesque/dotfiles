@@ -47,10 +47,16 @@
 	path = ~/.dotfiles/git/gitlab.groq.gitconfig
 [includeIf "hasconfig:remote.*.url:git@gitlab-master.nvidia.com:*/**"]
 	path = ~/.dotfiles/git/gitlab.nvidia.gitconfig
+[includeIf "hasconfig:remote.*.url:https://gitlab-master.nvidia.com/**"]
+	path = ~/.dotfiles/git/gitlab.nvidia.gitconfig
 [credential "https://github.com"]
 	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = !gh auth git-credential
+# glab sends git an empty username unless one is set for the host:
+#   glab config set user <username> --host gitlab-master.nvidia.com
+[credential "https://gitlab-master.nvidia.com"]
+	helper = !glab auth git-credential
 
 # Machine-local overrides (e.g. dev VMs that authenticate over HTTPS).
 # Silently ignored on machines where this file does not exist.
