@@ -128,6 +128,10 @@ automatically.
 - Keep commits atomic and focused.
 - When making branches, prefix them with `reid/`.
 - Open PRs in draft mode by default.
+- If a PR's base is a branch other than the default branch, use GitHub stacked
+  PRs through `gh stack`. Do not use `gh pr create --base`. Run
+  `gh stack init` or `gh stack add` for the branches, and then run
+  `gh stack submit --auto` so that the PRs are drafts in one GitHub stack.
 - Never run `gh auth setup-git`; it rewrites the tracked `~/.gitconfig`
   symlink target. For GitHub HTTPS auth, rely on the existing credential helper
   or pass a temporary helper with `git -c`.
