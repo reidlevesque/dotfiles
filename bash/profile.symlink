@@ -134,5 +134,10 @@ if [ -d "$HOME/.local/bin" ]; then
     PATH="$PATH:$HOME/.local/bin"
 fi
 
+# Append cargo bin, matching zsh/path.zsh.
+if [ -d "$HOME/.cargo/bin" ]; then
+    PATH="$PATH:$HOME/.cargo/bin"
+fi
+
 # conflux-lite telemetry env
 [ -z "${CONFLUX_LITE_DISABLE:-}" ] && [ -f "$HOME/.conflux-lite/env.sh" ] && . "$HOME/.conflux-lite/env.sh"
