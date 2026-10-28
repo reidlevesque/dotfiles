@@ -107,7 +107,6 @@ brew "go-swagger/go-swagger/go-swagger"
 brew "mike-engel/jwt-cli/jwt-cli"
 
 cask "ai-cli/ai-pim-utils/ai-pim-utils"
-cask "codex"
 cask "gcloud-cli"
 cask "ghostty"
 cask "docker/tap/sbx"
