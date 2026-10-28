@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Strip the Gatekeeper quarantine attribute from Homebrew cask files.
+# Homebrew quarantines every cask download and only carries approval across
+# upgrades for .app bundles, so CLI-only casks such as sbx prompt
+# "downloaded from the Internet" again after every upgrade.
+#
+# This cannot help casks that Homebrew runs during install, because the prompt
+# fires before brew exits. codex does that, so codex/install.sh uses npm.
+set -euo pipefail
+
+[[ "$(uname)" == "Darwin" ]] || exit 0
+command -v brew >/dev/null 2>&1 || exit 0
+
+caskroom="$(brew --caskroom)"
+[[ -d "$caskroom" ]] || exit 0
+roots=("$caskroom")
+
+# gcloud-cli moves its SDK out of the Caskroom and leaves a symlink behind.
+gcloud_sdk="$(brew --prefix)/share/google-cloud-sdk"
+[[ -d "$gcloud_sdk" ]] && roots+=("$gcloud_sdk")
+
+find "${roots[@]}" -xattrname com.apple.quarantine \
+  -exec xattr -s -d com.apple.quarantine {} +

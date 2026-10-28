@@ -19,3 +19,16 @@ export PATH="${brew_path}/bin:/opt/homebrew/sbin:${PATH}";
 [ -z "${MANPATH-}" ] || export MANPATH=":${MANPATH#:}";
 export INFOPATH="${brew_path}/share/info:${INFOPATH:-}";
 
+# Clear cask quarantine after anything that can download a cask.
+if [[ "$OSTYPE" == darwin* ]]; then
+  function brew() {
+    command brew "$@"
+    local rc=$?
+    # The first non-flag argument is the subcommand (brew -v upgrade works).
+    case "${${@:#-*}[1]}" in
+      install|instal|reinstall|upgrade|bundle) "$DOTFILES/bin/brew-unquarantine" ;;
+    esac
+    return $rc
+  }
+fi
+

@@ -159,7 +159,10 @@ done
 if [[ -f "Brewfile.$(uname)" ]]; then
   install_homebrew_if_missing
   echo -e "\\n> Installing Bundle"
-  brew bundle install --upgrade --file="Brewfile.$(uname)"
+  bundle_rc=0
+  brew bundle install --upgrade --file="Brewfile.$(uname)" || bundle_rc=$?
+  "$DOTFILES/bin/brew-unquarantine" || echo "Could not clear cask quarantine." >&2
+  ((bundle_rc == 0)) || exit "$bundle_rc"
 fi
 
 for script in "$DOTFILES"/*/install.sh; do
