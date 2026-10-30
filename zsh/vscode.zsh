@@ -89,7 +89,6 @@ if [[ "$(/usr/bin/uname 2>/dev/null || uname)" == "Linux" ]]; then
 
     if [[ ! -S "$CURSOR_BRIDGE_REMOTE_SOCKET" ]]; then
       print -u2 -- "code: Cursor is not connected yet and no bridge is available at ${CURSOR_BRIDGE_REMOTE_SOCKET}."
-      print -u2 -- "code: reconnect with attach so your laptop can launch Cursor for this host."
       return 1
     fi
 
