@@ -28,6 +28,9 @@ When these local CLIs fit the task, use them:
 
 When interacting with Linear, use the `linear` CLI.
 When creating a Linear ticket, use the LEI team.
+When you start work on a Linear ticket that you created, assign it to me and
+move it to In Progress:
+`linear issue update <ID> --assignee self --state "In Progress"`.
 
 The `PATH` contains these additional CLI tools:
 
