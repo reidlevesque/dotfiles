@@ -10,7 +10,7 @@ function gcurl () {
   curl --header "Authorization: Bearer $token" $@
 }
 
-# export CLOUDSDK_PYTHON="$HOME/.pyenv/shims/python3"
+# Use NumPy from gcp/install.sh for faster IAP TCP uploads.
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
 [ -f "$HOMEBREW_CASKROOM/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ] && . "$HOMEBREW_CASKROOM/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
