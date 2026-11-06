@@ -46,6 +46,82 @@ To inspect the current machine inventory, run
 If `mise` blocks a needed command because local configuration must be trusted,
 run `mise trust` and then retry the command.
 
+## Subspace handoffs
+
+When I ask to hand off work to Subspace, launch standalone agents outside
+Paseo. Paseo is only the launch point. Do not use Paseo `create_agent`,
+`paseo run`, or the `paseo-handoff` workflow for the receiving agents.
+Do not add a Paseo listener integration or forward worker completions to
+Paseo. Report completion of the migration here; subsequent coordination
+and decisions belong in the Subspace room.
+
+Carry out the handoff, rather than only giving me launch commands:
+
+1. Identify the target host, repository, room, existing crew, and current
+   service configuration. Reuse them where possible. Check linked tickets
+   and active work before starting anything; do not duplicate another
+   agent's assignment. Preserve unrelated agents and rooms.
+2. Prepare a durable handoff with the goal, acceptance criteria, authority,
+   decisions, completed work, exact branches and commits, uncommitted
+   changes, blockers, and next actions. Link authoritative evidence.
+   Record each agent's working directory, provider-native session or thread
+   ID, model, effort, role, and private Subspace client-state directory.
+   Keep credentials in private files, never in prompts or logs.
+3. Preflight the server's health, credentials, actual executable versions,
+   bridge options, saved sessions, worktrees, and service configuration.
+   A mise shim can exist without resolving a tool; execute a harmless
+   version or help command. Install a missing required helper from the
+   existing trusted checkout. Do not change PATH just because it uses mise.
+4. Resolve required execution approval before stopping the original crew.
+   The supplied bridges automatically approve tools; Codex also runs
+   unsandboxed. Apply approval already given for this crew without asking
+   again. Do not infer broader approval from an unrelated crew. If approval
+   is missing or automatic review blocks the action, prepare the concrete
+   configuration, explain the exact blocker, and ask once while the old
+   crew remains available.
+5. Use the native Subspace bridges under a detached supervisor. On this
+   Linux host, prefer systemd user services, one per agent, grouped under
+   a room-specific target. Reuse existing units. Preserve `reid/` branches
+   and existing worktrees; use bridges directly when `subspace-crew` cannot
+   preserve them. Do not enable reboot startup unless requested.
+6. Once preflight passes, stop only the crew's old runtimes and listeners.
+   For Paseo migrations, archive only the matching agent entries, never
+   their workspaces. Confirm that the old provider processes have exited
+   before resuming their conversations elsewhere. Never run two processes
+   against the same native session or client-state directory.
+7. Resume existing conversations in the same working directories with the
+   same model and effort: Claude uses `--session`, Codex uses `--thread`.
+   Check the installed bridge's prompt behaviour on resume. When a resume
+   cannot accept a prompt, deliver the handoff through the room after the
+   bridge connects. Only create a new conversation when none can be resumed;
+   provide the complete handoff and record its new native ID.
+8. Remove Paseo-specific tools and connection settings from the standalone
+   runtime. Tell the agents to coordinate through Subspace, not recreate
+   Paseo agents or send Paseo notifications. The bridge owns the sole room
+   waiter and wakes idle agents. Agents must not start another waiter or
+   continuously poll. Post meaningful changes rather than acknowledgements.
+9. Start the standalone services and verify the native session IDs, model
+   settings, room identities, and successful message delivery. Check for
+   startup errors and restart loops. A running supervisor alone is not
+   evidence of a working agent. If migration fails, preserve all state and
+   report which workers are stopped; do not claim completion.
+10. Save the actual start, stop, status, log, and viewer instructions with
+    the project. Report the room and those controls concisely. Commands run
+    from a Paseo terminal must control the standalone supervisor without
+    creating Paseo agents. Keep workspaces used by services available.
+
+For the existing Autonomous Rex crew, use `rex-crew.target` in the user
+service manager and room `autonomous-rex-dev`. The units are
+`rex-coordinator.service`, `rex-builder.service`, and `rex-reviewer.service`.
+Start or stop with `systemctl --user start rex-crew.target` or
+`systemctl --user stop rex-crew.target`. Its operating guide is
+`/home/rlevesque/dev/github/nvidia-lpu/autonomous-rex-subspace/docs/subspace.md`.
+Inspect the live configuration before relying on these host-specific paths.
+`subspace-crew down` does not control this migrated crew. Stopping workers
+does not delete or hide rooms; leave room history intact unless I request
+otherwise.
+
+
 ## Latency and Tool Use
 
 - Use medium reasoning for routine work.
