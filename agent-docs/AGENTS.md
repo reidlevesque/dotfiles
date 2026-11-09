@@ -46,6 +46,37 @@ To inspect the current machine inventory, run
 If `mise` blocks a needed command because local configuration must be trusted,
 run `mise trust` and then retry the command.
 
+## Slack search
+
+Slack's API quota is shared by every user of `slack-cli` and the MaaS Slack
+MCP server. Search allows 20 calls per minute and message or thread reads
+allow 50 per minute for all of NVIDIA together. Two searches in one minute
+can return HTTP 429. Choose the route in this order:
+
+1. Use a connector that has its own Slack app when one is connected: the
+   claude.ai Slack tools in Claude Code (`slack_search_public_and_private`,
+   `slack_read_channel`, `slack_read_thread`), or the Slack plugin in Codex
+   when it is authorized.
+2. Use `glean-cli search --datasource slack` to find messages and threads.
+   It reads Glean's index and makes no Slack API call. Expect an indexing
+   lag of minutes to hours. If it reports no token, run `glean-cli auth init`,
+   open the URL in a browser, and run
+   `glean-cli auth complete '<callback-url>'`.
+3. Use `slack-cli` only for what the routes above cannot see, such as DMs
+   and group DMs.
+
+When you use `slack-cli`:
+
+- Run Slack calls one at a time; never run them in parallel.
+- Search only to locate a conversation, then read it with
+  `conversation history` or `thread replies` and a large `--limit`.
+- On HTTP 429, wait the `retry-after` seconds from the error (30 for search,
+  10 for history and threads) and retry once. If the same call fails twice,
+  stop that route and report the gap.
+- The 429 comes from Slack through the ECI gateway, not from the CLI.
+  Report it as a shared-quota limit, not a local bug. Support is
+  #maas-support (C07UFJPHJUU); NVBug 6941982 tracks it.
+
 ## Subspace handoffs
 
 When I ask to hand off work to Subspace, launch standalone agents outside
