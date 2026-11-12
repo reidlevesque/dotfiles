@@ -4,7 +4,8 @@
     "specModeReasoningEffort": "off",
     "autonomyMode": "auto-high",
     "model": "gpt-5.5",
-    "reasoningEffort": "xhigh"
+    "reasoningEffort": "xhigh",
+    "autonomyLevel": "high"
   },
   "enabledPlugins": {
     "core@factory-plugins": true,

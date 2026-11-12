@@ -48,6 +48,11 @@ The `autoupdate` topic runs `git pull --no-rebase --ff-only` and then
   last successful update is more than 20 hours old. The output of the last run
   is in `~/.local/state/dotfiles-update/last-run.log`.
 
+On macOS, `claude/install.sh` installs or updates native Claude Code to the
+latest release through Anthropic's installer. It keeps the binary at
+`~/.local/bin/claude`. Linux uses the
+`claude-code@latest` Homebrew cask.
+
 ## Structure
 
 The repository follows a modular approach:

@@ -158,6 +158,15 @@ done
 
 if [[ -f "Brewfile.$(uname)" ]]; then
   install_homebrew_if_missing
+  # TFLint moved from a formula to the upstream cask. Remove the old formula
+  # so its executable does not shadow the cask installed by the Brewfile.
+  if [[ "$(uname)" == "Darwin" ]] && brew list --formula tflint >/dev/null 2>&1; then
+    HOMEBREW_NO_AUTOREMOVE=1 brew uninstall --formula tflint
+    if brew list --cask terraform-linters/tap/tflint >/dev/null 2>&1; then
+      brew reinstall --cask terraform-linters/tap/tflint
+    fi
+  fi
+
   echo -e "\\n> Installing Bundle"
   bundle_rc=0
   brew bundle install --upgrade --file="Brewfile.$(uname)" || bundle_rc=$?
