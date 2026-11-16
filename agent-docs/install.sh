@@ -22,9 +22,7 @@ readonly CODEX_SYSTEM_CONFIG="/etc/codex/config.toml"
 # Collection entries:
 # label|repo_path|skills_relative_dir
 # Each child directory with a SKILL.md is linked unless its name is disabled.
-TURBO_REVIEW_INSTALL_COMMAND="bash \"$SCRIPT_DIR/installers/turbo-review.sh\""
 EXTERNAL_SKILLS=(
-  "turbo-review|$HOME/dev/gitlab-master/achristensen/kungfu|turbo-review|$TURBO_REVIEW_INSTALL_COMMAND"
   "simple-english|$HOME/dev/github/AminBlg/SimpleEnglish|skills/simple-english|"
   "bro|$HOME/dev/github/cursor/plugins|pstack/skills/bro|"
 )

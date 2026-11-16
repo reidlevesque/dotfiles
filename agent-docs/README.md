@@ -35,7 +35,6 @@ skills from its managed skill directories.
 
 Current skills:
 
-- `turbo-review`: `/home/rlevesque/dev/gitlab-master/achristensen/kungfu/turbo-review`
 - `simple-english`: `/home/rlevesque/dev/github/AminBlg/SimpleEnglish/skills/simple-english`
 - `bro`: `/home/rlevesque/dev/github/cursor/plugins/pstack/skills/bro`
 - `nvidia-lpu/skills`: all skills under `/home/rlevesque/dev/github/nvidia-lpu/skills/skills`
