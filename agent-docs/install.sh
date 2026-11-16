@@ -26,6 +26,7 @@ TURBO_REVIEW_INSTALL_COMMAND="bash \"$SCRIPT_DIR/installers/turbo-review.sh\""
 EXTERNAL_SKILLS=(
   "turbo-review|$HOME/dev/gitlab-master/achristensen/kungfu|turbo-review|$TURBO_REVIEW_INSTALL_COMMAND"
   "simple-english|$HOME/dev/github/AminBlg/SimpleEnglish|skills/simple-english|"
+  "bro|$HOME/dev/github/cursor/plugins|pstack/skills/bro|"
 )
 EXTERNAL_SKILL_COLLECTIONS=(
   "nvidia-lpu-skills|$HOME/dev/github/nvidia-lpu/skills|skills"
