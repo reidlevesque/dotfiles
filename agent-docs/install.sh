@@ -473,7 +473,7 @@ link_system_settings codex "$CODEX_SYSTEM_CONFIG" "$SCRIPT_DIR/settings/codex.to
 # portable defaults instead of linking the file so those writes stay local.
 merge_settings claude "$HOME/.claude/settings.json"
 link_settings amp "$HOME/.config/amp/settings.json"
-link_settings droid "$HOME/.factory/settings.json"
+bash "$SCRIPT_DIR/install-droid-settings.sh"
 merge_settings claude-mcp "$HOME/.claude.json"
 
 # 5. External skills managed from source clones

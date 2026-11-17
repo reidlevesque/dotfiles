@@ -13,7 +13,7 @@ install_systemd_timer() {
   fi
 
   mkdir -p "$unit_dir"
-  for unit in dotfiles-update.service dotfiles-update.timer; do
+  for unit in dotfiles-update.service dotfiles-update.timer dotfiles-update-notify.service; do
     ln -sfnv "$dotfiles_dir/autoupdate/$unit" "$unit_dir/$unit"
   done
 

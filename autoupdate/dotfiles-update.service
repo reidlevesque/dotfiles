@@ -1,6 +1,7 @@
 [Unit]
 Description=Pull dotfiles and run install.sh
 ConditionPathIsDirectory=%h/.dotfiles/.git
+OnFailure=dotfiles-update-notify.service
 
 [Service]
 Type=oneshot

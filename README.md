@@ -43,7 +43,13 @@ The `autoupdate` topic runs `git pull --no-rebase --ff-only` and then
 `./install.sh` once a day.
 
 - Linux: a systemd user timer. Check it with
-  `journalctl --user -u dotfiles-update`.
+  `journalctl --user -u dotfiles-update`. A failed run triggers
+  `dotfiles-update-notify.service`, which sends a DM through `slack --user`
+  to the current Unix username. The `slack` command must be installed and
+  authenticated for unattended use. To use a different recipient, set
+  `Environment=DOTFILES_SLACK_USER=<username>` in a user override for
+  `dotfiles-update-notify.service`. Notification failures are visible in
+  `journalctl --user -u dotfiles-update-notify`. Raw installer logs stay local.
 - macOS: a LaunchAgent that checks every hour and at login. It runs when the
   last successful update is more than 20 hours old. The output of the last run
   is in `~/.local/state/dotfiles-update/last-run.log`.
